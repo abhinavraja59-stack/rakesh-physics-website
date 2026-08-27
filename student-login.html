@@ -234,17 +234,19 @@ Your success is our mission.
 </div>
 
 <script>
-function loginStudent(){
+function loginStudent() {
 
-const id = document.getElementById("studentId").value.trim();
+const studentId = document.getElementById("studentId").value.trim();
 const password = document.getElementById("password").value.trim();
 
-if(!id || !password){
+if (studentId === "" || password === "") {
 alert("Please enter your Student ID and Password.");
 return;
 }
 
-alert("Login system will be connected with your Student Dashboard.");
+localStorage.setItem("studentID", studentId);
+
+window.location.href = "student-dashboard.html";
 }
 </script>
 
