@@ -214,7 +214,7 @@ placeholder="Enter your password"
 >
 </div>
 
-<button class="login-btn" onclick="loginStudent()">
+<button type="login-btn" onclick="loginStudent()">
 🚀 Enter Student Dashboard
 </button>
 
@@ -235,16 +235,13 @@ Your success is our mission.
 
 <script>
 function loginStudent() {
-
-const studentId = document.getElementById("studentId").value.trim();
+const id = document.getElementById("studentId").value.trim();
 const password = document.getElementById("password").value.trim();
 
-if (studentId === "" || password === "") {
+if (!id || !password) {
 alert("Please enter your Student ID and Password.");
 return;
 }
-
-localStorage.setItem("studentID", studentId);
 
 window.location.href = "student-dashboard.html";
 }
