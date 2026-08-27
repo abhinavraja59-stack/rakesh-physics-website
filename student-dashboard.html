@@ -1,1 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Dashboard | Rakesh Physics</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,Arial,sans-serif;
+}
+
+body{
+min-height:100vh;
+background:
+radial-gradient(circle at 10% 10%,#2563eb35,transparent 28%),
+radial-gradient(circle at 90% 20%,#9333ea30,transparent 28%),
+#07111f;
+color:#fff;
+padding:18px;
+}
+
+.dashboard{
+width:100%;
+max-width:1050px;
+margin:auto;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 20px;
+border:1px solid rgba(255,255,255,.12);
+border-radius:22px;
+background:rgba(255,255,255,.07);
+backdrop-filter:blur(20px);
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo{
+width:45px;
+height:45px;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:21px;
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+.brand h1{
+font-size:17px;
+}
+
+.brand p{
+font-size:10px;
+color:#94a3b8;
+margin-top:3px;
+}
+
+.logout{
+text-decoration:none;
+color:#cbd5e1;
+font-size:11px;
+padding:9px 13px;
+border-radius:11px;
+background:rgba(255,255,255,.07);
+}
+
+/* WELCOME */
+
+.welcome{
+margin:22px 4px;
+}
+
+.welcome p{
+color:#94a3b8;
+font-size:12px;
+margin-bottom:5px;
+}
+
+.welcome h2{
+font-size:26px;
+}
+
+.welcome span{
+color:#60a5fa;
+}
+
+/* PROFILE */
+
+.profile{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+padding:20px;
+border-radius:22px;
+background:linear-gradient(135deg,#1d4ed855,#7c3aed45);
+border:1px solid rgba(255,255,255,.12);
+}
+
+.profile-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.avatar{
+width:55px;
+height:55px;
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,.15);
+font-size:24px;
+}
+
+.profile h3{
+font-size:17px;
+}
+
+.profile p{
+color:#cbd5e1;
+font-size:11px;
+margin-top:4px;
+}
+
+.status{
+padding:7px 11px;
+border-radius:20px;
+font-size:10px;
+color:#86efac;
+background:#22c55e18;
+border:1px solid #22c55e35;
+}
+
+/* STATS */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:15px;
+}
+
+.stat{
+padding:16px;
+border-radius:18px;
+background:rgba(255,255,255,.065);
+border:1px solid rgba(255,255,255,.1);
+}
+
+.stat-icon{
+font-size:18px;
+}
+
+.stat strong{
+display:block;
+font-size:21px;
+margin-top:8px;
+}
+
+.stat span{
+font-size:10px;
+color:#94a3b8;
+}
+
+/* MAIN GRID */
+
+.section-title{
+margin:25px 3px 12px;
+font-size:14px;
+color:#dbeafe;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.card{
+text-decoration:none;
+color:white;
+padding:18px;
+min-height:125px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,.1);
+background:rgba(255,255,255,.065);
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-3px);
+background:rgba(255,255,255,.1);
+}
+
+.card-icon{
+width:42px;
+height:42px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:13px;
+font-size:20px;
+background:linear-gradient(135deg,#2563eb55,#9333ea55);
+}
+
+.card h3{
+font-size:14px;
+margin-top:13px;
+}
+
+.card p{
+font-size:10px;
+color:#94a3b8;
+margin-top:5px;
+}
+
+/* NOTICE */
+
+.notice{
+margin-top:15px;
+padding:17px;
+border-radius:20px;
+background:linear-gradient(135deg,#0f766e55,#2563eb35);
+border:1px solid rgba(255,255,255,.1);
+}
+
+.notice-title{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:13px;
+font-weight:700;
+}
+
+.notice p{
+font-size:11px;
+color:#cbd5e1;
+margin-top:8px;
+line-height:1.5;
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+padding:24px 5px 10px;
+color:#64748b;
+font-size:10px;
+}
+
+.footer strong{
+color:#94a3b8;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+body{
+padding:12px;
+}
+
+.header{
+padding:15px;
+}
+
+.brand h1{
+font-size:15px;
+}
+
+.welcome h2{
+font-size:22px;
+}
+
+.profile{
+padding:16px;
+}
+
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+.cards{
+grid-template-columns:repeat(2,1fr);
+}
+
+.card{
+min-height:115px;
+padding:15px;
+}
+}
+
+@media(max-width:380px){
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.status{
+display:none;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="brand">
+
+<div class="logo">🎓</div>
+
+<div>
+<h1>Rakesh Physics</h1>
+<p>Student Learning Portal</p>
+</div>
+
+</div>
+
+<a href="student-login.html" class="logout">
+Logout
+</a>
+
+</header>
+
+
+<!-- WELCOME -->
+
+<section class="welcome">
+
+<p>GOOD MORNING 👋</p>
+
+<h2>Welcome back, <span>Student</span></h2>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section class="profile">
+
+<div class="profile-left">
+
+<div class="avatar">👨‍🎓</div>
+
+<div>
+<h3>Student Name</h3>
+<p>Student ID • RP2026XXXX</p>
+</div>
+
+</div>
+
+<div class="status">
+● Active Student
+</div>
+
+</section>
+
+
+<!-- QUICK STATS -->
+
+<section class="stats">
+
+<div class="stat">
+<div class="stat-icon">📅</div>
+<strong>92%</strong>
+<span>Attendance</span>
+</div>
+
+<div class="stat">
+<div class="stat-icon">📝</div>
+<strong>08</strong>
+<span>Tests</span>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🏆</div>
+<strong>86%</strong>
+<span>Performance</span>
+</div>
+
+<div class="stat">
+<div class="stat-icon">📚</div>
+<strong>24</strong>
+<span>Materials</span>
+</div>
+
+</section>
+
+
+<!-- LEARNING -->
+
+<h3 class="section-title">
+My Learning
+</h3>
+
+<section class="cards">
+
+<a href="#" class="card">
+
+<div class="card-icon">🎥</div>
+
+<h3>My Classes</h3>
+
+<p>Watch your classes & lectures</p>
+
+</a>
+
+
+<a href="#" class="card">
+
+<div class="card-icon">📖</div>
+
+<h3>Study Material</h3>
+
+<p>Notes, PDFs & learning resources</p>
+
+</a>
+
+
+<a href="#" class="card">
+
+<div class="card-icon">📝</div>
+
+<h3>Tests & Results</h3>
+
+<p>Attempt tests & check performance</p>
+
+</a>
+
+
+<a href="#" class="card">
+
+<div class="card-icon">📊</div>
+
+<h3>My Performance</h3>
+
+<p>Track your academic progress</p>
+
+</a>
+
+
+<a href="#" class="card">
+
+<div class="card-icon">💳</div>
+
+<h3>Fee Status</h3>
+
+<p>View your payment information</p>
+
+</a>
+
+
+<a href="#" class="card">
+
+<div class="card-icon">💬</div>
+
+<h3>Doubt Support</h3>
+
+<p>Get help whenever you need</p>
+
+</a>
+
+</section>
+
+
+<!-- NOTICE -->
+
+<section class="notice">
+
+<div class="notice-title">
+🔔 Latest Notice
+</div>
+
+<p>
+Keep checking your Student Portal regularly
+for classes, tests, study material and important
+announcements.
+</p>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<strong>Learn • Practice • Achieve</strong><br>
+
+Rakesh Physics — Your Success, Our Mission.
+
+</footer>
+
+</div>
+
+</body>
+</html>
 
