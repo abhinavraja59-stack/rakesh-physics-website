@@ -5016,3 +5016,48 @@ box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
 grid-template-columns: 1fr;
 }
 }
+/* =========================================
+   FINAL HEADER FIX – BRAND & NAV ALIGNMENT
+   ========================================= */
+
+.site-header .nav-wrap{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  flex-wrap:nowrap !important;
+  width:100% !important;
+}
+
+.site-header .brand{
+  flex:0 0 auto !important;
+  white-space:nowrap !important;
+}
+
+.site-header .main-nav{
+  flex:0 0 auto !important;
+  margin-left:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+}
+
+/* Prevent Home and other menu items from moving above brand */
+.site-header .main-nav a{
+  white-space:nowrap !important;
+}
+
+/* Keep brand together */
+.site-header .brand-name{
+  white-space:nowrap !important;
+}
+
+/* Mobile: keep hamburger layout clean */
+@media (max-width:760px){
+  .site-header .nav-wrap{
+    flex-wrap:nowrap !important;
+  }
+
+  .site-header .main-nav{
+    margin-left:auto !important;
+  }
+}
