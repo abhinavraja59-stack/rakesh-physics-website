@@ -266,18 +266,40 @@ greeting.textContent = "Good Night, Student 🌙";
 
 updateGreeting();
 
-function loginStudent() {
-const id = document.getElementById("studentId").value.trim();
-const password = document.getElementById("password").value.trim();
+async function loginStudent() {
+  const id = document.getElementById("studentId").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-if (!id || !password) {
-alert("Please enter your Student ID and Password.");
-return;
+  if (!id || !password) {
+    alert("Please enter your Student ID and Password.");
+    return;
+  }
+
+  try {
+    const loginEmail = id.includes("@")
+      ? id
+      : `${id}@students.rakeshphysics.com`;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: password
+    });
+
+    if (error) {
+      alert("Invalid Student ID or Password.");
+      console.error(error);
+      return;
+    }
+
+    if (data.session) {
+      window.location.href = "student-dashboard.html";
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Login failed. Please try again.");
+  }
 }
-
-window.location.href = "student-dashboard.html";
-}
-
 </script>
 
 
