@@ -5325,3 +5325,74 @@ grid-template-columns: 1fr;
       0 8px 14px rgba(7,22,51,0.10);
   }
 }
+/* ===== JEE PROGRAM PREMIUM LIGHT THEME ===== */
+
+#features .program{
+  background:
+    radial-gradient(circle at 100% 0%,
+      rgba(247,223,138,.45),
+      transparent 32%),
+    linear-gradient(135deg,
+      #ffffff 0%,
+      #fffdf7 55%,
+      #fff8df 100%) !important;
+
+  color:#071633 !important;
+
+  border:1px solid rgba(212,175,55,.35) !important;
+
+  box-shadow:
+    0 20px 55px rgba(7,22,51,.10) !important;
+}
+
+/* Program small heading */
+
+#features .program .mini{
+  color:#9c7618 !important;
+  font-weight:900 !important;
+  letter-spacing:1.5px;
+}
+
+/* Main heading */
+
+#features .program h2{
+  color:#071633 !important;
+  opacity:1 !important;
+}
+
+/* Paragraph */
+
+#features .program p{
+  color:#26324a !important;
+  opacity:1 !important;
+}
+
+/* Program items */
+
+#features .program-item{
+  background:#ffffff !important;
+  color:#071633 !important;
+
+  border:1px solid rgba(212,175,55,.35) !important;
+
+  box-shadow:
+    0 8px 22px rgba(7,22,51,.06);
+
+  opacity:1 !important;
+}
+
+/* Gold tick */
+
+#features .program-item::first-letter{
+  color:#d4af37 !important;
+}
+
+/* Hover */
+
+#features .program-item:hover{
+  transform:translateY(-2px);
+  border-color:#d4af37 !important;
+
+  box-shadow:
+    0 12px 28px rgba(156,118,24,.12);
+}
