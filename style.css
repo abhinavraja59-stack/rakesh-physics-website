@@ -5676,3 +5676,460 @@ body {
   max-width: 100% !important;
   overflow-x: hidden !important;
 }
+/* =========================================================
+   RAKESH PHYSICS — PREMIUM PROFESSIONAL FOOTER
+   Desktop + Tablet + Mobile
+   ========================================================= */
+
+.site-footer{
+  position:relative;
+  margin-top:0;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255,201,40,.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #030b1d 0%,
+      #06152f 48%,
+      #071d42 100%
+    );
+
+  color:#ffffff;
+
+  border-top:1px solid rgba(255,201,40,.18);
+
+  overflow:hidden;
+}
+
+
+/* =========================================================
+   FOOTER MAIN AREA
+   ========================================================= */
+
+.footer-grid{
+  width:min(1200px,92%);
+
+  margin:0 auto;
+
+  padding:70px 0 55px;
+
+  display:grid;
+
+  grid-template-columns:
+    1.45fr
+    1fr
+    1fr
+    1.35fr;
+
+  gap:50px;
+
+  align-items:start;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.footer-brand{
+  max-width:360px;
+}
+
+
+.footer-logo{
+  font-size:24px;
+
+  font-weight:900;
+
+  letter-spacing:1.5px;
+
+  color:#ffffff;
+
+  margin-bottom:8px;
+}
+
+
+.footer-tagline{
+  margin:0 0 18px;
+
+  color:#ffc928;
+
+  font-size:13px;
+
+  font-weight:800;
+
+  letter-spacing:1.5px;
+}
+
+
+.footer-description{
+  margin:0;
+
+  color:#aebbd0;
+
+  font-size:13px;
+
+  line-height:1.8;
+}
+
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.footer-column{
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:flex-start;
+
+  gap:10px;
+}
+
+
+.footer-column h3{
+  margin:0 0 12px;
+
+  color:#ffffff;
+
+  font-size:15px;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  position:relative;
+}
+
+
+.footer-column h3::after{
+  content:"";
+
+  display:block;
+
+  width:32px;
+
+  height:2px;
+
+  margin-top:8px;
+
+  border-radius:10px;
+
+  background:#ffc928;
+}
+
+
+.footer-column a{
+  color:#b9c6da;
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  line-height:1.5;
+
+  transition:
+    color .25s ease,
+    transform .25s ease;
+}
+
+
+.footer-column a:hover{
+  color:#ffc928;
+
+  transform:translateX(4px);
+}
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.footer-contact p{
+  margin:0 0 5px;
+
+  color:#b9c6da;
+
+  font-size:13px;
+
+  line-height:1.7;
+}
+
+
+.footer-contact a{
+  word-break:break-word;
+}
+
+
+.footer-login{
+  display:inline-flex !important;
+
+  align-items:center;
+
+  justify-content:center;
+
+  margin-top:8px;
+
+  padding:9px 15px;
+
+  border:1px solid rgba(255,201,40,.55);
+
+  border-radius:9px;
+
+  color:#ffc928 !important;
+
+  background:rgba(255,201,40,.06);
+
+  font-weight:800;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    transform .25s ease !important;
+}
+
+
+.footer-login:hover{
+  background:#ffc928;
+
+  color:#071633 !important;
+
+  transform:translateY(-2px) !important;
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.09);
+
+  background:rgba(0,0,0,.16);
+}
+
+
+.footer-bottom-inner{
+  width:min(1200px,92%);
+
+  margin:0 auto;
+
+  min-height:64px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+}
+
+
+.footer-bottom p{
+  margin:0;
+
+  color:#8796ad;
+
+  font-size:11px;
+
+  line-height:1.5;
+}
+
+
+.footer-bottom p:last-child{
+  color:#ffc928;
+
+  font-weight:700;
+
+  letter-spacing:.5px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(max-width:900px){
+
+  .footer-grid{
+    grid-template-columns:
+      1.3fr
+      1fr
+      1fr;
+
+    gap:40px;
+
+    padding:60px 0 45px;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+
+    max-width:600px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:600px){
+
+  .footer-grid{
+    width:88%;
+
+    grid-template-columns:1fr;
+
+    gap:35px;
+
+    padding:50px 0 40px;
+  }
+
+
+  .footer-brand{
+    grid-column:auto;
+
+    max-width:none;
+
+    text-align:center;
+  }
+
+
+  .footer-logo{
+    font-size:21px;
+  }
+
+
+  .footer-tagline{
+    font-size:12px;
+  }
+
+
+  .footer-description{
+    font-size:13px;
+
+    line-height:1.75;
+  }
+
+
+  .footer-column{
+    align-items:center;
+
+    text-align:center;
+  }
+
+
+  .footer-column h3{
+    margin-bottom:10px;
+  }
+
+
+  .footer-column a{
+    font-size:13px;
+  }
+
+
+  .footer-contact p{
+    text-align:center;
+  }
+
+
+  .footer-bottom-inner{
+    width:88%;
+
+    min-height:auto;
+
+    padding:18px 0;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    text-align:center;
+
+    gap:6px;
+  }
+
+
+  .footer-bottom p{
+    font-size:10px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media(max-width:430px){
+
+  .footer-grid{
+    width:86%;
+
+    padding:42px 0 35px;
+
+    gap:30px;
+  }
+
+
+  .footer-logo{
+    font-size:19px;
+
+    letter-spacing:1px;
+  }
+
+
+  .footer-tagline{
+    font-size:11px;
+  }
+
+
+  .footer-description{
+    font-size:12px;
+  }
+
+
+  .footer-column h3{
+    font-size:14px;
+  }
+
+
+  .footer-column a,
+  .footer-contact p{
+    font-size:12px;
+  }
+
+
+  .footer-login{
+    padding:8px 13px;
+  }
+
+
+  .footer-bottom-inner{
+    width:86%;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  .footer-column a,
+  .footer-login{
+    transition:none !important;
+  }
+
+}
