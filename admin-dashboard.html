@@ -18,7 +18,70 @@
 <section id="content" class="panel section-block"><p class="eyebrow">DRAFT EDITOR</p><h2>Website content notes</h2><label for="content-notes">Content changes to prepare</label><textarea id="content-notes" rows="4" placeholder="Describe the page and exact change..."></textarea><button id="save-content">Save content draft</button></section>
 <section id="seo" class="panel section-block"><p class="eyebrow">SEARCH VISIBILITY</p><h2>SEO settings</h2><div class="form-grid"><div><label for="seo-title">Default SEO title</label><input id="seo-title" maxlength="70" placeholder="Rakesh Physics | Purnea, Bihar"></div><div><label for="canonical-url">Canonical URL</label><input id="canonical-url" type="url" placeholder="https://rakeshphysics.com/"></div><div class="span-2"><label for="seo-description">Meta description</label><textarea id="seo-description" rows="3" maxlength="180"></textarea></div><div class="span-2"><label for="local-seo">Local SEO notes</label><textarea id="local-seo" rows="3" placeholder="Purnea, Seemanchal, JEE/NEET..."></textarea></div></div><button id="save-seo">Save SEO draft</button></section>
 <section id="notices" class="panel section-block"><p class="eyebrow">ANNOUNCEMENTS</p><h2>Notices & banners</h2><label for="announcement">Announcement text</label><input id="announcement" placeholder="Admissions Open — Scholarship Test 2027"><button id="save-announcement">Save announcement draft</button></section>
-<section id="enquiries" class="panel section-block"><p class="eyebrow">MODULE 5</p><h2>Admission Enquiries & Contact</h2><p class="muted">Not connected yet. Existing enquiry source and access rules must be identified.</p></section>
+<section id="enquiries" class="panel section-block">
+  <p class="eyebrow">MODULE 5</p>
+  <h2>Enquiry Management</h2>
+  <p class="muted">
+    Admission enquiries and scholarship registrations.
+    Visible only to the authorized Director account.
+  </p>
+
+  <div class="form-grid">
+    <div>
+      <label for="enquiry-search">Search enquiries</label>
+      <input id="enquiry-search" type="search"
+        placeholder="Student name or mobile number">
+    </div>
+    <div>
+      <label for="enquiry-status-filter">Filter by status</label>
+      <select id="enquiry-status-filter">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="contacted">Contacted</option>
+        <option value="converted">Converted</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <button type="button" id="admission-tab"
+      class="secondary">Admission Enquiries</button>
+    <button type="button" id="scholarship-tab"
+      class="secondary">Scholarship Registrations</button>
+  </div>
+
+  <p id="enquiry-message" class="message" role="status">
+    Loading enquiries…
+  </p>
+
+  <button type="button" id="refresh-enquiries" class="secondary">
+    Refresh enquiries
+  </button>
+
+  <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Student</th>
+          <th>Mobile</th>
+          <th>Class</th>
+          <th>Course / Exam</th>
+          <th>School</th>
+          <th>District</th>
+          <th>Status</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody id="enquiry-rows">
+        <tr>
+          <td colspan="9">Enquiries will appear here.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 <section id="analytics" class="panel section-block"><p class="eyebrow">MODULE 6</p><h2>Analytics & Performance</h2><p class="muted">Integration pending; no fabricated analytics are shown.</p></section>
 <section id="backup" class="panel section-block"><p class="eyebrow">MODULE 7</p><h2>Backup & Change History</h2><p class="muted">Audit log and backup workflow must be implemented before production use.</p></section>
 <section id="security" class="panel section-block"><p class="eyebrow">MODULE 8</p><h2>Secure Admin & Settings</h2><p id="admin-identity" class="muted">Checking authorization…</p><p class="warning-note">Salary and complete historical fee collection records must be Director-only through database policies, not just hidden UI links.</p></section>
