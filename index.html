@@ -2635,308 +2635,219 @@ mainNav.classList.remove("open");
 
 
 
-/* =============== RAKESH PHYSICS FORM INTEGRATION =============== */
+/* ADMISSION FORM */
 
-(() => {
-  "use strict";
+const admissionForm =
+document.getElementById("admissionForm");
 
-  const config = window.RP_ADMIN_CONFIG || {};
 
-  const supabaseReady =
-    window.supabase &&
-    config.SUPABASE_URL &&
-    config.SUPABASE_PUBLISHABLE_KEY;
+admissionForm.addEventListener(
+"submit",
+function(event){
 
-  const db = supabaseReady
-    ? window.supabase.createClient(
-        config.SUPABASE_URL,
-        config.SUPABASE_PUBLISHABLE_KEY
-      )
-    : null;
+event.preventDefault();
 
-  const whatsappNumber = "919065522564";
 
-  function openWhatsApp(message, popup) {
-    const url =
-      "https://wa.me/" + whatsappNumber +
-      "?text=" + encodeURIComponent(message);
+const studentName =
+admissionForm
+.querySelector('[name="studentName"]')
+.value;
 
-    if (popup && !popup.closed) {
-      popup.location.href = url;
-    } else {
-      window.location.href = url;
+
+const fatherName =
+admissionForm
+.querySelector('[name="fatherName"]')
+.value;
+
+
+const mobile =
+admissionForm
+.querySelector('[name="mobile"]')
+.value;
+
+
+const selectedClass =
+admissionForm
+.querySelector('[name="class"]')
+.value;
+
+
+const course =
+admissionForm
+.querySelector('[name="course"]')
+.value;
+
+
+const message =
+
+"Admission Enquiry - Rakesh Physics\n\n" +
+
+"Student Name: " + studentName + "\n" +
+
+"Father's Name: " + fatherName + "\n" +
+
+"Mobile: " + mobile + "\n" +
+
+"Class: " + selectedClass + "\n" +
+
+"Course: " + course;
+
+
+const whatsappURL =
+
+"https://wa.me/919065522564?text=" +
+
+encodeURIComponent(message);
+
+
+window.open(
+whatsappURL,
+"_blank"
+);
+
+});
+
+
+
+/* CURRENT YEAR */
+
+document
+.querySelectorAll("footer p")
+.forEach(function(el){
+
+el.innerHTML =
+"© " +
+new Date().getFullYear() +
+" Rakesh Physics. All Rights Reserved.";
+
+});
+/* =====================================================
+PREMIUM SCROLL REVEAL
+===================================================== */
+
+const revealElements = document.querySelectorAll(
+".reveal, .reveal-left, .reveal-right, .reveal-scale"
+);
+
+const revealObserver = new IntersectionObserver(
+function(entries) {
+
+entries.forEach(function(entry) {
+
+if (entry.isIntersecting) {
+
+entry.target.classList.add("active");
+
+revealObserver.unobserve(entry.target);
+
+}
+
+});
+
+},
+{
+threshold: 0.15
+}
+);
+
+revealElements.forEach(function(element) {
+revealObserver.observe(element);
+});
+/* ================= SCHOLARSHIP REGISTRATION ================= */
+
+const scholarshipForm = document.getElementById("scholarshipForm");
+
+if (scholarshipForm) {
+
+  scholarshipForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    const submitButton = scholarshipForm.querySelector("button[type='submit']");
+
+    const studentName = document.getElementById("scholarshipStudentName").value.trim();
+    const fatherName = document.getElementById("scholarshipFatherName").value.trim();
+    const mobile = document.getElementById("scholarshipMobile").value.trim();
+    const studentClass = document.getElementById("scholarshipClass").value;
+    const schoolName = document.getElementById("scholarshipSchool").value.trim();
+    const district = document.getElementById("scholarshipDistrict").value.trim();
+    const examMode = document.getElementById("scholarshipExamMode").value;
+
+    if (!/^[0-9]{10}$/.test(mobile)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
     }
-  }
 
-  function setButton(button, text, disabled) {
-    if (!button) return;
-    button.textContent = text;
-    button.disabled = disabled;
-  }
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycbzTfHdifZNd70ipnCxVM8jFcKy4c0JHhUArmZxAceTs6xDICtj_oCRCDI0w-VTqyWY6/exec";
 
-  async function saveEnquiry(enquiry) {
-    if (!db) {
-      throw new Error(
-        "Website database configuration is missing. Please contact Rakesh Physics."
+    const formData = new URLSearchParams();
+
+    formData.append("studentName", studentName);
+    formData.append("fatherName", fatherName);
+    formData.append("mobile", mobile);
+    formData.append("studentClass", studentClass);
+    formData.append("schoolName", schoolName);
+    formData.append("district", district);
+    formData.append("examMode", examMode);
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+    fetch(scriptURL, {
+      method: "POST",
+      body: formData,
+      mode: "no-cors"
+    })
+    .then(function () {
+
+      const whatsappMessage =
+        "🎓 *RAKESH PHYSICS SCHOLARSHIP TEST 2026–27*%0A%0A" +
+        "Student Name: " + encodeURIComponent(studentName) + "%0A" +
+        "Father's Name: " + encodeURIComponent(fatherName) + "%0A" +
+        "Mobile: " + encodeURIComponent(mobile) + "%0A" +
+        "Class: " + encodeURIComponent(studentClass) + "%0A" +
+        "School: " + encodeURIComponent(schoolName) + "%0A" +
+        "District: " + encodeURIComponent(district) + "%0A" +
+        "Exam Mode: " + encodeURIComponent(examMode) + "%0A%0A" +
+        "Scholarship Registration submitted from website.";
+
+      alert(
+        "🎉 Registration submitted successfully!%0A%0A" +
+        "Your details have been sent for registration."
       );
-    }
 
-    const { error } = await db
-      .from("website_enquiries")
-      .insert([enquiry]);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-  }
-
-  /* ================= ADMISSION FORM ================= */
-
-  const admissionForm = document.getElementById("admissionForm");
-
-  if (admissionForm) {
-    admissionForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const button = admissionForm.querySelector(
-        'button[type="submit"]'
+      window.open(
+        "https://wa.me/919065522564?text=" + whatsappMessage,
+        "_blank"
       );
 
-      const studentName =
-        admissionForm.querySelector('[name="studentName"]').value.trim();
+      scholarshipForm.reset();
 
-      const fatherName =
-        admissionForm.querySelector('[name="fatherName"]').value.trim();
+      submitButton.disabled = false;
+      submitButton.textContent = "🎓 Register For Scholarship Test";
+    })
+    .catch(function () {
 
-      const mobile =
-        admissionForm.querySelector('[name="mobile"]').value.trim();
+      alert(
+        "Something went wrong. Please try again or contact Rakesh Physics."
+      );
 
-      const selectedClass =
-        admissionForm.querySelector('[name="class"]').value;
-
-      const course =
-        admissionForm.querySelector('[name="course"]').value;
-
-      if (!studentName || !/^[0-9]{10}$/.test(mobile)) {
-        alert("Please enter the student's name and a valid 10-digit mobile number.");
-        return;
-      }
-
-      const popup = window.open("about:blank", "_blank");
-
-      setButton(button, "Submitting...", true);
-
-      try {
-        await saveEnquiry({
-          enquiry_type: "admission",
-          student_name: studentName,
-          father_name: fatherName || null,
-          mobile: mobile,
-          class_name: selectedClass || null,
-          course: course || null,
-          source: "website"
-        });
-
-        const message =
-          "Admission Enquiry - Rakesh Physics\n\n" +
-          "Student Name: " + studentName + "\n" +
-          "Father's Name: " + fatherName + "\n" +
-          "Mobile: " + mobile + "\n" +
-          "Class: " + selectedClass + "\n" +
-          "Course: " + course;
-
-        openWhatsApp(message, popup);
-
-        alert("Admission enquiry saved successfully.");
-
-        admissionForm.reset();
-      } catch (error) {
-        if (popup && !popup.closed) popup.close();
-
-        console.error("Admission enquiry error:", error);
-
-        alert(
-          "Admission enquiry could not be saved. Please try again. Details: " +
-          error.message
-        );
-      } finally {
-        setButton(
-          button,
-          "Submit Admission Enquiry",
-          false
-        );
-      }
+      submitButton.disabled = false;
+      submitButton.textContent = "🎓 Register For Scholarship Test";
     });
-  }
 
-  /* ============== SCHOLARSHIP REGISTRATION ============== */
-
-  const scholarshipForm =
-    document.getElementById("scholarshipForm");
-
-  if (scholarshipForm) {
-    scholarshipForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const button = scholarshipForm.querySelector(
-        'button[type="submit"]'
-      );
-
-      const studentName =
-        document.getElementById("scholarshipStudentName").value.trim();
-
-      const fatherName =
-        document.getElementById("scholarshipFatherName").value.trim();
-
-      const mobile =
-        document.getElementById("scholarshipMobile").value.trim();
-
-      const studentClass =
-        document.getElementById("scholarshipClass").value;
-
-      const schoolName =
-        document.getElementById("scholarshipSchool").value.trim();
-
-      const district =
-        document.getElementById("scholarshipDistrict").value.trim();
-
-      const examMode =
-        document.getElementById("scholarshipExamMode").value;
-
-      if (!studentName || !/^[0-9]{10}$/.test(mobile)) {
-        alert("Please enter the student's name and a valid 10-digit mobile number.");
-        return;
-      }
-
-      const popup = window.open("about:blank", "_blank");
-
-      setButton(button, "Submitting...", true);
-
-      try {
-        // First save to Supabase. Do not reset the form if this fails.
-        await saveEnquiry({
-          enquiry_type: "scholarship",
-          student_name: studentName,
-          father_name: fatherName || null,
-          mobile: mobile,
-          class_name: studentClass || null,
-          school_name: schoolName || null,
-          district: district || null,
-          exam_mode: examMode || null,
-          source: "website"
-        });
-
-        // Preserve the existing Google Sheets submission.
-        const scriptURL =
-          "https://script.google.com/macros/s/AKfycbzTfHdifZNd70ipnCxVM8jFcKy4c0JHhUArmZxAceTs6xDICtj_oCRCDI0w-VTqyWY6/exec";
-
-        const formData = new URLSearchParams();
-
-        formData.append("studentName", studentName);
-        formData.append("fatherName", fatherName);
-        formData.append("mobile", mobile);
-        formData.append("studentClass", studentClass);
-        formData.append("schoolName", schoolName);
-        formData.append("district", district);
-        formData.append("examMode", examMode);
-
-        let sheetsMessage =
-          "Supabase saved. Google Sheets submission status could not be verified.";
-
-        try {
-          await fetch(scriptURL, {
-            method: "POST",
-            body: formData,
-            mode: "no-cors"
-          });
-
-          // no-cors does not expose the actual response or confirm
-          // that Google Apps Script successfully stored the row.
-          sheetsMessage =
-            "Supabase saved. Google Sheets request sent; verify the Sheet.";
-        } catch (sheetError) {
-          console.error("Google Sheets request error:", sheetError);
-          sheetsMessage =
-            "Supabase saved, but the Google Sheets request failed. Please check the Sheet.";
-        }
-
-        const whatsappMessage =
-          "RAKESH PHYSICS SCHOLARSHIP TEST 2026-27\n\n" +
-          "Student Name: " + studentName + "\n" +
-          "Father's Name: " + fatherName + "\n" +
-          "Mobile: " + mobile + "\n" +
-          "Class: " + studentClass + "\n" +
-          "School: " + schoolName + "\n" +
-          "District: " + district + "\n" +
-          "Exam Mode: " + examMode + "\n\n" +
-          "Scholarship registration submitted from website.";
-
-        openWhatsApp(whatsappMessage, popup);
-
-        alert(
-          "Scholarship registration saved in the website database.\n\n" +
-          sheetsMessage
-        );
-
-        scholarshipForm.reset();
-      } catch (error) {
-        if (popup && !popup.closed) popup.close();
-
-        console.error("Scholarship registration error:", error);
-
-        alert(
-          "Registration could not be saved in the website database. " +
-          "Your form has not been cleared. Please try again.\n\n" +
-          error.message
-        );
-      } finally {
-        setButton(
-          button,
-          "🎓 Register For Scholarship Test",
-          false
-        );
-      }
-    });
-  }
-
-  /* ================= CURRENT YEAR ================= */
-
-  document.querySelectorAll("footer p").forEach(function (element) {
-    element.textContent =
-      "© " + new Date().getFullYear() +
-      " Rakesh Physics. All Rights Reserved.";
   });
 
-  /* ================= PREMIUM SCROLL REVEAL ================= */
+}
 
-  const revealElements = document.querySelectorAll(
-    ".reveal, .reveal-left, .reveal-right, .reveal-scale"
-  );
+/* ================= END SCHOLARSHIP REGISTRATION ================= *//* ================= SCHOLARSHIP REGISTRATION ================= */
 
-  if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
 
-    revealElements.forEach(function (element) {
-      revealObserver.observe(element);
-    });
-  } else {
-    revealElements.forEach(function (element) {
-      element.classList.add("active");
-    });
-  }
-})();
 
-/* =============== END RAKESH PHYSICS INTEGRATION =============== */
+/* ================= END SCHOLARSHIP REGISTRATION ================= */
+</script>
+
 
 </body>
 </html>
