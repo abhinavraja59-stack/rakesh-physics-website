@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exam Management | Rakeshh Physics</title>
+
+<style>
+:root{--navy:#0A1931;--gold:#D4AF37}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
+header{background:var(--navy);padding:20px 5%;border-bottom:4px solid var(--gold);color:white}
+header h2{color:var(--gold);font-size:22px}
+header p{font-size:11px;margin-top:5px}
+.container{max-width:1150px;margin:25px auto;padding:0 15px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{color:var(--navy);font-size:25px}
+.card{background:white;border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
+input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;background:white;font-size:13px}
+.field{margin-bottom:15px}
+button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);color:white;font-size:12px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+.gold{background:var(--gold);color:var(--navy)}
+.light{background:#edf1f7;color:var(--navy)}
+.notice{background:#fff6dc;color:#775d0e;padding:14px;border-radius:9px;font-size:12px;line-height:1.7;margin-bottom:18px}
+.status{display:inline-block;background:#fff2d1;color:#80600b;padding:6px 10px;border-radius:20px;font-size:11px}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #e7ebf1;font-size:12px}
+th{background:#f4f6fa;color:#536078}
+.table-wrap{overflow-x:auto}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:#f5f6fa;padding:16px;border-radius:9px}
+.stat small{font-size:11px;color:#718096}
+.stat strong{display:block;font-size:21px;color:var(--navy);margin-top:8px}
+#message{font-size:12px;color:#176b43;margin-top:12px;line-height:1.6}
+footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-top:30px;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}.card{padding:16px}}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>RAKESHH PHYSICS</h2>
+<p>SCHOLARSHIP TEST 2027 | EXAM CONTROL</p>
+</header>
+
+<main class="container">
+
+<div class="top">
+<div>
+<h1>Exam Management</h1>
+<p style="font-size:12px;color:#718096;margin-top:7px">
+Examination configuration and scheduling.
+</p>
+</div>
+<a href="dashboard.html" class="btn light">← Dashboard</a>
+</div>
+
+<div class="notice">
+<strong>PREVIEW MODE:</strong>
+These controls currently demonstrate the interface only.
+No live examination will start, stop or change until
+secure Admin authentication and Supabase integration
+are completed.
+</div>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:17px">Examination Overview</h3>
+
+<div class="stat-grid">
+
+<div class="stat">
+<small>Total Papers</small>
+<strong>05</strong>
+</div>
+
+<div class="stat">
+<small>Questions Per Paper</small>
+<strong>50</strong>
+</div>
+
+<div class="stat">
+<small>Time Per Question</small>
+<strong>45 Sec</strong>
+</div>
+
+<div class="stat">
+<small>Total Exam Duration</small>
+<strong>37:30</strong>
+</div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:18px">Exam Configuration</h3>
+
+<form id="examForm">
+
+<div class="grid">
+
+<div class="field">
+<label>Examination Paper</label>
+<select id="paper">
+<option value="RP10">10th Passed – Combined</option>
+<option value="RP11PCB">Class 11 – PCB</option>
+<option value="RP11PCM">Class 11 – PCM</option>
+<option value="RP12PCB">Class 12 – PCB</option>
+<option value="RP12PCM">Class 12 – PCM</option>
+</select>
+</div>
+
+<div class="field">
+<label>Exam Date</label>
+<input type="date" id="date">
+</div>
+
+<div class="field">
+<label>Start Time</label>
+<input type="time" id="time">
+</div>
+
+<div class="field">
+<label>Question Timer (Seconds)</label>
+<input type="number" id="timer" value="45" min="45" max="45" readonly>
+</div>
+
+<div class="field">
+<label>Total Questions</label>
+<input type="number" value="50" readonly>
+</div>
+
+<div class="field">
+<label>Maximum Marks</label>
+<input type="number" value="200" readonly>
+</div>
+
+<div class="field">
+<label>Correct Answer Marks</label>
+<input type="number" value="4" readonly>
+</div>
+
+<div class="field">
+<label>Wrong Answer Marks</label>
+<input type="number" value="-1" readonly>
+</div>
+
+<div class="field">
+<label>Previous Question</label>
+<select disabled>
+<option>Locked – No Backward Navigation</option>
+</select>
+</div>
+
+<div class="field">
+<label>Examination Status</label>
+<select id="examStatus">
+<option value="Draft">Draft</option>
+<option value="Scheduled">Scheduled</option>
+<option value="Open">Open (Preview only)</option>
+<option value="Closed">Closed</option>
+</select>
+</div>
+
+<div class="field">
+<label>Maximum Student Capacity</label>
+<input type="number" id="capacity" value="500" min="1" max="500">
+</div>
+
+<div class="field">
+<label>Result Publication</label>
+<select disabled>
+<option>Manual Admin Publication</option>
+</select>
+</div>
+
+</div>
+
+<button type="submit" class="gold">Save Preview Configuration</button>
+
+<p id="message" role="status"></p>
+
+</form>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:17px">Five Examination Papers</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Paper ID</th>
+<th>Academic Category</th>
+<th>Stream</th>
+<th>Questions</th>
+<th>Difficulty</th>
+<th>Timer</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>RP10</td>
+<td>10th Passed</td>
+<td>JEE + NEET Combined</td>
+<td>50</td>
+<td>25 Easy / 25 Hard</td>
+<td>45 Sec</td>
+</tr>
+
+<tr>
+<td>RP11PCB</td>
+<td>Class 11</td>
+<td>PCB</td>
+<td>50</td>
+<td>25 Easy / 25 Hard</td>
+<td>45 Sec</td>
+</tr>
+
+<tr>
+<td>RP11PCM</td>
+<td>Class 11</td>
+<td>PCM</td>
+<td>50</td>
+<td>25 Easy / 25 Hard</td>
+<td>45 Sec</td>
+</tr>
+
+<tr>
+<td>RP12PCB</td>
+<td>Class 12</td>
+<td>PCB</td>
+<td>50</td>
+<td>25 Easy / 25 Hard</td>
+<td>45 Sec</td>
+</tr>
+
+<tr>
+<td>RP12PCM</td>
+<td>Class 12</td>
+<td>PCM</td>
+<td>50</td>
+<td>25 Easy / 25 Hard</td>
+<td>45 Sec</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:15px">Examination Rules</h3>
+
+<div style="font-size:13px;line-height:2;color:#526078">
+<p>✓ Automatic next question after 45 seconds.</p>
+<p>✓ Previous questions permanently locked.</p>
+<p>✓ Correct answer: +4 marks.</p>
+<p>✓ Incorrect answer: -1 mark.</p>
+<p>✓ Unattempted question: 0 marks.</p>
+<p>✓ Automatic submission after Question 50.</p>
+<p>✓ Official result published manually by Admin.</p>
+<p>✓ Target capacity: Up to 500 students.</p>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+RAKESHH PHYSICS | Another Name For Success
+</footer>
+
+<script>
+
+document.getElementById("examForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const config={
+paper:document.getElementById("paper").value,
+date:document.getElementById("date").value,
+time:document.getElementById("time").value,
+status:document.getElementById("examStatus").value,
+capacity:Number(document.getElementById("capacity").value),
+questionTimer:45,
+totalQuestions:50
+};
+
+document.getElementById("message").textContent=
+"Preview configuration captured for "+config.paper+
+". This is not saved to the server. Supabase integration is required for permanent settings.";
+
+});
+
+</script>
+
+</body>
+</html>
