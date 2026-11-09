@@ -251,3 +251,32 @@ with check (
 -- =====================================================
 -- END OF SCHOLARSHIP PORTAL SCHEMA
 -- =====================================================
+-- ==========================================
+-- PRIMARY ADMIN SECURITY
+-- Only Rakesh Sir can manage admin roles
+-- ==========================================
+
+create or replace function public.is_scholarship_primary_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+    select exists (
+        select 1
+        from public.scholarship_admin_roles
+        where user_id = (select auth.uid())
+        and admin_role = 'primary_admin'
+    );
+$$;
+
+drop policy if exists "Scholarship admins manage admin roles"
+on public.scholarship_admin_roles;
+
+create policy "Primary admin manages admin roles"
+on public.scholarship_admin_roles
+for all
+to authenticated
+using (public.is_scholarship_primary_admin())
+with check (public.is_scholarship_primary_admin());
