@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Online Examination | Rakeshh Physics</title>
+
+<style>
+:root {
+    --navy:#0A1931;
+    --gold:#D4AF37;
+    --bg:#f3f5f9;
+    --text:#172033;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+header {
+    background:var(--navy);
+    color:white;
+    padding:17px 5%;
+    border-bottom:4px solid var(--gold);
+}
+
+.header-inner {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.brand {
+    color:var(--gold);
+    font-size:22px;
+    font-weight:900;
+}
+
+.brand small {
+    display:block;
+    color:white;
+    font-size:10px;
+    letter-spacing:2px;
+    margin-top:5px;
+}
+
+.exam-label {
+    font-size:12px;
+    color:#e0e7f1;
+    text-align:right;
+}
+
+.container {
+    max-width:1100px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.exam-top {
+    background:white;
+    padding:18px;
+    border-radius:13px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 4px 15px #00000008;
+}
+
+.student-info h3 {
+    color:var(--navy);
+    margin-bottom:6px;
+}
+
+.student-info p {
+    color:#718096;
+    font-size:12px;
+}
+
+.timer-box {
+    background:#fff4d5;
+    border:1px solid #e8d28c;
+    border-radius:12px;
+    padding:10px 18px;
+    text-align:center;
+}
+
+.timer-box small {
+    display:block;
+    color:#80630c;
+    font-size:11px;
+    margin-bottom:5px;
+}
+
+#timer {
+    font-size:28px;
+    font-weight:900;
+    color:var(--navy);
+    font-variant-numeric:tabular-nums;
+}
+
+.progress-wrap {
+    margin:18px 0;
+}
+
+.progress-label {
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:8px;
+}
+
+.progress {
+    height:8px;
+    background:#e1e6ee;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar {
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    transition:width .3s;
+}
+
+.exam-layout {
+    display:grid;
+    grid-template-columns:1fr 260px;
+    gap:18px;
+}
+
+.question-card,
+.side-card {
+    background:white;
+    border-radius:14px;
+    padding:24px;
+    box-shadow:0 4px 18px #00000008;
+}
+
+.question-heading {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    border-bottom:1px solid #e6eaf0;
+    padding-bottom:15px;
+}
+
+.question-heading h3 {
+    color:var(--navy);
+    font-size:17px;
+}
+
+.difficulty {
+    background:#edf3ff;
+    color:#24528d;
+    padding:7px 11px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+#questionText {
+    font-size:19px;
+    line-height:1.7;
+    margin:25px 0;
+    font-weight:600;
+}
+
+.option {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:15px;
+    border:1px solid #dfe5ed;
+    border-radius:10px;
+    margin:12px 0;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.option:hover {
+    border-color:var(--gold);
+    background:#fffcf1;
+}
+
+.option.selected {
+    border:2px solid var(--gold);
+    background:#fff9e8;
+}
+
+.option input {
+    accent-color:var(--navy);
+    width:17px;
+    height:17px;
+}
+
+.option span {
+    font-size:14px;
+    line-height:1.5;
+}
+
+.actions {
+    margin-top:25px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+}
+
+button {
+    padding:13px 20px;
+    border:0;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.next-btn {
+    background:var(--navy);
+    color:white;
+}
+
+.submit-btn {
+    background:var(--gold);
+    color:var(--navy);
+    display:none;
+}
+
+button:disabled {
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.side-card h3 {
+    color:var(--navy);
+    margin-bottom:15px;
+}
+
+.side-stat {
+    background:#f5f6fa;
+    padding:13px;
+    border-radius:9px;
+    margin-bottom:10px;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.side-stat strong {
+    color:var(--navy);
+}
+
+.lock-note {
+    background:#fff6dc;
+    color:#795d0b;
+    padding:13px;
+    border-radius:9px;
+    font-size:12px;
+    line-height:1.6;
+    margin-top:15px;
+}
+
+.status {
+    font-size:12px;
+    color:#64748b;
+    margin-top:15px;
+    line-height:1.6;
+}
+
+footer {
+    text-align:center;
+    padding:20px;
+    background:var(--navy);
+    color:white;
+    margin-top:35px;
+    font-size:12px;
+}
+
+footer strong {
+    color:var(--gold);
+}
+
+@media(max-width:750px) {
+    .exam-layout {
+        grid-template-columns:1fr;
+    }
+
+    .exam-top {
+        align-items:flex-start;
+    }
+
+    .question-card {
+        padding:18px;
+    }
+
+    #questionText {
+        font-size:17px;
+    }
+
+    .header-inner {
+        align-items:flex-start;
+    }
+}
+
+@media(max-width:450px) {
+    .brand {
+        font-size:17px;
+    }
+
+    #timer {
+        font-size:23px;
+    }
+
+    .timer-box {
+        padding:9px 12px;
+    }
+
+    .actions button {
+        padding:12px;
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="header-inner">
+    <div class="brand">
+        RAKESHH PHYSICS
+        <small>ONLINE SCHOLARSHIP TEST 2027</small>
+    </div>
+
+    <div class="exam-label">
+        OFFICIAL EXAMINATION PORTAL
+    </div>
+</div>
+</header>
+
+<main class="container">
+
+<section class="exam-top">
+
+    <div class="student-info">
+        <h3>Scholarship Examination</h3>
+        <p>Candidate ID: RP27-DEMO001</p>
+        <p>Paper: Class 10 Combined JEE + NEET</p>
+    </div>
+
+    <div class="timer-box">
+        <small>TIME REMAINING</small>
+        <div id="timer">00:45</div>
+    </div>
+
+</section>
+
+<div class="progress-wrap">
+
+    <div class="progress-label">
+        <span>Examination Progress</span>
+        <span id="progressText">Question 1 / 50</span>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+</div>
+
+<div class="exam-layout">
+
+<section class="question-card">
+
+    <div class="question-heading">
+
+        <h3 id="questionNumber">Question 01</h3>
+
+        <span class="difficulty" id="difficulty">
+            EASY
+        </span>
+
+    </div>
+
+    <div id="questionText">
+        Loading Question...
+    </div>
+
+    <div id="options"></div>
+
+    <div class="actions">
+
+        <button class="next-btn" id="nextButton">
+            Save & Next →
+        </button>
+
+        <button class="submit-btn" id="submitButton">
+            Submit Examination
+        </button>
+
+    </div>
+
+    <div class="status" id="status">
+        Your selected answer is saved in this demo session.
+    </div>
+
+</section>
+
+<aside class="side-card">
+
+    <h3>Exam Information</h3>
+
+    <div class="side-stat">
+        <span>Total Questions</span>
+        <strong>50</strong>
+    </div>
+
+    <div class="side-stat">
+        <span>Easy Questions</span>
+        <strong>25</strong>
+    </div>
+
+    <div class="side-stat">
+        <span>Hard Questions</span>
+        <strong>25</strong>
+    </div>
+
+    <div class="side-stat">
+        <span>Time Per Question</span>
+        <strong>45 Sec</strong>
+    </div>
+
+    <div class="side-stat">
+        <span>Correct Answer</span>
+        <strong>+4</strong>
+    </div>
+
+    <div class="side-stat">
+        <span>Wrong Answer</span>
+        <strong>-1</strong>
+    </div>
+
+    <div class="lock-note">
+        <strong>Navigation Rules</strong><br><br>
+        • Automatic next question<br>
+        • Previous questions locked<br>
+        • No backward navigation<br>
+        • Auto submission after final question
+    </div>
+
+</aside>
+
+</div>
+
+</main>
+
+<footer>
+<strong>RAKESHH PHYSICS</strong>
+<p style="margin-top:7px;">Another Name For Success</p>
+</footer>
+
+<script>
+
+// DEMO QUESTIONS ONLY.
+// Production question bank will be loaded securely from the server.
+
+const demoQuestions = [
+    {
+        difficulty:"EASY",
+        question:"Which physical quantity is measured in Newton?",
+        options:["Mass","Force","Power","Energy"]
+    },
+    {
+        difficulty:"EASY",
+        question:"What is the SI unit of electric current?",
+        options:["Volt","Watt","Ampere","Ohm"]
+    },
+    {
+        difficulty:"EASY",
+        question:"Which organelle is known as the powerhouse of the cell?",
+        options:["Nucleus","Mitochondria","Ribosome","Golgi body"]
+    },
+    {
+        difficulty:"HARD",
+        question:"A body moves with a velocity of 20 m/s for 5 seconds. What distance does it cover?",
+        options:["25 m","50 m","100 m","200 m"]
+    },
+    {
+        difficulty:"HARD",
+        question:"Which of the following has the highest ionization energy in the second period?",
+        options:["Lithium","Carbon","Oxygen","Neon"]
+    }
+];
+
+let currentQuestion = 0;
+let remainingTime = 45;
+let selectedAnswers = {};
+let timerInterval = null;
+let finished = false;
+
+const timer = document.getElementById("timer");
+const optionsBox = document.getElementById("options");
+const nextButton = document.getElementById("nextButton");
+const submitButton = document.getElementById("submitButton");
+
+function renderQuestion() {
+
+    if(finished) return;
+
+    const q = demoQuestions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Question " + String(currentQuestion + 1).padStart(2,"0");
+
+    document.getElementById("difficulty").textContent =
+        q.difficulty;
+
+    document.getElementById("questionText").textContent =
+        q.question;
+
+    document.getElementById("progressText").textContent =
+        "Question " + (currentQuestion + 1) + " / 50 (Demo: 5 questions)";
+
+    document.getElementById("progressBar").style.width =
+        ((currentQuestion + 1) / 50 * 100) + "%";
+
+    optionsBox.innerHTML = "";
+
+    q.options.forEach((option,index) => {
+
+        const label = document.createElement("label");
+        label.className = "option";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = index;
+
+        const text = document.createElement("span");
+        text.textContent = option;
+
+        if(selectedAnswers[currentQuestion] === index) {
+            input.checked = true;
+            label.classList.add("selected");
+        }
+
+        input.addEventListener("change", () => {
+
+            selectedAnswers[currentQuestion] = index;
+
+            document.querySelectorAll(".option").forEach(el => {
+                el.classList.remove("selected");
+            });
+
+            label.classList.add("selected");
+
+        });
+
+        label.appendChild(input);
+        label.appendChild(text);
+
+        optionsBox.appendChild(label);
+
+    });
+
+    nextButton.style.display =
+        currentQuestion === demoQuestions.length - 1
+        ? "none" : "block";
+
+    submitButton.style.display =
+        currentQuestion === demoQuestions.length - 1
+        ? "block" : "none";
+
+    remainingTime = 45;
+    startTimer();
+
+}
+
+function startTimer() {
+
+    clearInterval(timerInterval);
+
+    updateTimer();
+
+    timerInterval = setInterval(() => {
+
+        remainingTime--;
+
+        updateTimer();
+
+        if(remainingTime <= 0) {
+            moveNext(true);
+        }
+
+    },1000);
+
+}
+
+function updateTimer() {
+
+    const seconds = Math.max(0,remainingTime);
+
+    timer.textContent =
+        "00:" + String(seconds).padStart(2,"0");
+
+    if(seconds <= 10) {
+        timer.style.color = "#c0392b";
+    } else {
+        timer.style.color = "#0A1931";
+    }
+
+}
+
+function moveNext(auto = false) {
+
+    if(finished) return;
+
+    clearInterval(timerInterval);
+
+    if(currentQuestion < demoQuestions.length - 1) {
+
+        currentQuestion++;
+
+        document.getElementById("status").textContent =
+            auto
+            ? "Time expired. Previous question is locked."
+            : "Answer saved. Previous question is locked.";
+
+        renderQuestion();
+
+    } else {
+
+        finishExam();
+
+    }
+
+}
+
+function finishExam() {
+
+    if(finished) return;
+
+    finished = true;
+
+    clearInterval(timerInterval);
+
+    document.getElementById("questionNumber").textContent =
+        "DEMO COMPLETED";
+
+    document.getElementById("questionText").textContent =
+        "Your demo examination has been submitted successfully!";
+
+    optionsBox.innerHTML = "";
+
+    timer.textContent = "DONE";
+
+    nextButton.style.display = "none";
+    submitButton.style.display = "none";
+
+    document.getElementById("progressBar").style.width = "10%";
+
+    document.getElementById("status").textContent =
+        "This is a five-question preview only. Your official result will be published later by Rakeshh Physics.";
+
+}
+
+nextButton.addEventListener("click",() => moveNext(false));
+
+submitButton.addEventListener("click",finishExam);
+
+renderQuestion();
+
+</script>
+
+</body>
+</html>
