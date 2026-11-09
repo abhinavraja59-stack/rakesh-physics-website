@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Answer Sheets | Rakeshh Physics</title>
+<style>
+:root{--navy:#0A1931;--gold:#D4AF37}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
+header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
+header h2{color:var(--gold);font-size:22px}
+header p{font-size:11px;margin-top:5px}
+.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{color:var(--navy);font-size:25px}
+.card{background:white;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:#f5f6fa;padding:16px;border-radius:9px}
+.stat small{color:#718096;font-size:11px}
+.stat strong{display:block;font-size:24px;color:var(--navy);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
+input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;font-size:13px;background:white}
+button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);color:white;font-size:12px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+.gold{background:var(--gold);color:var(--navy)}
+.light{background:#edf1f7;color:var(--navy)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.notice{background:#fff6dc;color:#775d0e;padding:13px;border-radius:9px;font-size:12px;line-height:1.6;margin-bottom:18px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{padding:13px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
+th{background:#f4f6fa;color:#536078}
+.empty{text-align:center;padding:35px;color:#718096;font-size:13px}
+#message{font-size:12px;color:#176b43;margin-top:12px;line-height:1.6}
+footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-top:30px;font-size:12px}
+@media(max-width:700px){
+.stats{grid-template-columns:1fr 1fr}
+.grid{grid-template-columns:1fr}
+.card{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>RAKESHH PHYSICS</h2>
+<p>SCHOLARSHIP TEST 2027 | ANSWER SHEET MANAGEMENT</p>
+</header>
+
+<main class="container">
+
+<div class="top">
+<div>
+<h1>Student Answer Sheets</h1>
+<p style="font-size:12px;color:#718096;margin-top:7px">
+Review examination submissions and student responses.
+</p>
+</div>
+<a href="dashboard.html" class="btn light">← Dashboard</a>
+</div>
+
+<div class="notice">
+<strong>PREVIEW MODE:</strong>
+Real answer sheets will appear after Supabase integration.
+This page does not currently access or modify student submissions.
+</div>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:17px">Submission Overview</h3>
+
+<div class="stats">
+<div class="stat">
+<small>Total Submissions</small>
+<strong>--</strong>
+</div>
+<div class="stat">
+<small>Completed Exams</small>
+<strong>--</strong>
+</div>
+<div class="stat">
+<small>Incomplete Exams</small>
+<strong>--</strong>
+</div>
+<div class="stat">
+<small>Pending Review</small>
+<strong>--</strong>
+</div>
+</div>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:17px">Search Answer Sheets</h3>
+
+<div class="grid">
+
+<div>
+<label>Registration ID / Student Name</label>
+<input id="search" placeholder="Enter registration ID or name">
+</div>
+
+<div>
+<label>Examination Paper</label>
+<select id="paper">
+<option value="">All Papers</option>
+<option value="RP10">10th Passed</option>
+<option value="RP11PCB">Class 11 PCB</option>
+<option value="RP11PCM">Class 11 PCM</option>
+<option value="RP12PCB">Class 12 PCB</option>
+<option value="RP12PCM">Class 12 PCM</option>
+</select>
+</div>
+
+<div>
+<label>Submission Status</label>
+<select id="status">
+<option value="">All Status</option>
+<option value="Completed">Completed</option>
+<option value="Incomplete">Incomplete</option>
+</select>
+</div>
+
+</div>
+
+<div class="toolbar">
+<button id="searchBtn">Search</button>
+<button class="light" id="resetBtn">Reset</button>
+<button class="gold" id="exportBtn">Export CSV</button>
+</div>
+
+<p id="message" role="status"></p>
+
+</section>
+
+<section class="card">
+
+<div class="top">
+<h3 style="color:#0A1931">Examination Submissions</h3>
+<span style="font-size:12px;color:#718096" id="count">0 Records</span>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Registration ID</th>
+<th>Student Name</th>
+<th>Paper</th>
+<th>Attempted</th>
+<th>Unattempted</th>
+<th>Submission Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="records">
+<tr>
+<td colspan="7" class="empty">
+No answer sheet records available.<br><br>
+Connect the examination database to view student submissions.
+</td>
+</tr>
+</tbody>
+
+</table>
+</div>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:14px">Answer Sheet Review Process</h3>
+
+<div style="font-size:13px;line-height:2;color:#536078">
+<p>1. Student completes the online examination.</p>
+<p>2. System automatically submits the final answers.</p>
+<p>3. Answers are stored securely in Supabase.</p>
+<p>4. Admin can retrieve the student's answer sheet.</p>
+<p>5. Admin can review attempted and unattempted questions.</p>
+<p>6. Final marks will be uploaded separately through Result Management.</p>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+RAKESHH PHYSICS | Another Name For Success
+</footer>
+
+<script>
+
+const submissions=[];
+
+function filterRecords(){
+
+const search=document.getElementById("search").value.toLowerCase();
+const paper=document.getElementById("paper").value;
+const status=document.getElementById("status").value;
+
+return submissions.filter(s=>
+(!search || s.id.toLowerCase().includes(search) ||
+s.name.toLowerCase().includes(search)) &&
+(!paper || s.paper===paper) &&
+(!status || s.status===status)
+);
+
+}
+
+function render(){
+
+const data=filterRecords();
+const tbody=document.getElementById("records");
+
+document.getElementById("count").textContent=
+data.length+" Records";
+
+tbody.innerHTML="";
+
+if(!data.length){
+
+const tr=document.createElement("tr");
+const td=document.createElement("td");
+
+td.colSpan=7;
+td.className="empty";
+td.textContent="No matching submissions. Database integration pending.";
+
+tr.appendChild(td);
+tbody.appendChild(tr);
+return;
+
+}
+
+data.forEach(s=>{
+
+const tr=document.createElement("tr");
+
+[s.id,s.name,s.paper,s.attempted,s.unattempted,s.status]
+.forEach(value=>{
+
+const td=document.createElement("td");
+td.textContent=value;
+tr.appendChild(td);
+
+});
+
+const action=document.createElement("td");
+action.textContent="Database integration pending";
+tr.appendChild(action);
+
+tbody.appendChild(tr);
+
+});
+
+}
+
+document.getElementById("searchBtn").onclick=render;
+
+document.getElementById("resetBtn").onclick=()=>{
+
+document.getElementById("search").value="";
+document.getElementById("paper").value="";
+document.getElementById("status").value="";
+
+render();
+
+};
+
+document.getElementById("exportBtn").onclick=()=>{
+
+document.getElementById("message").textContent=
+"No real submissions are connected yet. CSV export will be enabled after database integration.";
+
+};
+
+render();
+
+</script>
+
+</body>
+</html>
