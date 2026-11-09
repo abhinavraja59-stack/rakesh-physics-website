@@ -295,10 +295,14 @@ I agree to the examination rules and the processing of my registration informati
 const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+let supabaseClient = null;
+
+if (window.supabase && window.supabase.createClient) {
+    supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+}
 
 const form = document.getElementById("registrationForm");
 const className = document.getElementById("className");
