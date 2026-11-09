@@ -386,7 +386,7 @@ form.addEventListener("submit", async function(event) {
 
     if (!form.reportValidity()) return;
 
-    if (!window.supabase) {
+   if (!supabaseClient) {
         showMessage("error", "Registration service could not load. Please refresh and try again.");
         return;
     }
