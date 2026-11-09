@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login | Rakeshh Physics</title>
+
+<style>
+:root {
+    --navy:#0A1931;
+    --gold:#D4AF37;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    font-family:Arial,sans-serif;
+    background:#f2f5f9;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+header {
+    background:var(--navy);
+    padding:22px 7%;
+    border-bottom:4px solid var(--gold);
+}
+
+.brand {
+    color:var(--gold);
+    font-size:25px;
+    font-weight:900;
+}
+
+.subtitle {
+    color:white;
+    font-size:11px;
+    letter-spacing:2px;
+    margin-top:5px;
+}
+
+main {
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px 15px;
+}
+
+.login-card {
+    background:white;
+    width:100%;
+    max-width:440px;
+    padding:35px;
+    border-radius:16px;
+    box-shadow:0 10px 40px rgba(0,0,0,.08);
+}
+
+.badge {
+    display:inline-block;
+    background:#fff5d8;
+    color:#80630c;
+    padding:7px 13px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+h1 {
+    color:var(--navy);
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.description {
+    color:#718096;
+    line-height:1.6;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.field {
+    margin-bottom:19px;
+}
+
+label {
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:9px;
+    color:#25334a;
+}
+
+input {
+    width:100%;
+    padding:14px;
+    border:1px solid #d7deea;
+    border-radius:9px;
+    font-size:15px;
+}
+
+input:focus {
+    outline:none;
+    border-color:var(--gold);
+}
+
+button {
+    width:100%;
+    padding:15px;
+    background:var(--navy);
+    color:white;
+    border:0;
+    border-radius:9px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover {
+    background:#19385d;
+}
+
+.message {
+    display:none;
+    padding:13px;
+    margin-top:17px;
+    border-radius:9px;
+    background:#fff5d8;
+    color:#765c0b;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.links {
+    text-align:center;
+    margin-top:23px;
+    font-size:13px;
+    line-height:2;
+}
+
+.links a {
+    color:#173c69;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.note {
+    text-align:center;
+    color:#778398;
+    font-size:12px;
+    line-height:1.6;
+    margin-top:20px;
+}
+
+footer {
+    background:var(--navy);
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+}
+
+footer strong {
+    color:var(--gold);
+}
+
+@media(max-width:500px) {
+    .login-card {
+        padding:25px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">RAKESHH PHYSICS</div>
+    <div class="subtitle">ONLINE SCHOLARSHIP TEST 2027</div>
+</header>
+
+<main>
+
+<section class="login-card">
+
+    <div class="badge">STUDENT PORTAL</div>
+
+    <h1>Student Login</h1>
+
+    <p class="description">
+        Welcome to Rakeshh Physics Online Scholarship Test.
+        Login with your registration details to continue.
+    </p>
+
+    <form id="loginForm">
+
+        <div class="field">
+            <label>Registration ID *</label>
+            <input
+                type="text"
+                id="registrationId"
+                placeholder="Example: RP27XXXXXX"
+                required
+                maxlength="30"
+            >
+        </div>
+
+        <div class="field">
+            <label>Registered Mobile Number *</label>
+            <input
+                type="tel"
+                id="mobile"
+                placeholder="Enter 10-digit mobile number"
+                pattern="[6-9][0-9]{9}"
+                maxlength="10"
+                required
+            >
+        </div>
+
+        <button type="submit">
+            Continue to Verification
+        </button>
+
+    </form>
+
+    <div class="message" id="message" role="status"></div>
+
+    <div class="links">
+        New Student?
+        <a href="register.html">Register Here</a>
+        <br>
+        <a href="index.html">Back to Scholarship Homepage</a>
+    </div>
+
+    <p class="note">
+        Secure student verification will be enabled
+        after Supabase authentication integration.
+    </p>
+
+</section>
+
+</main>
+
+<footer>
+    <strong>RAKESHH PHYSICS</strong>
+    <p style="margin-top:7px;">Another Name For Success</p>
+</footer>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const registrationId =
+        document.getElementById("registrationId").value.trim();
+
+    const mobile =
+        document.getElementById("mobile").value.trim();
+
+    const message = document.getElementById("message");
+
+    message.style.display = "block";
+
+    message.textContent =
+        "Your details have passed the basic form check. Secure student verification and OTP login will be activated after connecting the Supabase authentication service.";
+
+});
+</script>
+
+</body>
+</html>
