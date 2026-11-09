@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Question Bank | Rakeshh Physics</title>
+
+<style>
+:root {
+ --navy:#0A1931;
+ --gold:#D4AF37;
+ --bg:#f3f5f9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:#18243a}
+header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
+header h2{color:var(--gold);font-size:22px}
+header p{font-size:11px;margin-top:5px}
+.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{color:var(--navy);font-size:25px}
+.card{background:white;border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;font-size:13px;background:white}
+textarea{resize:vertical;min-height:85px}
+.field{margin-bottom:15px}
+button,.btn{border:0;border-radius:8px;padding:12px 17px;background:var(--navy);color:white;font-weight:bold;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block}
+.gold{background:var(--gold);color:var(--navy)}
+.light{background:#edf1f7;color:var(--navy)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:#f5f6fa;padding:15px;border-radius:9px}
+.stat strong{display:block;font-size:24px;color:var(--navy);margin-top:7px}
+.stat small{color:#718096;font-size:11px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.notice{padding:13px;background:#fff7df;color:#775d0e;border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:15px}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
+th{background:#f4f6fa;color:#46536a}
+.table-wrap{overflow-x:auto}
+.badge{background:#e8f0ff;color:#244b80;padding:5px 8px;border-radius:20px;font-size:10px}
+#message{font-size:12px;margin-top:12px;color:#176b43}
+footer{text-align:center;padding:20px;background:var(--navy);color:white;font-size:12px;margin-top:30px}
+@media(max-width:700px){
+ .grid{grid-template-columns:1fr}
+ .stats{grid-template-columns:1fr 1fr}
+ .options{grid-template-columns:1fr}
+ .card{padding:16px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>RAKESHH PHYSICS</h2>
+<p>SCHOLARSHIP EXAMINATION – ADMINISTRATION</p>
+</header>
+
+<main class="container">
+
+<div class="top">
+<div>
+<h1>Question Bank Management</h1>
+<p style="font-size:12px;color:#718096;margin-top:7px">
+Create and manage all five scholarship examination papers.
+</p>
+</div>
+<a href="dashboard.html" class="btn light">← Dashboard</a>
+</div>
+
+<div class="notice">
+<strong>Development Preview:</strong>
+Questions entered here are currently held in browser memory only.
+They are not yet saved to Supabase or available to students.
+</div>
+
+<section class="card">
+<h3 style="margin-bottom:16px;color:#0A1931">Question Bank Overview</h3>
+
+<div class="stats">
+<div class="stat">
+<small>Questions Added (This Session)</small>
+<strong id="total">0</strong>
+</div>
+<div class="stat">
+<small>Easy Questions</small>
+<strong id="easy">0</strong>
+</div>
+<div class="stat">
+<small>Hard Questions</small>
+<strong id="hard">0</strong>
+</div>
+<div class="stat">
+<small>Target Questions</small>
+<strong>250</strong>
+</div>
+</div>
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:18px">Select Examination Paper</h3>
+
+<div class="grid">
+
+<div class="field">
+<label>Scholarship Paper *</label>
+<select id="paper">
+<option value="RP10">10th Passed – Combined JEE + NEET</option>
+<option value="RP11PCB">Class 11 – PCB</option>
+<option value="RP11PCM">Class 11 – PCM</option>
+<option value="RP12PCB">Class 12 – PCB</option>
+<option value="RP12PCM">Class 12 – PCM</option>
+</select>
+</div>
+
+<div class="field">
+<label>Subject *</label>
+<select id="subject">
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Biology</option>
+<option>Mathematics</option>
+</select>
+</div>
+
+<div class="field">
+<label>Difficulty *</label>
+<select id="difficulty">
+<option value="Easy">Easy</option>
+<option value="Hard">Hard</option>
+</select>
+</div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h3 style="color:#0A1931;margin-bottom:18px">Add New Question</h3>
+
+<form id="questionForm">
+
+<div class="field">
+<label>Question *</label>
+<textarea id="question" required placeholder="Enter question here..."></textarea>
+</div>
+
+<div class="options">
+
+<div class="field">
+<label>Option A *</label>
+<input id="a" required placeholder="Option A">
+</div>
+
+<div class="field">
+<label>Option B *</label>
+<input id="b" required placeholder="Option B">
+</div>
+
+<div class="field">
+<label>Option C *</label>
+<input id="c" required placeholder="Option C">
+</div>
+
+<div class="field">
+<label>Option D *</label>
+<input id="d" required placeholder="Option D">
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="field">
+<label>Correct Answer *</label>
+<select id="correct" required>
+<option value="">Select Correct Answer</option>
+<option value="A">Option A</option>
+<option value="B">Option B</option>
+<option value="C">Option C</option>
+<option value="D">Option D</option>
+</select>
+</div>
+
+<div class="field">
+<label>Marks</label>
+<input type="number" value="4" readonly>
+</div>
+
+<div class="field">
+<label>Negative Marks</label>
+<input type="number" value="-1" readonly>
+</div>
+
+</div>
+
+<div class="field">
+<label>Question Explanation</label>
+<textarea id="explanation" placeholder="Explain the correct answer..."></textarea>
+</div>
+
+<div class="toolbar">
+<button type="submit" class="gold">+ Add Question</button>
+<button type="reset" class="light">Clear Form</button>
+</div>
+
+<p id="message" role="status"></p>
+
+</form>
+
+</section>
+
+<section class="card">
+
+<div class="top">
+<h3 style="color:#0A1931">Import Questions Through CSV</h3>
+<button class="light" id="downloadTemplate">Download CSV Template</button>
+</div>
+
+<div class="notice">
+CSV columns: paper, subject, difficulty, question, optionA,
+optionB, optionC, optionD, correct, explanation.
+Import will be preview-only until database integration.
+</div>
+
+<div class="field">
+<label>Select CSV File</label>
+<input type="file" id="csvFile" accept=".csv,text/csv">
+</div>
+
+<button id="previewCSV">Preview CSV Import</button>
+
+<div id="csvPreview" style="margin-top:15px;overflow-x:auto"></div>
+
+</section>
+
+<section class="card">
+
+<div class="top">
+<h3 style="color:#0A1931">Question List</h3>
+<div class="toolbar">
+<button class="light" id="exportCSV">Export CSV</button>
+</div>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Paper</th>
+<th>Subject</th>
+<th>Difficulty</th>
+<th>Question</th>
+<th>Correct</th>
+</tr>
+</thead>
+<tbody id="questionList">
+<tr><td colspan="6">No questions added yet.</td></tr>
+</tbody>
+</table>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+RAKESHH PHYSICS | Another Name For Success
+</footer>
+
+<script>
+
+let questions = [];
+
+const $ = id => document.getElementById(id);
+
+function updateDashboard(){
+
+ $("total").textContent = questions.length;
+
+ $("easy").textContent =
+ questions.filter(q=>q.difficulty==="Easy").length;
+
+ $("hard").textContent =
+ questions.filter(q=>q.difficulty==="Hard").length;
+
+ const tbody=$("questionList");
+
+ tbody.innerHTML="";
+
+ if(!questions.length){
+  tbody.innerHTML='<tr><td colspan="6">No questions added yet.</td></tr>';
+  return;
+ }
+
+ questions.forEach((q,i)=>{
+
+  const tr=document.createElement("tr");
+
+  [i+1,q.paper,q.subject,q.difficulty,q.question,q.correct]
+  .forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=value;
+   tr.appendChild(td);
+  });
+
+  tbody.appendChild(tr);
+
+ });
+
+}
+
+$("questionForm").addEventListener("submit",function(e){
+
+ e.preventDefault();
+
+ const paper=$("paper").value;
+ const subject=$("subject").value;
+
+ if(
+  (paper==="RP10" && subject==="Biology" && false) ||
+  ((paper==="RP11PCM"||paper==="RP12PCM") && subject==="Biology") ||
+  ((paper==="RP11PCB"||paper==="RP12PCB") && subject==="Mathematics")
+ ){
+  alert("This subject is not included in the selected paper.");
+  return;
+ }
+
+ const q={
+  paper,
+  subject,
+  difficulty:$("difficulty").value,
+  question:$("question").value.trim(),
+  optionA:$("a").value.trim(),
+  optionB:$("b").value.trim(),
+  optionC:$("c").value.trim(),
+  optionD:$("d").value.trim(),
+  correct:$("correct").value,
+  explanation:$("explanation").value.trim()
+ };
+
+ questions.push(q);
+
+ updateDashboard();
+
+ this.reset();
+
+ $("message").textContent=
+ "Question added to this browser session. Permanent saving is not yet enabled.";
+
+});
+
+function csvEscape(value){
+ return '"'+String(value??"").replace(/"/g,'""')+'"';
+}
+
+function downloadFile(name,content,type){
+
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download=name;
+ a.click();
+
+ URL.revokeObjectURL(url);
+
+}
+
+const columns=[
+ "paper","subject","difficulty","question",
+ "optionA","optionB","optionC","optionD",
+ "correct","explanation"
+];
+
+$("downloadTemplate").onclick=()=>{
+ downloadFile(
+  "rakeshh-question-template.csv",
+  columns.join(",")+"\n",
+  "text/csv;charset=utf-8"
+ );
+};
+
+function parseCSV(text){
+
+ const rows=[];
+ let row=[],cell="",quoted=false;
+
+ for(let i=0;i<text.length;i++){
+
+  const ch=text[i];
+
+  if(ch==='"'){
+   if(quoted && text[i+1]==='"'){
+    cell+='"';i++;
+   }else{
+    quoted=!quoted;
+   }
+  }else if(ch===","&&!quoted){
+   row.push(cell);cell="";
+  }else if((ch==="\n"||ch==="\r")&&!quoted){
+   if(ch==="\r"&&text[i+1]==="\n")i++;
+   row.push(cell);
+   if(row.some(x=>x.trim()))rows.push(row);
+   row=[];cell="";
+  }else{
+   cell+=ch;
+  }
+
+ }
+
+ row.push(cell);
+ if(row.some(x=>x.trim()))rows.push(row);
+
+ return rows;
+
+}
+
+$("previewCSV").onclick=async()=>{
+
+ const file=$("csvFile").files[0];
+
+ if(!file){
+  alert("Please select a CSV file.");
+  return;
+ }
+
+ const rows=parseCSV(await file.text());
+ const headers=rows.shift().map(x=>x.trim());
+
+ const missing=columns.filter(c=>!headers.includes(c));
+
+ if(missing.length){
+  alert("Missing CSV columns: "+missing.join(", "));
+  return;
+ }
+
+ const imported=rows.map(row=>{
+  const obj={};
+  headers.forEach((h,i)=>obj[h]=row[i]||"");
+  return obj;
+ });
+
+ const preview=$("csvPreview");
+ preview.innerHTML="";
+
+ const heading=document.createElement("p");
+ heading.textContent=imported.length+" rows found. Preview only; not saved.";
+ preview.appendChild(heading);
+
+ imported.slice(0,10).forEach(q=>{
+  const p=document.createElement("p");
+  p.style.padding="8px";
+  p.style.borderBottom="1px solid #eee";
+  p.textContent=q.paper+" | "+q.subject+" | "+q.difficulty+" | "+q.question;
+  preview.appendChild(p);
+ });
+
+};
+
+$("exportCSV").onclick=()=>{
+
+ const content=[
+  columns.join(","),
+  ...questions.map(q=>columns.map(c=>csvEscape(q[c])).join(","))
+ ].join("\n");
+
+ downloadFile(
+  "rakeshh-question-bank.csv",
+  content,
+  "text/csv;charset=utf-8"
+ );
+
+};
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
