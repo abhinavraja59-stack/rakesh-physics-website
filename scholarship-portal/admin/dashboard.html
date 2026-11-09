@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Scholarship Admin Dashboard | Rakeshh Physics</title>
+
+<style>
+:root {
+ --navy:#0A1931;
+ --gold:#D4AF37;
+ --bg:#f3f5f9;
+ --text:#18243a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+.sidebar{
+ position:fixed;left:0;top:0;bottom:0;width:245px;
+ background:var(--navy);padding:25px 16px;color:white;
+}
+.brand{font-size:21px;font-weight:900;color:var(--gold)}
+.brand small{display:block;color:white;font-size:10px;letter-spacing:2px;margin-top:6px}
+.admin-label{margin:32px 0 13px;color:#aebbd0;font-size:11px;letter-spacing:1px}
+.nav a{
+ display:block;padding:13px 14px;margin:5px 0;
+ border-radius:8px;text-decoration:none;color:#e2e8f0;font-size:13px;
+}
+.nav a.active,.nav a:hover{background:#1d385b;color:var(--gold)}
+.main{margin-left:245px;padding:27px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
+.topbar h1{font-size:25px;color:var(--navy)}
+.admin-chip{background:white;padding:11px 15px;border-radius:9px;font-size:12px}
+.notice{background:#fff5d9;border:1px solid #ead58a;padding:13px;border-radius:10px;font-size:12px;line-height:1.6;margin-bottom:22px;color:#765d12}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.stat,.panel,.paper{background:white;border-radius:13px;padding:20px;box-shadow:0 4px 15px #00000007}
+.stat small{color:#758197;font-size:12px}
+.stat h2{font-size:27px;color:var(--navy);margin:12px 0 5px}
+.stat p{font-size:11px;color:#758197}
+.section-title{font-size:19px;color:var(--navy);margin:30px 0 16px}
+.paper-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.paper{border-top:3px solid var(--gold)}
+.paper h3{font-size:15px;color:var(--navy);margin-bottom:10px}
+.paper p{font-size:12px;color:#718096;line-height:1.8}
+.paper strong{color:var(--navy)}
+.btn{
+ display:inline-block;background:var(--navy);color:white;
+ padding:10px 14px;border-radius:7px;text-decoration:none;
+ font-size:12px;font-weight:bold;margin-top:12px;
+}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.action{
+ background:white;border:1px solid #e5e9f0;border-radius:11px;
+ padding:18px;text-decoration:none;color:var(--navy);
+}
+.action strong{display:block;margin-bottom:8px;font-size:14px}
+.action span{font-size:12px;color:#718096;line-height:1.6}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #e8ecf2}
+th{background:#f6f7fa;color:#536078}
+.status{background:#fff2d1;color:#82620c;padding:5px 8px;border-radius:20px;font-size:10px}
+.footer{font-size:11px;color:#7c8799;text-align:center;margin:35px 0 10px}
+@media(max-width:950px){
+ .sidebar{width:190px}
+ .main{margin-left:190px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .paper-grid{grid-template-columns:repeat(2,1fr)}
+ .actions{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ .sidebar{position:relative;width:100%;height:auto;padding:17px}
+ .nav{display:flex;overflow-x:auto;gap:5px}
+ .nav a{white-space:nowrap}
+ .admin-label{display:none}
+ .main{margin-left:0;padding:16px}
+ .topbar{align-items:flex-start;flex-direction:column}
+ .stats{grid-template-columns:1fr 1fr;gap:9px}
+ .paper-grid,.actions{grid-template-columns:1fr}
+ .stat{padding:14px}
+ .stat h2{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+ <div class="brand">
+  RAKESHH PHYSICS
+  <small>SCHOLARSHIP ADMIN</small>
+ </div>
+
+ <div class="admin-label">MAIN MENU</div>
+
+ <nav class="nav">
+  <a href="dashboard.html" class="active">Dashboard</a>
+  <a href="students.html">Student Records</a>
+  <a href="questions.html">Question Bank</a>
+  <a href="exams.html">Exam Management</a>
+  <a href="answers.html">Answer Sheets</a>
+  <a href="results.html">Result Management</a>
+ </nav>
+
+ <div class="admin-label">WEBSITE</div>
+
+ <nav class="nav">
+  <a href="../index.html">Student Portal</a>
+ </nav>
+
+</aside>
+
+<main class="main">
+
+ <div class="topbar">
+  <div>
+   <h1>Admin Dashboard</h1>
+   <p style="color:#788398;font-size:12px;margin-top:6px">
+    Online Scholarship Test 2027
+   </p>
+  </div>
+
+  <div class="admin-chip">
+   <strong>Director / Admin</strong>
+   <br><span style="color:#788398">Dashboard Preview</span>
+  </div>
+ </div>
+
+ <div class="notice">
+  <strong>DEVELOPMENT PREVIEW:</strong>
+  This dashboard is currently a visual interface only.
+  Live student data, authentication and administrative actions
+  will be activated after secure Supabase integration.
+ </div>
+
+ <section class="stats">
+
+  <div class="stat">
+   <small>Total Registrations</small>
+   <h2>--</h2>
+   <p>Awaiting database connection</p>
+  </div>
+
+  <div class="stat">
+   <small>Exam Completed</small>
+   <h2>--</h2>
+   <p>Live data not connected</p>
+  </div>
+
+  <div class="stat">
+   <small>Exam In Progress</small>
+   <h2>--</h2>
+   <p>Live monitoring pending</p>
+  </div>
+
+  <div class="stat">
+   <small>Results Published</small>
+   <h2>--</h2>
+   <p>Admin publication pending</p>
+  </div>
+
+ </section>
+
+ <h2 class="section-title">Five Scholarship Examination Papers</h2>
+
+ <section class="paper-grid">
+
+  <div class="paper">
+   <h3>RP10 – Class 10 Passed</h3>
+   <p>
+    Combined JEE + NEET Foundation<br>
+    <strong>50 Questions</strong><br>
+    25 Easy + 25 Hard
+   </p>
+   <a href="questions.html?paper=RP10" class="btn">Manage Paper</a>
+  </div>
+
+  <div class="paper">
+   <h3>RP11PCB – Class 11</h3>
+   <p>
+    Physics, Chemistry, Biology<br>
+    <strong>50 Questions</strong><br>
+    25 Easy + 25 Hard
+   </p>
+   <a href="questions.html?paper=RP11PCB" class="btn">Manage Paper</a>
+  </div>
+
+  <div class="paper">
+   <h3>RP11PCM – Class 11</h3>
+   <p>
+    Physics, Chemistry, Mathematics<br>
+    <strong>50 Questions</strong><br>
+    25 Easy + 25 Hard
+   </p>
+   <a href="questions.html?paper=RP11PCM" class="btn">Manage Paper</a>
+  </div>
+
+  <div class="paper">
+   <h3>RP12PCB – Class 12</h3>
+   <p>
+    Physics, Chemistry, Biology<br>
+    <strong>50 Questions</strong><br>
+    25 Easy + 25 Hard
+   </p>
+   <a href="questions.html?paper=RP12PCB" class="btn">Manage Paper</a>
+  </div>
+
+  <div class="paper">
+   <h3>RP12PCM – Class 12</h3>
+   <p>
+    Physics, Chemistry, Mathematics<br>
+    <strong>50 Questions</strong><br>
+    25 Easy + 25 Hard
+   </p>
+   <a href="questions.html?paper=RP12PCM" class="btn">Manage Paper</a>
+  </div>
+
+ </section>
+
+ <h2 class="section-title">Quick Administration</h2>
+
+ <section class="actions">
+
+  <a href="students.html" class="action">
+   <strong>Student Records</strong>
+   <span>View, search and manage registered students.</span>
+  </a>
+
+  <a href="questions.html" class="action">
+   <strong>Question Bank</strong>
+   <span>Manage questions, options, answers and explanations.</span>
+  </a>
+
+  <a href="exams.html" class="action">
+   <strong>Exam Management</strong>
+   <span>Configure exam schedule and examination status.</span>
+  </a>
+
+  <a href="answers.html" class="action">
+   <strong>Answer Sheets</strong>
+   <span>Review and export submitted student responses.</span>
+  </a>
+
+  <a href="results.html" class="action">
+   <strong>Result Upload</strong>
+   <span>Import reviewed marks through CSV and publish results.</span>
+  </a>
+
+  <a href="../index.html" class="action">
+   <strong>Student Portal</strong>
+   <span>Open the scholarship examination homepage.</span>
+  </a>
+
+ </section>
+
+ <h2 class="section-title">Examination Configuration</h2>
+
+ <section class="panel">
+
+  <table>
+   <tr>
+    <th>Setting</th>
+    <th>Configuration</th>
+   </tr>
+   <tr>
+    <td>Total Questions</td>
+    <td>50 per paper</td>
+   </tr>
+   <tr>
+    <td>Question Timer</td>
+    <td>45 Seconds</td>
+   </tr>
+   <tr>
+    <td>Total Duration</td>
+    <td>37 Minutes 30 Seconds</td>
+   </tr>
+   <tr>
+    <td>Correct Answer</td>
+    <td>+4 Marks</td>
+   </tr>
+   <tr>
+    <td>Incorrect Answer</td>
+    <td>-1 Mark</td>
+   </tr>
+   <tr>
+    <td>Previous Question</td>
+    <td>Locked</td>
+   </tr>
+   <tr>
+    <td>Result Publication</td>
+    <td>Manual Admin Publication</td>
+   </tr>
+   <tr>
+    <td>Maximum Student Capacity</td>
+    <td>500</td>
+   </tr>
+  </table>
+
+ </section>
+
+ <div class="footer">
+  © 2027 Rakeshh Physics | Scholarship Examination Administration
+ </div>
+
+</main>
+
+</body>
+</html>
