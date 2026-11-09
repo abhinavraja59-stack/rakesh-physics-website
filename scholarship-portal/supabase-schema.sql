@@ -18,7 +18,7 @@ create table if not exists public.scholarship_admin_roles (
 -- Rakesh Sir: Primary Admin
 insert into public.scholarship_admin_roles (user_id, admin_role)
 values (
-    '248b079c-bcbf-4ac8-aca0-ab915382828d',
+    '248b079c-bcb1-4ac8-aca0-ab915382828d',
     'primary_admin'
 )
 on conflict (user_id) do update
