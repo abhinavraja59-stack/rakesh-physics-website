@@ -6,16 +6,19 @@
 
 <title>Student Registration | Rakeshh Physics</title>
 
+<meta name="description" content="Register for Rakeshh Physics Online Scholarship Test 2027.">
+
 <style>
 :root {
     --navy: #0A1931;
     --gold: #D4AF37;
+    --white: #ffffff;
 }
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -32,15 +35,16 @@ header {
 
 .brand {
     color: var(--gold);
-    font-size: 24px;
+    font-size: 25px;
     font-weight: 900;
+    letter-spacing: 1px;
 }
 
 .subtitle {
     color: white;
     font-size: 11px;
     letter-spacing: 2px;
-    margin-top: 5px;
+    margin-top: 6px;
 }
 
 .container {
@@ -51,7 +55,7 @@ header {
 
 .form-card {
     background: white;
-    padding: 30px;
+    padding: 32px;
     border-radius: 16px;
     box-shadow: 0 8px 30px rgba(0,0,0,.06);
 }
@@ -64,23 +68,24 @@ h1 {
 
 .intro {
     color: #68758a;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 22px;
+    font-size: 14px;
 }
 
 .section-title {
     color: var(--navy);
     font-weight: bold;
     font-size: 17px;
-    margin: 25px 0 15px;
-    padding-bottom: 9px;
+    margin: 26px 0 16px;
+    padding-bottom: 10px;
     border-bottom: 2px solid var(--gold);
 }
 
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 17px;
+    gap: 18px;
 }
 
 .field {
@@ -96,55 +101,68 @@ h1 {
 
 .field input,
 .field select {
-    padding: 13px;
+    padding: 14px;
     border: 1px solid #d6dce6;
     border-radius: 9px;
     font-size: 14px;
     width: 100%;
     background: white;
+    color: #172033;
 }
 
 .field input:focus,
 .field select:focus {
     outline: none;
     border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(212,175,55,.12);
+}
+
+.field input:disabled,
+.field select:disabled {
+    background: #edf0f5;
+    cursor: not-allowed;
 }
 
 .full {
     grid-column: 1 / -1;
 }
 
-.paper-box {
+.category-box {
     background: #f8f5e9;
     border: 1px solid #e6d58e;
-    padding: 17px;
     border-radius: 10px;
+    padding: 17px;
     margin-top: 20px;
-    display: none;
 }
 
-.paper-box h3 {
+.category-box small {
+    color: #80651b;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.category-box h3 {
     color: var(--navy);
-    margin-bottom: 8px;
-}
-
-.paper-box p {
-    font-size: 13px;
-    line-height: 1.7;
-    color: #536078;
+    margin-top: 7px;
+    font-size: 19px;
 }
 
 .consent {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    margin-top: 23px;
+    gap: 11px;
+    margin-top: 24px;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .consent input {
-    margin-top: 3px;
+    margin-top: 4px;
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    accent-color: var(--navy);
 }
 
 button {
@@ -152,48 +170,95 @@ button {
     background: var(--navy);
     color: white;
     border: none;
-    padding: 15px;
+    padding: 16px;
     border-radius: 9px;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 23px;
+    margin-top: 25px;
 }
 
 button:hover {
     background: #19385d;
 }
 
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
 .note {
     background: #fff8e3;
-    padding: 13px;
+    border: 1px solid #ead58a;
+    padding: 14px;
     border-radius: 9px;
     font-size: 12px;
     color: #755b13;
     margin-top: 20px;
-    line-height: 1.6;
+    line-height: 1.7;
+}
+
+.message {
+    display: none;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 9px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.message.info {
+    display: block;
+    background: #eaf2ff;
+    border: 1px solid #b9d0f2;
+    color: #174578;
+}
+
+.message.error {
+    display: block;
+    background: #fff0f0;
+    border: 1px solid #efc0c0;
+    color: #9b2828;
 }
 
 footer {
     text-align: center;
-    padding: 22px;
+    padding: 25px;
     background: var(--navy);
     color: white;
     margin-top: 40px;
     font-size: 12px;
+    line-height: 1.8;
+}
+
+footer strong {
+    color: var(--gold);
 }
 
 @media(max-width:600px) {
-    .form-grid {
-        grid-template-columns: 1fr;
+    header {
+        padding: 19px 20px;
+    }
+
+    .container {
+        margin: 22px auto;
+        padding: 0 13px;
     }
 
     .form-card {
         padding: 21px;
     }
 
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
     h1 {
-        font-size: 23px;
+        font-size: 24px;
+    }
+
+    .section-title {
+        font-size: 16px;
     }
 }
 </style>
@@ -203,7 +268,7 @@ footer {
 
 <header>
     <div class="brand">RAKESHH PHYSICS</div>
-    <div class="subtitle">ONLINE SCHOLARSHIP TEST 2027</div>
+    <div class="subtitle">ANOTHER NAME FOR SUCCESS</div>
 </header>
 
 <main class="container">
@@ -213,84 +278,120 @@ footer {
 <h1>Student Registration</h1>
 
 <p class="intro">
-Register for Rakeshh Physics Scholarship Test 2027.
-Please provide accurate information.
+Welcome to Rakeshh Physics Online Scholarship Test 2027.
+Please complete your registration information carefully.
 </p>
 
 <form id="registrationForm">
+
+<!-- PERSONAL INFORMATION -->
 
 <div class="section-title">Personal Information</div>
 
 <div class="form-grid">
 
 <div class="field">
-<label>Student Full Name *</label>
-<input type="text" id="studentName"
-placeholder="Enter student name" required maxlength="100">
+<label for="studentName">Student Full Name *</label>
+<input
+type="text"
+id="studentName"
+name="student_name"
+placeholder="Enter student full name"
+maxlength="100"
+autocomplete="name"
+required>
 </div>
 
 <div class="field">
-<label>Father's Name *</label>
-<input type="text" id="fatherName"
-placeholder="Enter father's name" required maxlength="100">
+<label for="fatherName">Father's Name *</label>
+<input
+type="text"
+id="fatherName"
+name="father_name"
+placeholder="Enter father's name"
+maxlength="100"
+required>
 </div>
 
 <div class="field">
-<label>Mobile Number *</label>
-<input type="tel" id="mobile"
+<label for="mobile">Mobile Number *</label>
+<input
+type="tel"
+id="mobile"
+name="mobile"
 placeholder="10-digit mobile number"
-pattern="[6-9][0-9]{9}" maxlength="10" required>
+pattern="[6-9][0-9]{9}"
+maxlength="10"
+inputmode="numeric"
+autocomplete="tel"
+required>
 </div>
 
 <div class="field">
-<label>WhatsApp Number</label>
-<input type="tel" id="whatsapp"
+<label for="whatsapp">WhatsApp Number</label>
+<input
+type="tel"
+id="whatsapp"
+name="whatsapp"
 placeholder="WhatsApp number"
-pattern="[6-9][0-9]{9}" maxlength="10">
+pattern="[6-9][0-9]{9}"
+maxlength="10"
+inputmode="numeric">
 </div>
 
 <div class="field">
-<label>Date of Birth</label>
-<input type="date" id="dob">
+<label for="dob">Date of Birth *</label>
+<input
+type="date"
+id="dob"
+name="date_of_birth"
+required>
 </div>
 
 <div class="field">
-<label>Gender</label>
-<select id="gender">
+<label for="gender">Gender *</label>
+<select id="gender" name="gender" required>
 <option value="">Select Gender</option>
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
-<option>Prefer not to say</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+<option value="Other">Other</option>
+<option value="Prefer not to say">Prefer not to say</option>
 </select>
 </div>
 
 </div>
+
+<!-- ACADEMIC INFORMATION -->
 
 <div class="section-title">Academic Information</div>
 
 <div class="form-grid">
 
 <div class="field">
-<label>Current Academic Category *</label>
-<select id="className" required>
+<label for="className">Academic Category *</label>
+
+<select id="className" name="class_category" required>
 <option value="">Select Category</option>
-<option value="10th">10th Passed</option>
-<option value="11th">Current Class 11</option>
-<option value="12th">Current Class 12</option>
+<option value="10th">10th Passed Students</option>
+<option value="11th">Class 11</option>
+<option value="12th">Class 12</option>
 </select>
 </div>
 
-<div class="field">
-<label>Stream *</label>
-<select id="stream" required disabled>
+<div class="field" id="streamField">
+<label for="stream">Academic Stream *</label>
+
+<select id="stream" name="stream" required disabled>
 <option value="">Select Stream</option>
+<option value="PCB">PCB – Physics, Chemistry, Biology</option>
+<option value="PCM">PCM – Physics, Chemistry, Mathematics</option>
 </select>
 </div>
 
 <div class="field">
-<label>Board *</label>
-<select id="board" required>
+<label for="board">Board *</label>
+
+<select id="board" name="board" required>
 <option value="">Select Board</option>
 <option value="BSEB">Bihar Board</option>
 <option value="CBSE">CBSE</option>
@@ -300,52 +401,88 @@ pattern="[6-9][0-9]{9}" maxlength="10">
 </div>
 
 <div class="field">
-<label>School Name *</label>
-<input type="text" id="school"
-placeholder="Enter school name" required maxlength="150">
+<label for="school">School Name *</label>
+
+<input
+type="text"
+id="school"
+name="school"
+placeholder="Enter school name"
+maxlength="150"
+required>
 </div>
 
 <div class="field">
-<label>District *</label>
-<input type="text" id="district"
-placeholder="Enter district" required maxlength="80">
+<label for="district">District *</label>
+
+<input
+type="text"
+id="district"
+name="district"
+placeholder="Enter district"
+maxlength="80"
+required>
 </div>
 
 <div class="field">
-<label>State</label>
-<input type="text" value="Bihar" readonly>
+<label for="state">State *</label>
+
+<input
+type="text"
+id="state"
+name="state"
+value="Bihar"
+readonly
+required>
 </div>
 
 </div>
 
-<div class="paper-box" id="paperBox">
+<!-- SELECTED CATEGORY -->
 
-<h3 id="paperTitle"></h3>
+<div class="category-box">
 
-<p id="paperDetails"></p>
+<small>Selected Scholarship Category</small>
+
+<h3 id="selectedCategory">
+Please select your academic category
+</h3>
 
 </div>
+
+<!-- INSTRUCTIONS -->
 
 <div class="note">
-<strong>Important:</strong> Your examination paper will be
-assigned according to your academic category and stream.
-Please verify your information before submission.
+<strong>Important Information:</strong><br>
+Please check your name, mobile number, academic category
+and school details before proceeding.
+Your examination category will be determined by your
+academic selection.
 </div>
 
+<!-- CONSENT -->
+
 <label class="consent">
-<input type="checkbox" id="consent" required>
+
+<input
+type="checkbox"
+id="consent"
+name="consent"
+required>
+
 <span>
-I confirm that the information provided above is correct.
-I agree to the examination rules and data processing
-required for this scholarship test.
+I confirm that all the information provided by me is correct.
+I agree to the examination rules and the processing of my
+registration information for the Rakeshh Physics Scholarship Test 2027.
 </span>
+
 </label>
 
 <button type="submit" id="submitBtn">
 Continue Registration
 </button>
 
-<p id="message" class="note" hidden></p>
+<div id="message" class="message" role="status" aria-live="polite"></div>
 
 </form>
 
@@ -353,96 +490,238 @@ Continue Registration
 </main>
 
 <footer>
+
 <strong>RAKESHH PHYSICS</strong>
-<p style="margin-top:7px;">Another Name For Success</p>
-<p style="margin-top:7px;">© 2027 Rakeshh Physics</p>
+
+<p>Another Name For Success</p>
+
+<p>Online Scholarship Test 2027</p>
+
+<p>© 2027 Rakeshh Physics. All Rights Reserved.</p>
+
 </footer>
 
 <script>
 
+// ELEMENTS
+
 const className = document.getElementById("className");
 const stream = document.getElementById("stream");
-const paperBox = document.getElementById("paperBox");
-const paperTitle = document.getElementById("paperTitle");
-const paperDetails = document.getElementById("paperDetails");
+const streamField = document.getElementById("streamField");
+const selectedCategory = document.getElementById("selectedCategory");
+const form = document.getElementById("registrationForm");
+const message = document.getElementById("message");
 
-className.addEventListener("change", function() {
 
-    const category = this.value;
+// CATEGORY CONFIGURATION
 
-    stream.innerHTML = '<option value="">Select Stream</option>';
-    stream.disabled = true;
-    paperBox.style.display = "none";
+const categoryNames = {
+    "10th": "10th Passed Students",
+    "11th": "Class 11",
+    "12th": "Class 12"
+};
+
+
+// UPDATE CATEGORY
+
+function updateCategory(category, selectedStream = "") {
+
+    className.value = category;
 
     if (category === "10th") {
 
-        stream.innerHTML =
-        '<option value="Combined">JEE + NEET Combined</option>';
+        streamField.style.display = "none";
 
-        stream.disabled = false;
-        stream.value = "Combined";
+        stream.value = "";
+        stream.disabled = true;
+        stream.required = false;
 
-        showPaper(
-            "RP10 – Combined JEE + NEET",
-            "50 Questions | Physics: 13, Chemistry: 13, Biology: 12, Mathematics: 12 | 25 Easy + 25 Hard."
-        );
+        selectedCategory.textContent =
+            "10th Passed Students";
 
     }
 
     else if (category === "11th" || category === "12th") {
 
+        streamField.style.display = "flex";
+
         stream.disabled = false;
+        stream.required = true;
 
-        stream.innerHTML +=
-        '<option value="PCB">PCB – Physics, Chemistry, Biology</option>' +
-        '<option value="PCM">PCM – Physics, Chemistry, Mathematics</option>';
+        stream.value = ["PCB", "PCM"].includes(selectedStream)
+            ? selectedStream
+            : "";
+
+        updateSelectedCategory();
 
     }
 
-});
+    else {
 
-stream.addEventListener("change", function() {
+        streamField.style.display = "flex";
 
-    const category = className.value;
-    const selectedStream = this.value;
+        stream.disabled = true;
+        stream.required = true;
 
-    if (!category || !selectedStream) {
-        paperBox.style.display = "none";
-        return;
+        stream.value = "";
+
+        selectedCategory.textContent =
+            "Please select your academic category";
+
     }
-
-    const code = "RP" + category.replace("th", "") + selectedStream;
-
-    const subject = selectedStream === "PCB"
-        ? "Physics: 17, Chemistry: 17, Biology: 16"
-        : "Physics: 17, Chemistry: 17, Mathematics: 16";
-
-    showPaper(
-        code + " – Class " + category + " " + selectedStream,
-        "50 Questions | " + subject + " | 25 Easy + 25 Hard."
-    );
-
-});
-
-function showPaper(title, details) {
-
-    paperTitle.textContent = title;
-    paperDetails.textContent = details;
-    paperBox.style.display = "block";
 
 }
 
-document.getElementById("registrationForm")
-.addEventListener("submit", function(event) {
+
+// UPDATE SELECTED CATEGORY DISPLAY
+
+function updateSelectedCategory() {
+
+    const category = className.value;
+    const selectedStream = stream.value;
+
+    if (category === "10th") {
+
+        selectedCategory.textContent =
+            "10th Passed Students";
+
+    }
+
+    else if (category === "11th" || category === "12th") {
+
+        if (selectedStream) {
+
+            selectedCategory.textContent =
+                categoryNames[category] + " – " + selectedStream;
+
+        } else {
+
+            selectedCategory.textContent =
+                categoryNames[category] + " – Select PCB or PCM";
+
+        }
+
+    }
+
+}
+
+
+// CLASS CHANGE
+
+className.addEventListener("change", function() {
+
+    updateCategory(this.value);
+
+});
+
+
+// STREAM CHANGE
+
+stream.addEventListener("change", function() {
+
+    updateSelectedCategory();
+
+});
+
+
+// AUTO SELECT FROM HOMEPAGE URL
+
+const params = new URLSearchParams(window.location.search);
+
+const requestedCategory = params.get("category");
+const requestedStream = params.get("stream");
+
+if (["10th", "11th", "12th"].includes(requestedCategory)) {
+
+    updateCategory(
+        requestedCategory,
+        requestedStream || ""
+    );
+
+}
+
+
+// MAXIMUM DATE OF BIRTH
+
+document.getElementById("dob").max =
+    new Date().toISOString().split("T")[0];
+
+
+// MOBILE NUMBER VALIDATION
+
+function validMobile(value) {
+
+    return /^[6-9][0-9]{9}$/.test(value);
+
+}
+
+
+// FORM SUBMISSION
+
+form.addEventListener("submit", function(event) {
 
     event.preventDefault();
 
-    const message = document.getElementById("message");
+    message.className = "message";
+    message.textContent = "";
 
-    message.hidden = false;
+    if (!form.reportValidity()) {
+        return;
+    }
+
+    const mobile =
+        document.getElementById("mobile").value.trim();
+
+    const whatsapp =
+        document.getElementById("whatsapp").value.trim();
+
+    if (!validMobile(mobile)) {
+
+        message.className = "message error";
+
+        message.textContent =
+            "Please enter a valid 10-digit mobile number.";
+
+        return;
+
+    }
+
+    if (whatsapp && !validMobile(whatsapp)) {
+
+        message.className = "message error";
+
+        message.textContent =
+            "Please enter a valid WhatsApp number.";
+
+        return;
+
+    }
+
+    if (
+        className.value !== "10th" &&
+        !["PCB", "PCM"].includes(stream.value)
+    ) {
+
+        message.className = "message error";
+
+        message.textContent =
+            "Please select your academic stream.";
+
+        return;
+
+    }
+
+    const category =
+        className.value === "10th"
+        ? "10th Passed Students"
+        : categoryNames[className.value] + " – " + stream.value;
+
+    message.className = "message info";
 
     message.textContent =
-    "Your form is valid. Registration is not yet submitted because the secure Supabase registration service will be connected in the next development step.";
+        "Your form has passed browser validation for " +
+        category +
+        ". Secure registration is not connected yet. Your information has NOT been submitted or saved.";
 
     message.scrollIntoView({
         behavior: "smooth",
