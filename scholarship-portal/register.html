@@ -541,17 +541,33 @@ form.addEventListener("submit", async function(event) {
             );
         }
 
-        const registrationId = data.registration_id;
+       const registrationId = data.registration_id;
 
-        form.reset();
-        updateCategory("");
+form.reset();
+updateCategory("");
 
-        showMessage(
-            "success",
-            "Congratulations! Your registration and student login account have been created successfully. Your Registration ID is: " +
-            registrationId +
-            ". Please save this ID and your password safely. You will need them to log in."
-        );
+message.className = "message success";
+message.replaceChildren();
+
+const successText = document.createElement("p");
+
+successText.textContent =
+    "Congratulations! Your registration and student login account have been created successfully. Your Registration ID is: " +
+    registrationId +
+    ". Please save this ID and your password safely. You will need them to log in.";
+
+const loginButton = document.createElement("a");
+
+loginButton.href = "login.html";
+loginButton.className = "login-link";
+loginButton.textContent = "Login to Student Portal";
+
+message.append(successText, loginButton);
+
+message.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+});
 
     } catch (error) {
         console.error("Registration error:", error);
