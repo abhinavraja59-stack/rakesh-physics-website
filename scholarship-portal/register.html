@@ -12,41 +12,59 @@
     --gold:#D4AF37;
 }
 * {margin:0;padding:0;box-sizing:border-box}
+
 body {
     font-family:Arial,sans-serif;
     background:#f3f5f9;
     color:#172033;
 }
+
 header {
     background:var(--navy);
     padding:22px 6%;
     border-bottom:4px solid var(--gold);
 }
+
 .brand {
     color:var(--gold);
     font-size:25px;
     font-weight:900;
     letter-spacing:1px;
 }
+
 .subtitle {
     color:white;
     font-size:11px;
     letter-spacing:2px;
     margin-top:6px;
 }
+
 .container {
     max-width:850px;
     margin:35px auto;
     padding:0 15px;
 }
+
 .form-card {
     background:white;
     padding:32px;
     border-radius:16px;
     box-shadow:0 8px 30px rgba(0,0,0,.06);
 }
-h1 {color:var(--navy);font-size:27px;margin-bottom:10px}
-.intro {color:#68758a;line-height:1.7;margin-bottom:22px;font-size:14px}
+
+h1 {
+    color:var(--navy);
+    font-size:27px;
+    margin-bottom:10px;
+}
+
+.intro {
+    color:#68758a;
+    line-height:1.7;
+    margin-bottom:22px;
+    font-size:14px;
+}
+
 .section-title {
     color:var(--navy);
     font-weight:bold;
@@ -55,13 +73,24 @@ h1 {color:var(--navy);font-size:27px;margin-bottom:10px}
     padding-bottom:10px;
     border-bottom:2px solid var(--gold);
 }
+
 .form-grid {
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:18px;
 }
-.field {display:flex;flex-direction:column;gap:8px}
-.field label {font-size:13px;font-weight:bold}
+
+.field {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.field label {
+    font-size:13px;
+    font-weight:bold;
+}
+
 .field input,.field select {
     padding:14px;
     border:1px solid #d6dce6;
@@ -71,11 +100,14 @@ h1 {color:var(--navy);font-size:27px;margin-bottom:10px}
     background:white;
     color:#172033;
 }
+
 .field input:focus,.field select:focus {
     outline:none;
     border-color:var(--gold);
 }
+
 .full {grid-column:1/-1}
+
 .category-box {
     background:#f8f5e9;
     border:1px solid #e6d58e;
@@ -83,13 +115,20 @@ h1 {color:var(--navy);font-size:27px;margin-bottom:10px}
     padding:17px;
     margin-top:20px;
 }
+
 .category-box small {
     color:#80651b;
     font-size:11px;
     font-weight:bold;
     text-transform:uppercase;
 }
-.category-box h3 {color:var(--navy);margin-top:7px;font-size:19px}
+
+.category-box h3 {
+    color:var(--navy);
+    margin-top:7px;
+    font-size:19px;
+}
+
 .consent {
     display:flex;
     align-items:flex-start;
@@ -98,7 +137,14 @@ h1 {color:var(--navy);font-size:27px;margin-bottom:10px}
     font-size:13px;
     line-height:1.7;
 }
-.consent input {margin-top:4px;width:17px;height:17px;flex-shrink:0}
+
+.consent input {
+    margin-top:4px;
+    width:17px;
+    height:17px;
+    flex-shrink:0;
+}
+
 button {
     width:100%;
     background:var(--navy);
@@ -111,8 +157,10 @@ button {
     cursor:pointer;
     margin-top:25px;
 }
+
 button:hover {background:#19385d}
 button:disabled {opacity:.6;cursor:not-allowed}
+
 .note {
     background:#fff8e3;
     border:1px solid #ead58a;
@@ -123,6 +171,7 @@ button:disabled {opacity:.6;cursor:not-allowed}
     margin-top:20px;
     line-height:1.7;
 }
+
 .message {
     display:none;
     padding:15px;
@@ -132,26 +181,62 @@ button:disabled {opacity:.6;cursor:not-allowed}
     line-height:1.7;
     overflow-wrap:anywhere;
 }
-.message.info {display:block;background:#eaf2ff;border:1px solid #b9d0f2;color:#174578}
-.message.error {display:block;background:#fff0f0;border:1px solid #efc0c0;color:#9b2828}
-.message.success {display:block;background:#eaf8ef;border:1px solid #a8d8b5;color:#176534}
-    .login-link {
-    display: block;
-    width: 100%;
-    margin-top: 18px;
-    padding: 16px;
-    background: #0A1931;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 9px;
+
+.message.info {
+    display:block;
+    background:#eaf2ff;
+    border:1px solid #b9d0f2;
+    color:#174578;
+}
+
+.message.error {
+    display:block;
+    background:#fff0f0;
+    border:1px solid #efc0c0;
+    color:#9b2828;
+}
+
+.message.success {
+    display:block;
+    background:#eaf8ef;
+    border:1px solid #a8d8b5;
+    color:#176534;
+}
+
+.login-link {
+    display:block;
+    width:100%;
+    margin-top:18px;
+    padding:16px;
+    background:var(--navy);
+    color:white;
+    text-align:center;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:bold;
+    border-radius:9px;
+    border:2px solid var(--gold);
 }
 
 .login-link:hover {
-    background: #19385d;
+    background:#19385d;
 }
+
+.login-section {
+    margin-top:25px;
+    padding:22px;
+    border:1px solid #e1e5ec;
+    border-radius:12px;
+    text-align:center;
+    background:#fafbfc;
+}
+
+.login-section p {
+    color:#68758a;
+    font-size:13px;
+    line-height:1.6;
+}
+
 footer {
     text-align:center;
     padding:25px;
@@ -161,7 +246,9 @@ footer {
     font-size:12px;
     line-height:1.8;
 }
+
 footer strong {color:var(--gold)}
+
 @media(max-width:600px) {
     header {padding:19px 20px}
     .container {margin:22px auto;padding:0 13px}
@@ -173,6 +260,7 @@ footer strong {color:var(--gold)}
 </head>
 
 <body>
+
 <header>
     <div class="brand">RAKESHH PHYSICS</div>
     <div class="subtitle">ANOTHER NAME FOR SUCCESS</div>
@@ -180,7 +268,9 @@ footer strong {color:var(--gold)}
 
 <main class="container">
 <div class="form-card">
+
 <h1>Student Registration</h1>
+
 <p class="intro">
 Welcome to Rakeshh Physics Online Scholarship Test 2027.
 Please complete your registration information carefully.
@@ -189,6 +279,7 @@ Please complete your registration information carefully.
 <form id="registrationForm">
 
 <div class="section-title">Personal Information</div>
+
 <div class="form-grid">
 
 <div class="field">
@@ -226,9 +317,11 @@ Please complete your registration information carefully.
 <option value="Prefer not to say">Prefer not to say</option>
 </select>
 </div>
+
 </div>
 
 <div class="section-title">Academic Information</div>
+
 <div class="form-grid">
 
 <div class="field">
@@ -275,9 +368,11 @@ Please complete your registration information carefully.
 <label for="state">State *</label>
 <input type="text" id="state" value="Bihar" readonly required>
 </div>
+
 </div>
 
 <div class="section-title">Create Student Login Password</div>
+
 <div class="form-grid">
 
 <div class="field">
@@ -316,9 +411,20 @@ I agree to the examination rules and the processing of my registration informati
 </label>
 
 <button type="submit" id="submitBtn">Submit Registration</button>
+
 <div id="message" class="message" role="status" aria-live="polite"></div>
 
 </form>
+
+<!-- PERMANENT STUDENT LOGIN OPTION -->
+<div class="login-section">
+    <p><strong>Already Registered?</strong></p>
+    <p>Students who already have a Registration ID can log in here.</p>
+    <a href="login.html" class="login-link">
+        Login to Student Portal
+    </a>
+</div>
+
 </div>
 </main>
 
@@ -516,9 +622,7 @@ form.addEventListener("submit", async function(event) {
         const { data, error } =
             await supabaseClient.functions.invoke(
                 "register-scholarship-student",
-                {
-                    body: payload
-                }
+                { body: payload }
             );
 
         if (error) {
@@ -530,44 +634,42 @@ form.addEventListener("submit", async function(event) {
             );
         }
 
-        if (
-            !data ||
-            data.success !== true ||
-            !data.registration_id
-        ) {
+        if (!data || data.success !== true || !data.registration_id) {
             throw new Error(
                 data?.error ||
                 "Registration ID was not returned. Please contact the institute."
             );
         }
 
-       const registrationId = data.registration_id;
+        const registrationId = data.registration_id;
 
-form.reset();
-updateCategory("");
+        form.reset();
+        updateCategory("");
 
-message.className = "message success";
-message.replaceChildren();
+        message.className = "message success";
+        message.replaceChildren();
 
-const successText = document.createElement("p");
+        const successTitle = document.createElement("strong");
+        successTitle.textContent = "Registration Successful!";
 
-successText.textContent =
-    "Congratulations! Your registration and student login account have been created successfully. Your Registration ID is: " +
-    registrationId +
-    ". Please save this ID and your password safely. You will need them to log in.";
+        const successText = document.createElement("p");
+        successText.style.marginTop = "8px";
+        successText.textContent =
+            "Your student account has been created successfully. Your Registration ID is: " +
+            registrationId +
+            ". Please save your Registration ID and password safely.";
 
-const loginButton = document.createElement("a");
+        const loginButton = document.createElement("a");
+        loginButton.href = "login.html";
+        loginButton.className = "login-link";
+        loginButton.textContent = "Login to Student Portal";
 
-loginButton.href = "login.html";
-loginButton.className = "login-link";
-loginButton.textContent = "Login to Student Portal";
+        message.append(successTitle, successText, loginButton);
 
-message.append(successText, loginButton);
-
-message.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-});
+        message.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
 
     } catch (error) {
         console.error("Registration error:", error);
