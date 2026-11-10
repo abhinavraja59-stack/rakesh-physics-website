@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Exam Management | Rakeshh Physics</title>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#0A1931;--gold:#D4AF37}
+:root{--navy:#0A1931;--gold:#D4AF37;--bg:#f3f5f9}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
+body{font-family:Arial,sans-serif;background:var(--bg);color:#172033}
 header{background:var(--navy);padding:20px 5%;border-bottom:4px solid var(--gold);color:white}
 header h2{color:var(--gold);font-size:22px}
 header p{font-size:11px;margin-top:5px}
-.container{max-width:1150px;margin:25px auto;padding:0 15px}
+.container{max-width:1200px;margin:25px auto;padding:0 15px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--navy);font-size:25px}
 .card{background:white;border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
@@ -21,26 +21,31 @@ label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
 input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;background:white;font-size:13px}
 .field{margin-bottom:15px}
 button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);color:white;font-size:12px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{opacity:.55;cursor:not-allowed}
 .gold{background:var(--gold);color:var(--navy)}
 .light{background:#edf1f7;color:var(--navy)}
 .notice{background:#fff6dc;color:#775d0e;padding:14px;border-radius:9px;font-size:12px;line-height:1.7;margin-bottom:18px}
-.status{display:inline-block;background:#fff2d1;color:#80600b;padding:6px 10px;border-radius:20px;font-size:11px}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th,td{text-align:left;padding:13px;border-bottom:1px solid #e7ebf1;font-size:12px}
-th{background:#f4f6fa;color:#536078}
-.table-wrap{overflow-x:auto}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat{background:#f5f6fa;padding:16px;border-radius:9px}
 .stat small{font-size:11px;color:#718096}
 .stat strong{display:block;font-size:21px;color:var(--navy);margin-top:8px}
-#message{font-size:12px;color:#176b43;margin-top:12px;line-height:1.6}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #e7ebf1;font-size:12px}
+th{background:#f4f6fa;color:#536078}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px}
+.Draft{background:#edf1f7;color:#536078}
+.Scheduled{background:#e5f3ff;color:#155b91}
+.Closed{background:#fee9e7;color:#a12b21}
+#message{font-size:12px;margin-top:12px;line-height:1.6}
+.success{color:#176b43}.error{color:#b42318}.muted{color:#718096}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
 footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-top:30px;font-size:12px}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}.card{padding:16px}}
 </style>
 </head>
 
 <body>
-
 <header>
 <h2>RAKESHH PHYSICS</h2>
 <p>SCHOLARSHIP TEST 2027 | EXAM CONTROL</p>
@@ -52,67 +57,39 @@ footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-
 <div>
 <h1>Exam Management</h1>
 <p style="font-size:12px;color:#718096;margin-top:7px">
-Examination configuration and scheduling.
+Live examination configuration and scheduling.
 </p>
 </div>
+<div class="toolbar">
 <a href="dashboard.html" class="btn light">← Dashboard</a>
+<button id="logoutBtn">Logout</button>
+</div>
 </div>
 
 <div class="notice">
-<strong>PREVIEW MODE:</strong>
-These controls currently demonstrate the interface only.
-No live examination will start, stop or change until
-secure Admin authentication and Supabase integration
-are completed.
+<strong>SECURE ADMIN AREA:</strong>
+Settings are saved in Supabase. Scheduling an exam does not itself start the student examination. The exam engine and server-side controls must be completed separately.
 </div>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:17px">Examination Overview</h3>
-
 <div class="stat-grid">
-
-<div class="stat">
-<small>Total Papers</small>
-<strong>05</strong>
+<div class="stat"><small>Total Papers</small><strong id="totalPapers">5</strong></div>
+<div class="stat"><small>Questions Per Paper</small><strong>50</strong></div>
+<div class="stat"><small>Time Per Question</small><strong>45 Sec</strong></div>
+<div class="stat"><small>Total Exam Duration</small><strong>37:30</strong></div>
 </div>
-
-<div class="stat">
-<small>Questions Per Paper</small>
-<strong>50</strong>
-</div>
-
-<div class="stat">
-<small>Time Per Question</small>
-<strong>45 Sec</strong>
-</div>
-
-<div class="stat">
-<small>Total Exam Duration</small>
-<strong>37:30</strong>
-</div>
-
-</div>
-
 </section>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:18px">Exam Configuration</h3>
 
 <form id="examForm">
-
 <div class="grid">
 
 <div class="field">
-<label>Examination Paper</label>
-<select id="paper">
-<option value="RP10">10th Passed – Combined</option>
-<option value="RP11PCB">Class 11 – PCB</option>
-<option value="RP11PCM">Class 11 – PCM</option>
-<option value="RP12PCB">Class 12 – PCB</option>
-<option value="RP12PCM">Class 12 – PCM</option>
-</select>
+<label>Examination Paper *</label>
+<select id="paper" required></select>
 </div>
 
 <div class="field">
@@ -126,184 +103,397 @@ are completed.
 </div>
 
 <div class="field">
-<label>Question Timer (Seconds)</label>
-<input type="number" id="timer" value="45" min="45" max="45" readonly>
+<label>Question Timer</label>
+<input type="number" value="45 Seconds" readonly>
 </div>
 
 <div class="field">
 <label>Total Questions</label>
-<input type="number" value="50" readonly>
+<input value="50" readonly>
 </div>
 
 <div class="field">
 <label>Maximum Marks</label>
-<input type="number" value="200" readonly>
+<input value="200" readonly>
 </div>
 
 <div class="field">
 <label>Correct Answer Marks</label>
-<input type="number" value="4" readonly>
+<input value="+4" readonly>
 </div>
 
 <div class="field">
 <label>Wrong Answer Marks</label>
-<input type="number" value="-1" readonly>
+<input value="-1" readonly>
 </div>
 
 <div class="field">
 <label>Previous Question</label>
-<select disabled>
-<option>Locked – No Backward Navigation</option>
-</select>
+<input value="Locked – No Backward Navigation" readonly>
 </div>
 
 <div class="field">
-<label>Examination Status</label>
-<select id="examStatus">
+<label>Examination Status *</label>
+<select id="examStatus" required>
 <option value="Draft">Draft</option>
 <option value="Scheduled">Scheduled</option>
-<option value="Open">Open (Preview only)</option>
 <option value="Closed">Closed</option>
 </select>
 </div>
 
 <div class="field">
-<label>Maximum Student Capacity</label>
-<input type="number" id="capacity" value="500" min="1" max="500">
+<label>Maximum Student Capacity *</label>
+<input type="number" id="capacity" value="500" min="1" max="500" required>
 </div>
 
 <div class="field">
 <label>Result Publication</label>
-<select disabled>
-<option>Manual Admin Publication</option>
-</select>
+<input value="Manual Admin Publication" readonly>
 </div>
 
 </div>
 
-<button type="submit" class="gold">Save Preview Configuration</button>
-
+<div class="toolbar">
+<button type="submit" class="gold" id="saveBtn">Save Exam Settings</button>
+<button type="button" class="light" id="resetBtn">Reset Form</button>
+</div>
 <p id="message" role="status"></p>
-
 </form>
-
 </section>
 
 <section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:17px">Five Examination Papers</h3>
+<div class="top">
+<h3 style="color:#0A1931">Five Examination Papers</h3>
+<button type="button" class="light" id="refreshBtn">↻ Refresh</button>
+</div>
 
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>Paper ID</th>
-<th>Academic Category</th>
-<th>Stream</th>
-<th>Questions</th>
-<th>Difficulty</th>
-<th>Timer</th>
+<th>Paper</th>
+<th>Exam Date</th>
+<th>Start Time</th>
+<th>Capacity</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
-<tbody>
-
-<tr>
-<td>RP10</td>
-<td>10th Passed</td>
-<td>JEE + NEET Combined</td>
-<td>50</td>
-<td>25 Easy / 25 Hard</td>
-<td>45 Sec</td>
-</tr>
-
-<tr>
-<td>RP11PCB</td>
-<td>Class 11</td>
-<td>PCB</td>
-<td>50</td>
-<td>25 Easy / 25 Hard</td>
-<td>45 Sec</td>
-</tr>
-
-<tr>
-<td>RP11PCM</td>
-<td>Class 11</td>
-<td>PCM</td>
-<td>50</td>
-<td>25 Easy / 25 Hard</td>
-<td>45 Sec</td>
-</tr>
-
-<tr>
-<td>RP12PCB</td>
-<td>Class 12</td>
-<td>PCB</td>
-<td>50</td>
-<td>25 Easy / 25 Hard</td>
-<td>45 Sec</td>
-</tr>
-
-<tr>
-<td>RP12PCM</td>
-<td>Class 12</td>
-<td>PCM</td>
-<td>50</td>
-<td>25 Easy / 25 Hard</td>
-<td>45 Sec</td>
-</tr>
-
+<tbody id="paperTable">
+<tr><td colspan="6">Loading examination papers...</td></tr>
 </tbody>
 </table>
 </div>
-
 </section>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:15px">Examination Rules</h3>
-
 <div style="font-size:13px;line-height:2;color:#526078">
 <p>✓ Automatic next question after 45 seconds.</p>
-<p>✓ Previous questions permanently locked.</p>
+<p>✓ Previous questions locked.</p>
 <p>✓ Correct answer: +4 marks.</p>
 <p>✓ Incorrect answer: -1 mark.</p>
 <p>✓ Unattempted question: 0 marks.</p>
 <p>✓ Automatic submission after Question 50.</p>
 <p>✓ Official result published manually by Admin.</p>
-<p>✓ Target capacity: Up to 500 students.</p>
+<p>✓ Maximum configured capacity: 500 students per paper.</p>
 </div>
-
 </section>
 
 </main>
 
-<footer>
-RAKESHH PHYSICS | Another Name For Success
-</footer>
+<footer>RAKESHH PHYSICS | Another Name For Success</footer>
 
 <script>
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-document.getElementById("examForm").addEventListener("submit",function(e){
+const $ = id => document.getElementById(id);
 
-e.preventDefault();
-
-const config={
-paper:document.getElementById("paper").value,
-date:document.getElementById("date").value,
-time:document.getElementById("time").value,
-status:document.getElementById("examStatus").value,
-capacity:Number(document.getElementById("capacity").value),
-questionTimer:45,
-totalQuestions:50
+const paperCodes = {
+ RP10:"8ef2cdd9-29e1-4775-94f6-c622499bb9e1",
+ RP11PCB:"16b47af1-2959-493e-8f92-c4f89ae21999",
+ RP11PCM:"5b4e711f-b637-4e68-bd40-5a8544647b71",
+ RP12PCB:"0b0d9b22-8c01-488e-a9cd-e6f4c505542e",
+ RP12PCM:"d08b2a65-b3cc-426c-8637-366e55642c37"
 };
 
-document.getElementById("message").textContent=
-"Preview configuration captured for "+config.paper+
-". This is not saved to the server. Supabase integration is required for permanent settings.";
+const paperNames = {
+ RP10:"10th Passed – Combined JEE + NEET",
+ RP11PCB:"Class 11 – PCB",
+ RP11PCM:"Class 11 – PCM",
+ RP12PCB:"Class 12 – PCB",
+ RP12PCM:"Class 12 – PCM"
+};
 
+let settings = [];
+let papers = [];
+
+function showMessage(message,type="muted"){
+ $("message").textContent=message;
+ $("message").className=type;
+}
+
+function codeFromId(id){
+ return Object.keys(paperCodes).find(k=>paperCodes[k]===id);
+}
+
+function formatDateTime(value){
+ if(!value)return {date:"Not set",time:"Not set"};
+ const d=new Date(value);
+ if(Number.isNaN(d.getTime()))return {date:"Not set",time:"Not set"};
+ return {
+  date:d.toLocaleDateString("en-IN"),
+  time:d.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})
+ };
+}
+
+async function verifyAdmin(){
+ const {data:{user},error}=await db.auth.getUser();
+ if(error||!user){
+  alert("Please login with your Admin account.");
+  window.location.replace("../login.html");
+  return false;
+ }
+
+ const {data:role,error:roleError}=await db
+  .from("scholarship_admin_roles")
+  .select("admin_role")
+  .eq("user_id",user.id)
+  .maybeSingle();
+
+ if(roleError||!role){
+  await db.auth.signOut();
+  alert("Unauthorized Scholarship Admin access.");
+  window.location.replace("../login.html");
+  return false;
+ }
+ return user;
+}
+
+async function loadData(){
+ showMessage("Loading examination settings...");
+ const {data:paperData,error:paperError}=await db
+  .from("scholarship_exam_papers")
+  .select("id,title,category,stream,total_questions,is_active")
+  .order("created_at");
+
+ if(paperError)throw paperError;
+ papers=paperData||[];
+
+ const {data:settingData,error:settingError}=await db
+  .from("scholarship_exam_settings")
+  .select("id,exam_paper_id,scheduled_at,question_timer_seconds,student_capacity,exam_status,created_by,created_at,updated_at");
+
+ if(settingError)throw settingError;
+ settings=settingData||[];
+
+ renderPaperSelect();
+ renderTable();
+ showMessage("Examination settings successfully loaded from Supabase.","success");
+}
+
+function renderPaperSelect(){
+ const select=$("paper");
+ const previous=select.value;
+ select.innerHTML="";
+
+ papers.forEach(p=>{
+  const code=codeFromId(p.id);
+  if(!code)return;
+  const option=document.createElement("option");
+  option.value=code;
+  option.textContent=paperNames[code];
+  select.appendChild(option);
+ });
+
+ if(paperCodes[previous])select.value=previous;
+ loadSelectedSettings();
+}
+
+function getSetting(code){
+ return settings.find(s=>s.exam_paper_id===paperCodes[code]);
+}
+
+function loadSelectedSettings(){
+ const code=$("paper").value;
+ const item=getSetting(code);
+
+ $("date").value="";
+ $("time").value="";
+ $("capacity").value="500";
+ $("examStatus").value="Draft";
+
+ if(!item)return;
+
+ if(item.scheduled_at){
+  const d=new Date(item.scheduled_at);
+  const pad=n=>String(n).padStart(2,"0");
+  $("date").value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  $("time").value=pad(d.getHours())+":"+pad(d.getMinutes());
+ }
+
+ $("capacity").value=item.student_capacity;
+ $("examStatus").value=item.exam_status;
+}
+
+function renderTable(){
+ const tbody=$("paperTable");
+ tbody.innerHTML="";
+
+ $("totalPapers").textContent=papers.length;
+
+ papers.forEach(p=>{
+  const code=codeFromId(p.id);
+  if(!code)return;
+
+  const item=getSetting(code);
+  const dt=formatDateTime(item?.scheduled_at);
+
+  const tr=document.createElement("tr");
+
+  const values=[
+   paperNames[code],
+   dt.date,
+   dt.time,
+   item?.student_capacity??"Not set"
+  ];
+
+  values.forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=String(value);
+   tr.appendChild(td);
+  });
+
+  const statusCell=document.createElement("td");
+  const badge=document.createElement("span");
+  badge.className="status "+(item?.exam_status||"Draft");
+  badge.textContent=item?.exam_status||"Not Configured";
+  statusCell.appendChild(badge);
+  tr.appendChild(statusCell);
+
+  const actionCell=document.createElement("td");
+  const edit=document.createElement("button");
+  edit.className="gold";
+  edit.textContent="Manage";
+  edit.onclick=()=>{
+   $("paper").value=code;
+   loadSelectedSettings();
+   window.scrollTo({top:0,behavior:"smooth"});
+  };
+  actionCell.appendChild(edit);
+  tr.appendChild(actionCell);
+
+  tbody.appendChild(tr);
+ });
+}
+
+$("paper").addEventListener("change",loadSelectedSettings);
+
+$("examForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+
+ const code=$("paper").value;
+ const paperId=paperCodes[code];
+ const status=$("examStatus").value;
+ const capacity=Number($("capacity").value);
+ const date=$("date").value;
+ const time=$("time").value;
+
+ if(!paperId){
+  showMessage("Please select a valid examination paper.","error");
+  return;
+ }
+
+ if(!Number.isInteger(capacity)||capacity<1||capacity>500){
+  showMessage("Capacity must be between 1 and 500.","error");
+  return;
+ }
+
+ let scheduledAt=null;
+
+ if(date||time){
+  if(!date||!time){
+   showMessage("Please select both Exam Date and Start Time.","error");
+   return;
+  }
+
+  const localDate=new Date(date+"T"+time);
+  if(Number.isNaN(localDate.getTime())){
+   showMessage("Invalid exam date or time.","error");
+   return;
+  }
+  scheduledAt=localDate.toISOString();
+ }
+
+ if(status==="Scheduled"&&!scheduledAt){
+  showMessage("Exam Date and Start Time are required for Scheduled status.","error");
+  return;
+ }
+
+ $("saveBtn").disabled=true;
+ showMessage("Saving settings to Supabase...");
+
+ try{
+  const {data:{user},error:userError}=await db.auth.getUser();
+  if(userError||!user)throw new Error("Admin session expired. Please login again.");
+
+  const payload={
+   exam_paper_id:paperId,
+   scheduled_at:scheduledAt,
+   question_timer_seconds:45,
+   student_capacity:capacity,
+   exam_status:status,
+   created_by:user.id,
+   updated_at:new Date().toISOString()
+  };
+
+  const {error}=await db
+   .from("scholarship_exam_settings")
+   .upsert(payload,{onConflict:"exam_paper_id"});
+
+  if(error)throw error;
+
+  showMessage("Settings saved successfully for "+paperNames[code]+".","success");
+  await loadData();
+
+ }catch(error){
+  showMessage("Save failed: "+error.message,"error");
+ }finally{
+  $("saveBtn").disabled=false;
+ }
 });
 
-</script>
+$("resetBtn").onclick=()=>{
+ $("examForm").reset();
+ loadSelectedSettings();
+ showMessage("Form restored to the saved settings.");
+};
 
+$("refreshBtn").onclick=async()=>{
+ try{
+  await loadData();
+ }catch(error){
+  showMessage("Refresh failed: "+error.message,"error");
+ }
+};
+
+$("logoutBtn").onclick=async()=>{
+ const {error}=await db.auth.signOut();
+ if(error){alert(error.message);return}
+ window.location.replace("../login.html");
+};
+
+(async()=>{
+ try{
+  const user=await verifyAdmin();
+  if(!user)return;
+  await loadData();
+ }catch(error){
+  showMessage("Initialization failed: "+error.message,"error");
+ }
+})();
+</script>
 </body>
 </html>
