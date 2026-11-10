@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | Rakeshh Physics</title>
+<meta name="description" content="Rakeshh Physics Scholarship Test 2027 Student Dashboard">
+
+<style>
+:root {
+    --navy:#0A1931;
+    --gold:#D4AF37;
+    --bg:#f3f5f9;
+    --text:#172033;
+    --muted:#718096;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+header {
+    background:var(--navy);
+    border-bottom:4px solid var(--gold);
+    padding:20px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+.brand {color:var(--gold);font-size:23px;font-weight:900}
+.subtitle {color:white;font-size:10px;letter-spacing:2px;margin-top:5px}
+.logout {
+    background:transparent;
+    border:1px solid var(--gold);
+    color:white;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+.container {max-width:1100px;margin:30px auto;padding:0 18px}
+.welcome {
+    background:var(--navy);
+    color:white;
+    border-radius:15px;
+    padding:28px;
+    position:relative;
+    overflow:hidden;
+}
+.welcome h1 {font-size:27px;margin-bottom:9px}
+.welcome p {color:#d7deea;line-height:1.6}
+.welcome small {color:var(--gold);font-weight:bold;letter-spacing:1px}
+.section-title {
+    margin:30px 0 16px;
+    color:var(--navy);
+    font-size:20px;
+}
+.grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+.card {
+    background:white;
+    border-radius:13px;
+    padding:22px;
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
+    border:1px solid #e8ebf0;
+}
+.card-label {color:var(--muted);font-size:13px;margin-bottom:12px}
+.card-value {color:var(--navy);font-size:20px;font-weight:bold;overflow-wrap:anywhere}
+.card-icon {font-size:25px;margin-bottom:13px}
+.status {
+    display:inline-block;
+    background:#fff5d8;
+    color:#866815;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+.exam-card {
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    border-left:5px solid var(--gold);
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
+}
+.exam-card h3 {color:var(--navy);margin-bottom:12px}
+.exam-card p {color:var(--muted);line-height:1.8;font-size:14px}
+.exam-button {
+    margin-top:18px;
+    width:100%;
+    padding:15px;
+    background:#d9dde5;
+    color:#68758a;
+    border:0;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:not-allowed;
+}
+.info-list {list-style:none}
+.info-list li {
+    padding:13px 0;
+    border-bottom:1px solid #edf0f4;
+    font-size:14px;
+    line-height:1.6;
+}
+.info-list li:last-child {border:0}
+.loading {
+    text-align:center;
+    padding:65px 15px;
+    color:var(--navy);
+    font-weight:bold;
+}
+.error {
+    margin:30px auto;
+    background:#fff0f0;
+    color:#9b2828;
+    border:1px solid #efc0c0;
+    border-radius:10px;
+    padding:20px;
+    max-width:600px;
+    line-height:1.7;
+    text-align:center;
+}
+footer {
+    margin-top:45px;
+    background:var(--navy);
+    color:white;
+    text-align:center;
+    padding:25px;
+    line-height:1.9;
+    font-size:13px;
+}
+footer strong {color:var(--gold)}
+@media(max-width:700px) {
+    header {padding:17px;align-items:flex-start}
+    .brand {font-size:19px}
+    .subtitle {font-size:9px}
+    .logout {padding:9px 12px;font-size:12px}
+    .container {margin:20px auto;padding:0 13px}
+    .welcome {padding:23px}
+    .welcome h1 {font-size:23px}
+    .grid {grid-template-columns:1fr}
+    .card {padding:19px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="brand">RAKESHH PHYSICS</div>
+        <div class="subtitle">ANOTHER NAME FOR SUCCESS</div>
+    </div>
+    <button class="logout" id="logoutBtn" type="button">
+        Logout
+    </button>
+</header>
+
+<main class="container">
+
+<div id="loading" class="loading">
+    Verifying your student account...
+</div>
+
+<div id="dashboard" hidden>
+
+    <section class="welcome">
+        <small>STUDENT PORTAL · 2027</small>
+        <h1>Welcome to Your Dashboard!</h1>
+        <p>
+            Your scholarship journey starts here.
+            Stay prepared and keep checking your portal for updates.
+        </p>
+    </section>
+
+    <h2 class="section-title">My Student Profile</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-icon">🎓</div>
+            <div class="card-label">Registration ID</div>
+            <div class="card-value" id="registrationId">Loading...</div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔐</div>
+            <div class="card-label">Account Status</div>
+            <div class="status">Verified Account</div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📚</div>
+            <div class="card-label">Examination</div>
+            <div class="card-value">Scholarship Test 2027</div>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">Scholarship Examination</h2>
+
+    <section class="exam-card">
+        <h3>Online Scholarship Test 2027</h3>
+        <p>
+            Your examination schedule and instructions will be
+            displayed here after they are officially published.
+        </p>
+        <p>
+            <strong>Exam Date:</strong> Not announced yet<br>
+            <strong>Exam Time:</strong> Not announced yet<br>
+            <strong>Exam Status:</strong>
+            <span class="status">Upcoming</span>
+        </p>
+        <button class="exam-button" disabled>
+            Examination Not Started
+        </button>
+    </section>
+
+    <h2 class="section-title">Examination Instructions</h2>
+
+    <section class="card">
+        <ul class="info-list">
+            <li>1. Keep your Registration ID and password confidential.</li>
+            <li>2. Check the examination schedule before the exam.</li>
+            <li>3. Ensure a stable internet connection during the examination.</li>
+            <li>4. Read all examination instructions before starting.</li>
+            <li>5. Follow the institute's examination rules.</li>
+        </ul>
+    </section>
+
+    <h2 class="section-title">My Results</h2>
+
+    <section class="card">
+        <div class="card-icon">🏆</div>
+        <div class="card-value">Result Not Published</div>
+        <p style="color:#718096;font-size:14px;margin-top:10px;line-height:1.6">
+            Your official scholarship examination result will
+            appear here after it is published by the institute.
+        </p>
+    </section>
+
+</div>
+
+<div id="errorBox" class="error" hidden>
+    Your session could not be verified.
+    Please log in again to access the Student Dashboard.
+    <br>
+    <a href="login.html">Go to Student Login</a>
+</div>
+
+</main>
+
+<footer>
+    <strong>RAKESHH PHYSICS</strong>
+    <p>Another Name For Success</p>
+    <p>Online Scholarship Test 2027</p>
+    <p>© 2027 Rakeshh Physics. All Rights Reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL =
+    "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+        }
+    }
+);
+
+const loading = document.getElementById("loading");
+const dashboard = document.getElementById("dashboard");
+const errorBox = document.getElementById("errorBox");
+
+async function verifyStudent() {
+    try {
+        const {data, error} =
+            await supabaseClient.auth.getUser();
+
+        if (error || !data.user) {
+            throw new Error("Login session not found.");
+        }
+
+        const user = data.user;
+        const metadata = user.user_metadata || {};
+
+        if (
+            metadata.account_type !== "scholarship_student" ||
+            !metadata.registration_id
+        ) {
+            throw new Error("Student account verification failed.");
+        }
+
+        document.getElementById("registrationId").textContent =
+            metadata.registration_id;
+
+        loading.hidden = true;
+        dashboard.hidden = false;
+
+    } catch (error) {
+        console.error("Dashboard verification:", error);
+
+        loading.hidden = true;
+        dashboard.hidden = true;
+        errorBox.hidden = false;
+    }
+}
+
+document.getElementById("logoutBtn").addEventListener(
+    "click",
+    async function() {
+        this.disabled = true;
+        this.textContent = "Logging out...";
+
+        const {error} = await supabaseClient.auth.signOut();
+
+        if (error) {
+            this.disabled = false;
+            this.textContent = "Logout";
+            alert("Logout failed. Please try again.");
+            return;
+        }
+
+        window.location.replace("login.html");
+    }
+);
+
+verifyStudent();
+</script>
+
+</body>
+</html>
