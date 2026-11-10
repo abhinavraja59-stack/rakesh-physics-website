@@ -4,19 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Question Bank | Rakeshh Physics</title>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root {
- --navy:#0A1931;
- --gold:#D4AF37;
- --bg:#f3f5f9;
-}
+:root{--navy:#0A1931;--gold:#D4AF37;--bg:#f3f5f9}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:var(--bg);color:#18243a}
 header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
 header h2{color:var(--gold);font-size:22px}
 header p{font-size:11px;margin-top:5px}
-.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.container{max-width:1250px;margin:25px auto;padding:0 15px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--navy);font-size:25px}
 .card{background:white;border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
@@ -26,8 +22,10 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #d9e0e9;border-ra
 textarea{resize:vertical;min-height:85px}
 .field{margin-bottom:15px}
 button,.btn{border:0;border-radius:8px;padding:12px 17px;background:var(--navy);color:white;font-weight:bold;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{opacity:.55;cursor:not-allowed}
 .gold{background:var(--gold);color:var(--navy)}
 .light{background:#edf1f7;color:var(--navy)}
+.danger{background:#b42318;color:white}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat{background:#f5f6fa;padding:15px;border-radius:9px}
@@ -35,14 +33,22 @@ button,.btn{border:0;border-radius:8px;padding:12px 17px;background:var(--navy);
 .stat small{color:#718096;font-size:11px}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .notice{padding:13px;background:#fff7df;color:#775d0e;border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:15px}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px;vertical-align:top}
 th{background:#f4f6fa;color:#46536a}
 .table-wrap{overflow-x:auto}
 .badge{background:#e8f0ff;color:#244b80;padding:5px 8px;border-radius:20px;font-size:10px}
-#message{font-size:12px;margin-top:12px;color:#176b43}
+#message,#csvMessage{font-size:12px;margin-top:12px;line-height:1.6}
+.success{color:#176b43}.error{color:#b42318}.muted{color:#718096}
 footer{text-align:center;padding:20px;background:var(--navy);color:white;font-size:12px;margin-top:30px}
-@media(max-width:700px){
+.hidden{display:none!important}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.small-btn{padding:7px 10px;font-size:11px}
+.progress{height:8px;background:#e9edf3;border-radius:10px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:var(--gold)}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:10;padding:18px;overflow:auto}
+.modal-card{max-width:500px;background:white;padding:22px;border-radius:12px;margin:40px auto}
+@media(max-width:750px){
  .grid{grid-template-columns:1fr}
  .stats{grid-template-columns:1fr 1fr}
  .options{grid-template-columns:1fr}
@@ -50,437 +56,812 @@ footer{text-align:center;padding:20px;background:var(--navy);color:white;font-si
 }
 </style>
 </head>
-
 <body>
 
 <header>
-<h2>RAKESHH PHYSICS</h2>
-<p>SCHOLARSHIP EXAMINATION – ADMINISTRATION</p>
+ <h2>RAKESHH PHYSICS</h2>
+ <p>SCHOLARSHIP EXAMINATION – QUESTION BANK MANAGEMENT</p>
 </header>
 
 <main class="container">
 
 <div class="top">
-<div>
-<h1>Question Bank Management</h1>
-<p style="font-size:12px;color:#718096;margin-top:7px">
-Create and manage all five scholarship examination papers.
-</p>
-</div>
-<a href="dashboard.html" class="btn light">← Dashboard</a>
-</div>
-
-<div class="notice">
-<strong>Development Preview:</strong>
-Questions entered here are currently held in browser memory only.
-They are not yet saved to Supabase or available to students.
-</div>
-
-<section class="card">
-<h3 style="margin-bottom:16px;color:#0A1931">Question Bank Overview</h3>
-
-<div class="stats">
-<div class="stat">
-<small>Questions Added (This Session)</small>
-<strong id="total">0</strong>
-</div>
-<div class="stat">
-<small>Easy Questions</small>
-<strong id="easy">0</strong>
-</div>
-<div class="stat">
-<small>Hard Questions</small>
-<strong id="hard">0</strong>
-</div>
-<div class="stat">
-<small>Target Questions</small>
-<strong>250</strong>
-</div>
-</div>
-</section>
-
-<section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:18px">Select Examination Paper</h3>
-
-<div class="grid">
-
-<div class="field">
-<label>Scholarship Paper *</label>
-<select id="paper">
-<option value="RP10">10th Passed – Combined JEE + NEET</option>
-<option value="RP11PCB">Class 11 – PCB</option>
-<option value="RP11PCM">Class 11 – PCM</option>
-<option value="RP12PCB">Class 12 – PCB</option>
-<option value="RP12PCM">Class 12 – PCM</option>
-</select>
-</div>
-
-<div class="field">
-<label>Subject *</label>
-<select id="subject">
-<option>Physics</option>
-<option>Chemistry</option>
-<option>Biology</option>
-<option>Mathematics</option>
-</select>
-</div>
-
-<div class="field">
-<label>Difficulty *</label>
-<select id="difficulty">
-<option value="Easy">Easy</option>
-<option value="Hard">Hard</option>
-</select>
-</div>
-
-</div>
-
-</section>
-
-<section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:18px">Add New Question</h3>
-
-<form id="questionForm">
-
-<div class="field">
-<label>Question *</label>
-<textarea id="question" required placeholder="Enter question here..."></textarea>
-</div>
-
-<div class="options">
-
-<div class="field">
-<label>Option A *</label>
-<input id="a" required placeholder="Option A">
-</div>
-
-<div class="field">
-<label>Option B *</label>
-<input id="b" required placeholder="Option B">
-</div>
-
-<div class="field">
-<label>Option C *</label>
-<input id="c" required placeholder="Option C">
-</div>
-
-<div class="field">
-<label>Option D *</label>
-<input id="d" required placeholder="Option D">
-</div>
-
-</div>
-
-<div class="grid">
-
-<div class="field">
-<label>Correct Answer *</label>
-<select id="correct" required>
-<option value="">Select Correct Answer</option>
-<option value="A">Option A</option>
-<option value="B">Option B</option>
-<option value="C">Option C</option>
-<option value="D">Option D</option>
-</select>
-</div>
-
-<div class="field">
-<label>Marks</label>
-<input type="number" value="4" readonly>
-</div>
-
-<div class="field">
-<label>Negative Marks</label>
-<input type="number" value="-1" readonly>
-</div>
-
-</div>
-
-<div class="field">
-<label>Question Explanation</label>
-<textarea id="explanation" placeholder="Explain the correct answer..."></textarea>
-</div>
-
-<div class="toolbar">
-<button type="submit" class="gold">+ Add Question</button>
-<button type="reset" class="light">Clear Form</button>
-</div>
-
-<p id="message" role="status"></p>
-
-</form>
-
-</section>
-
-<section class="card">
-
-<div class="top">
-<h3 style="color:#0A1931">Import Questions Through CSV</h3>
-<button class="light" id="downloadTemplate">Download CSV Template</button>
+ <div>
+  <h1>Question Bank Management</h1>
+  <p class="muted" style="font-size:12px;margin-top:7px">
+   Create, edit, import and manage examination questions.
+  </p>
+ </div>
+ <div class="toolbar">
+  <a href="dashboard.html" class="btn light">← Dashboard</a>
+  <button id="logoutBtn">Logout</button>
+ </div>
 </div>
 
 <div class="notice">
-CSV columns: paper, subject, difficulty, question, optionA,
-optionB, optionC, optionD, correct, explanation.
-Import will be preview-only until database integration.
+ <strong>SECURE ADMIN AREA:</strong>
+ Questions are stored in Supabase. Correct answers and explanations are accessed only through authorized Admin permissions.
 </div>
 
-<div class="field">
-<label>Select CSV File</label>
-<input type="file" id="csvFile" accept=".csv,text/csv">
-</div>
-
-<button id="previewCSV">Preview CSV Import</button>
-
-<div id="csvPreview" style="margin-top:15px;overflow-x:auto"></div>
-
+<section class="card">
+ <h3 style="margin-bottom:16px;color:#0A1931">Question Bank Overview</h3>
+ <div class="stats">
+  <div class="stat"><small>Total Questions</small><strong id="total">--</strong></div>
+  <div class="stat"><small>Easy Questions</small><strong id="easy">--</strong></div>
+  <div class="stat"><small>Hard Questions</small><strong id="hard">--</strong></div>
+  <div class="stat"><small>Target Questions</small><strong>250</strong></div>
+ </div>
 </section>
 
 <section class="card">
-
-<div class="top">
-<h3 style="color:#0A1931">Question List</h3>
-<div class="toolbar">
-<button class="light" id="exportCSV">Export CSV</button>
-</div>
-</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>No.</th>
-<th>Paper</th>
-<th>Subject</th>
-<th>Difficulty</th>
-<th>Question</th>
-<th>Correct</th>
-</tr>
-</thead>
-<tbody id="questionList">
-<tr><td colspan="6">No questions added yet.</td></tr>
-</tbody>
-</table>
-</div>
-
+ <h3 style="color:#0A1931;margin-bottom:16px">Paper-wise Progress</h3>
+ <div id="paperProgress" class="grid"></div>
 </section>
 
+<section class="card">
+ <h3 style="color:#0A1931;margin-bottom:18px" id="formHeading">Add New Question</h3>
+
+ <form id="questionForm">
+  <div class="grid">
+   <div class="field">
+    <label>Scholarship Paper *</label>
+    <select id="paper" required></select>
+   </div>
+   <div class="field">
+    <label>Subject *</label>
+    <select id="subject" required></select>
+   </div>
+   <div class="field">
+    <label>Difficulty *</label>
+    <select id="difficulty" required>
+     <option value="Easy">Easy</option>
+     <option value="Hard">Hard</option>
+    </select>
+   </div>
+  </div>
+
+  <div class="field">
+   <label>Question *</label>
+   <textarea id="question" required placeholder="Enter question here..."></textarea>
+  </div>
+
+  <div class="options">
+   <div class="field"><label>Option A *</label><input id="a" required></div>
+   <div class="field"><label>Option B *</label><input id="b" required></div>
+   <div class="field"><label>Option C *</label><input id="c" required></div>
+   <div class="field"><label>Option D *</label><input id="d" required></div>
+  </div>
+
+  <div class="grid">
+   <div class="field">
+    <label>Correct Answer *</label>
+    <select id="correct" required>
+     <option value="">Select Answer</option>
+     <option value="A">Option A</option>
+     <option value="B">Option B</option>
+     <option value="C">Option C</option>
+     <option value="D">Option D</option>
+    </select>
+   </div>
+   <div class="field">
+    <label>Correct Marks</label>
+    <input value="4" readonly>
+   </div>
+   <div class="field">
+    <label>Negative Marks</label>
+    <input value="-1" readonly>
+   </div>
+  </div>
+
+  <div class="field">
+   <label>Question Explanation</label>
+   <textarea id="explanation" placeholder="Explain the correct answer..."></textarea>
+  </div>
+
+  <div class="toolbar">
+   <button type="submit" class="gold" id="saveBtn">+ Save Question</button>
+   <button type="button" class="light" id="cancelEditBtn" hidden>Cancel Edit</button>
+   <button type="reset" class="light" id="clearBtn">Clear Form</button>
+  </div>
+  <p id="message" role="status"></p>
+ </form>
+</section>
+
+<section class="card">
+ <div class="top">
+  <h3 style="color:#0A1931">CSV Bulk Import</h3>
+  <button class="light" id="downloadTemplate">Download CSV Template</button>
+ </div>
+
+ <div class="notice">
+  Required columns: paper, subject, difficulty, question, optionA, optionB, optionC, optionD, correct, explanation.
+  Paper values: RP10, RP11PCB, RP11PCM, RP12PCB, RP12PCM.
+  CSV import will validate every row before saving.
+ </div>
+
+ <div class="field">
+  <label>Select CSV File</label>
+  <input type="file" id="csvFile" accept=".csv,text/csv">
+ </div>
+ <div class="toolbar">
+  <button id="previewCSV">Preview CSV</button>
+  <button id="importCSV" class="gold" disabled>Import Valid Questions</button>
+ </div>
+ <p id="csvMessage"></p>
+ <div id="csvPreview" class="table-wrap" style="margin-top:12px"></div>
+</section>
+
+<section class="card">
+ <div class="top">
+  <h3 style="color:#0A1931">Question List</h3>
+  <button class="gold" id="exportCSV">Export CSV</button>
+ </div>
+
+ <div class="grid" style="margin-bottom:15px">
+  <div>
+   <label>Filter Paper</label>
+   <select id="filterPaper"><option value="">All Papers</option></select>
+  </div>
+  <div>
+   <label>Filter Subject</label>
+   <select id="filterSubject">
+    <option value="">All Subjects</option>
+    <option>Physics</option><option>Chemistry</option>
+    <option>Biology</option><option>Mathematics</option>
+   </select>
+  </div>
+  <div>
+   <label>Filter Difficulty</label>
+   <select id="filterDifficulty">
+    <option value="">All Difficulties</option>
+    <option>Easy</option><option>Hard</option>
+   </select>
+  </div>
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>Order</th><th>Paper</th><th>Subject</th>
+     <th>Difficulty</th><th>Question</th><th>Correct</th><th>Actions</th>
+    </tr>
+   </thead>
+   <tbody id="questionList">
+    <tr><td colspan="7">Loading questions...</td></tr>
+   </tbody>
+  </table>
+ </div>
+ <p id="listMessage" class="muted" style="font-size:12px;margin-top:12px"></p>
+</section>
 </main>
 
-<footer>
-RAKESHH PHYSICS | Another Name For Success
-</footer>
+<div class="modal" id="deleteModal">
+ <div class="modal-card">
+  <h3 style="color:#0A1931">Delete Question?</h3>
+  <p style="margin:14px 0;font-size:13px;line-height:1.6">
+   This will permanently delete this question from the Question Bank.
+  </p>
+  <div class="toolbar">
+   <button id="confirmDelete" class="danger">Delete Permanently</button>
+   <button id="cancelDelete" class="light">Cancel</button>
+  </div>
+ </div>
+</div>
+
+<footer>RAKESHH PHYSICS | Another Name For Success</footer>
 
 <script>
-
-let questions = [];
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
 
-function updateDashboard(){
+const paperCodes = {
+ "RP10":"8ef2cdd9-29e1-4775-94f6-c622499bb9e1",
+ "RP11PCB":"16b47af1-2959-493e-8f92-c4f89ae21999",
+ "RP11PCM":"5b4e711f-b637-4e68-bd40-5a8544647b71",
+ "RP12PCB":"0b0d9b22-8c01-488e-a9cd-e6f4c505542e",
+ "RP12PCM":"d08b2a65-b3cc-426c-8637-366e55642c37"
+};
 
- $("total").textContent = questions.length;
+const paperNames = {
+ RP10:"10th Passed – Combined",
+ RP11PCB:"Class 11 – PCB",
+ RP11PCM:"Class 11 – PCM",
+ RP12PCB:"Class 12 – PCB",
+ RP12PCM:"Class 12 – PCM"
+};
 
- $("easy").textContent =
- questions.filter(q=>q.difficulty==="Easy").length;
+const columns = [
+ "paper","subject","difficulty","question",
+ "optionA","optionB","optionC","optionD",
+ "correct","explanation"
+];
 
- $("hard").textContent =
- questions.filter(q=>q.difficulty==="Hard").length;
+let papers = [];
+let questions = [];
+let editingId = null;
+let deletingId = null;
+let pendingCSV = [];
+
+function setMessage(id,text,type="muted"){
+ $(id).textContent=text;
+ $(id).className=type;
+}
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function allowedSubjects(code){
+ if(code==="RP11PCB"||code==="RP12PCB")
+  return ["Physics","Chemistry","Biology"];
+ if(code==="RP11PCM"||code==="RP12PCM")
+  return ["Physics","Chemistry","Mathematics"];
+ return ["Physics","Chemistry","Biology","Mathematics"];
+}
+
+function populateSubjects(){
+ const code=$("paper").value;
+ const subjects=allowedSubjects(code);
+ $("subject").innerHTML=subjects.map(s=>
+  `<option value="${s}">${s}</option>`
+ ).join("");
+}
+
+async function verifyAdmin(){
+ const {data:{user},error}=await db.auth.getUser();
+
+ if(error||!user){
+  window.location.replace("dashboard.html");
+  return false;
+ }
+
+ const {data:role,error:roleError}=await db
+  .from("scholarship_admin_roles")
+  .select("admin_role")
+  .eq("user_id",user.id)
+  .maybeSingle();
+
+ if(roleError||!role){
+  await db.auth.signOut();
+  alert("Unauthorized Admin access.");
+  window.location.replace("dashboard.html");
+  return false;
+ }
+ return true;
+}
+
+async function loadPapers(){
+ const {data,error}=await db
+  .from("scholarship_exam_papers")
+  .select("id,title,category,stream,total_questions,is_active")
+  .order("created_at");
+
+ if(error) throw error;
+ papers=data||[];
+
+ $("paper").innerHTML="";
+ $("filterPaper").innerHTML='<option value="">All Papers</option>';
+
+ papers.forEach(p=>{
+  const code=Object.keys(paperCodes).find(k=>paperCodes[k]===p.id);
+  if(!code)return;
+
+  const option=document.createElement("option");
+  option.value=code;
+  option.textContent=paperNames[code];
+  $("paper").appendChild(option);
+
+  const filterOption=option.cloneNode(true);
+  $("filterPaper").appendChild(filterOption);
+ });
+
+ populateSubjects();
+}
+
+function getPaperCode(id){
+ return Object.keys(paperCodes).find(k=>paperCodes[k]===id)||"Unknown";
+}
+
+async function loadQuestions(){
+ setMessage("message","Loading questions...");
+ let all=[];
+
+ for(let start=0;;start+=500){
+  const {data,error}=await db
+   .from("scholarship_questions")
+   .select("id,exam_paper_id,question_text,options,correct_option,explanation,difficulty,subject,marks_correct,marks_wrong,question_order,created_at")
+   .order("exam_paper_id")
+   .order("question_order")
+   .range(start,start+499);
+
+  if(error)throw error;
+  all=all.concat(data||[]);
+  if(!data||data.length<500)break;
+ }
+
+ questions=all;
+ renderAll();
+ setMessage("message","Questions successfully loaded from Supabase.","success");
+}
+
+function renderAll(){
+ $("total").textContent=questions.length;
+ $("easy").textContent=questions.filter(q=>q.difficulty==="Easy").length;
+ $("hard").textContent=questions.filter(q=>q.difficulty==="Hard").length;
+
+ renderProgress();
+ renderList();
+}
+
+function renderProgress(){
+ const target=$("paperProgress");
+ target.innerHTML="";
+
+ Object.keys(paperCodes).forEach(code=>{
+  const list=questions.filter(q=>q.exam_paper_id===paperCodes[code]);
+  const easy=list.filter(q=>q.difficulty==="Easy").length;
+  const hard=list.filter(q=>q.difficulty==="Hard").length;
+  const total=list.length;
+
+  const card=document.createElement("div");
+  card.className="stat";
+  card.innerHTML=`
+   <small>${paperNames[code]}</small>
+   <strong>${total}/50</strong>
+   <p style="font-size:11px;color:#718096;margin-top:7px">
+    Easy: ${easy}/25 | Hard: ${hard}/25
+   </p>
+   <div class="progress"><span style="width:${Math.min(total/50*100,100)}%"></span></div>
+  `;
+  target.appendChild(card);
+ });
+}
+
+function renderList(){
+ const paperFilter=$("filterPaper").value;
+ const subjectFilter=$("filterSubject").value;
+ const difficultyFilter=$("filterDifficulty").value;
+
+ const filtered=questions.filter(q=>
+  (!paperFilter||q.exam_paper_id===paperCodes[paperFilter])&&
+  (!subjectFilter||q.subject===subjectFilter)&&
+  (!difficultyFilter||q.difficulty===difficultyFilter)
+ );
 
  const tbody=$("questionList");
-
  tbody.innerHTML="";
 
- if(!questions.length){
-  tbody.innerHTML='<tr><td colspan="6">No questions added yet.</td></tr>';
+ if(!filtered.length){
+  tbody.innerHTML='<tr><td colspan="7" style="padding:25px;text-align:center">No questions found.</td></tr>';
+  $("listMessage").textContent="0 questions displayed.";
   return;
  }
 
- questions.forEach((q,i)=>{
-
+ filtered.forEach(q=>{
   const tr=document.createElement("tr");
+  const cells=[
+   q.question_order,
+   paperNames[getPaperCode(q.exam_paper_id)]||"Unknown",
+   q.subject||"—",
+   q.difficulty||"—",
+   q.question_text,
+   q.correct_option
+  ];
 
-  [i+1,q.paper,q.subject,q.difficulty,q.question,q.correct]
-  .forEach(value=>{
+  cells.forEach((v,index)=>{
    const td=document.createElement("td");
-   td.textContent=value;
+   td.textContent=String(v??"—");
+   if(index===3){
+    td.innerHTML=`<span class="badge">${escapeHTML(v)}</span>`;
+   }
    tr.appendChild(td);
   });
 
-  tbody.appendChild(tr);
+  const actions=document.createElement("td");
+  actions.className="actions";
 
+  const edit=document.createElement("button");
+  edit.className="small-btn gold";
+  edit.textContent="Edit";
+  edit.onclick=()=>startEdit(q);
+
+  const del=document.createElement("button");
+  del.className="small-btn danger";
+  del.textContent="Delete";
+  del.onclick=()=>openDelete(q.id);
+
+  actions.append(edit,del);
+  tr.appendChild(actions);
+  tbody.appendChild(tr);
  });
 
+ $("listMessage").textContent=filtered.length+" questions displayed.";
 }
 
-$("questionForm").addEventListener("submit",function(e){
+function clearForm(){
+ editingId=null;
+ $("questionForm").reset();
+ $("formHeading").textContent="Add New Question";
+ $("saveBtn").textContent="+ Save Question";
+ $("cancelEditBtn").hidden=true;
+ populateSubjects();
+}
 
- e.preventDefault();
+function startEdit(q){
+ editingId=q.id;
+ $("paper").value=getPaperCode(q.exam_paper_id);
+ populateSubjects();
+ $("subject").value=q.subject||"Physics";
+ $("difficulty").value=q.difficulty||"Easy";
+ $("question").value=q.question_text;
+ $("a").value=q.options?.A||"";
+ $("b").value=q.options?.B||"";
+ $("c").value=q.options?.C||"";
+ $("d").value=q.options?.D||"";
+ $("correct").value=q.correct_option;
+ $("explanation").value=q.explanation||"";
 
- const paper=$("paper").value;
- const subject=$("subject").value;
+ $("formHeading").textContent="Edit Question";
+ $("saveBtn").textContent="Update Question";
+ $("cancelEditBtn").hidden=false;
 
- if(
-  (paper==="RP10" && subject==="Biology" && false) ||
-  ((paper==="RP11PCM"||paper==="RP12PCM") && subject==="Biology") ||
-  ((paper==="RP11PCB"||paper==="RP12PCB") && subject==="Mathematics")
- ){
-  alert("This subject is not included in the selected paper.");
-  return;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function nextOrder(paperId){
+ const samePaper=questions.filter(q=>q.exam_paper_id===paperId);
+ return samePaper.reduce((max,q)=>Math.max(max,q.question_order||0),0)+1;
+}
+
+function validateQuestion(q,ignoreId=null){
+ if(!q.question_text||!q.options.A||!q.options.B||
+    !q.options.C||!q.options.D||!q.correct_option){
+  throw new Error("Complete the question and all four options.");
  }
 
- const q={
-  paper,
-  subject,
-  difficulty:$("difficulty").value,
-  question:$("question").value.trim(),
-  optionA:$("a").value.trim(),
-  optionB:$("b").value.trim(),
-  optionC:$("c").value.trim(),
-  optionD:$("d").value.trim(),
-  correct:$("correct").value,
-  explanation:$("explanation").value.trim()
- };
+ const code=getPaperCode(q.exam_paper_id);
+ if(!allowedSubjects(code).includes(q.subject)){
+  throw new Error("This subject is not allowed for the selected paper.");
+ }
 
- questions.push(q);
+ const same=questions.filter(x=>
+  x.exam_paper_id===q.exam_paper_id&&x.id!==ignoreId
+ );
 
- updateDashboard();
+ const easy=same.filter(x=>x.difficulty==="Easy").length;
+ const hard=same.filter(x=>x.difficulty==="Hard").length;
 
- this.reset();
+ if(q.difficulty==="Easy"&&easy>=25)
+  throw new Error("This paper already has 25 Easy questions.");
+ if(q.difficulty==="Hard"&&hard>=25)
+  throw new Error("This paper already has 25 Hard questions.");
 
- $("message").textContent=
- "Question added to this browser session. Permanent saving is not yet enabled.";
+ if(same.length>=50)
+  throw new Error("This paper already has 50 questions.");
+}
 
+$("questionForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ $("saveBtn").disabled=true;
+
+ try{
+  const code=$("paper").value;
+  const paperId=paperCodes[code];
+
+  const payload={
+   exam_paper_id:paperId,
+   subject:$("subject").value,
+   difficulty:$("difficulty").value,
+   question_text:$("question").value.trim(),
+   options:{
+    A:$("a").value.trim(),
+    B:$("b").value.trim(),
+    C:$("c").value.trim(),
+    D:$("d").value.trim()
+   },
+   correct_option:$("correct").value,
+   explanation:$("explanation").value.trim()||null,
+   marks_correct:4,
+   marks_wrong:-1
+  };
+
+  validateQuestion(payload,editingId);
+
+  if(editingId){
+   const {error}=await db
+    .from("scholarship_questions")
+    .update(payload)
+    .eq("id",editingId);
+
+   if(error)throw error;
+   setMessage("message","Question updated successfully.","success");
+  }else{
+   payload.question_order=await nextOrder(paperId);
+
+   const {error}=await db
+    .from("scholarship_questions")
+    .insert(payload);
+
+   if(error)throw error;
+   setMessage("message","Question permanently saved to Supabase.","success");
+  }
+
+  clearForm();
+  await loadQuestions();
+
+ }catch(error){
+  setMessage("message",error.message,"error");
+ }finally{
+  $("saveBtn").disabled=false;
+ }
 });
+
+$("paper").addEventListener("change",populateSubjects);
+$("cancelEditBtn").addEventListener("click",clearForm);
+$("clearBtn").addEventListener("click",()=>setTimeout(clearForm,0));
+
+["filterPaper","filterSubject","filterDifficulty"].forEach(id=>{
+ $(id).addEventListener("change",renderList);
+});
+
+function openDelete(id){
+ deletingId=id;
+ $("deleteModal").style.display="block";
+}
+
+$("cancelDelete").onclick=()=>{
+ deletingId=null;
+ $("deleteModal").style.display="none";
+};
+
+$("confirmDelete").onclick=async()=>{
+ if(!deletingId)return;
+
+ $("confirmDelete").disabled=true;
+ try{
+  const {error}=await db
+   .from("scholarship_questions")
+   .delete()
+   .eq("id",deletingId);
+
+  if(error)throw error;
+
+  $("deleteModal").style.display="none";
+  deletingId=null;
+  setMessage("message","Question deleted successfully.","success");
+  await loadQuestions();
+
+ }catch(error){
+  alert("Delete failed: "+error.message);
+ }finally{
+  $("confirmDelete").disabled=false;
+ }
+};
 
 function csvEscape(value){
  return '"'+String(value??"").replace(/"/g,'""')+'"';
 }
 
 function downloadFile(name,content,type){
-
  const blob=new Blob([content],{type});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
-
  a.href=url;
  a.download=name;
+ document.body.appendChild(a);
  a.click();
-
- URL.revokeObjectURL(url);
-
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const columns=[
- "paper","subject","difficulty","question",
- "optionA","optionB","optionC","optionD",
- "correct","explanation"
-];
-
 $("downloadTemplate").onclick=()=>{
- downloadFile(
-  "rakeshh-question-template.csv",
-  columns.join(",")+"\n",
-  "text/csv;charset=utf-8"
- );
+ const template=[
+  columns.join(","),
+  'RP11PCB,Physics,Easy,"Sample question?","Option A","Option B","Option C","Option D",A,"Sample explanation"'
+ ].join("\r\n");
+
+ downloadFile("rakeshh-question-template.csv","\uFEFF"+template,"text/csv;charset=utf-8");
 };
 
 function parseCSV(text){
-
  const rows=[];
  let row=[],cell="",quoted=false;
 
  for(let i=0;i<text.length;i++){
-
   const ch=text[i];
 
   if(ch==='"'){
-   if(quoted && text[i+1]==='"'){
-    cell+='"';i++;
-   }else{
-    quoted=!quoted;
-   }
+   if(quoted&&text[i+1]==='"'){cell+='"';i++}
+   else quoted=!quoted;
   }else if(ch===","&&!quoted){
    row.push(cell);cell="";
   }else if((ch==="\n"||ch==="\r")&&!quoted){
    if(ch==="\r"&&text[i+1]==="\n")i++;
    row.push(cell);
-   if(row.some(x=>x.trim()))rows.push(row);
+   if(row.some(v=>v.trim()))rows.push(row);
    row=[];cell="";
-  }else{
-   cell+=ch;
-  }
-
+  }else cell+=ch;
  }
 
  row.push(cell);
- if(row.some(x=>x.trim()))rows.push(row);
-
+ if(row.some(v=>v.trim()))rows.push(row);
  return rows;
-
 }
 
 $("previewCSV").onclick=async()=>{
+ pendingCSV=[];
+ $("importCSV").disabled=true;
+ $("csvPreview").innerHTML="";
 
  const file=$("csvFile").files[0];
-
  if(!file){
-  alert("Please select a CSV file.");
+  setMessage("csvMessage","Please select a CSV file.","error");
   return;
  }
 
- const rows=parseCSV(await file.text());
- const headers=rows.shift().map(x=>x.trim());
+ try{
+  const rows=parseCSV(await file.text());
+  if(!rows.length)throw new Error("CSV file is empty.");
 
- const missing=columns.filter(c=>!headers.includes(c));
+  const headers=rows.shift().map(v=>v.trim());
+  const missing=columns.filter(c=>!headers.includes(c));
+  if(missing.length)throw new Error("Missing columns: "+missing.join(", "));
 
- if(missing.length){
-  alert("Missing CSV columns: "+missing.join(", "));
-  return;
+  const counts={};
+  Object.keys(paperCodes).forEach(k=>{
+   counts[k]={
+    Easy:questions.filter(q=>q.exam_paper_id===paperCodes[k]&&q.difficulty==="Easy").length,
+    Hard:questions.filter(q=>q.exam_paper_id===paperCodes[k]&&q.difficulty==="Hard").length,
+    total:questions.filter(q=>q.exam_paper_id===paperCodes[k]).length
+   };
+  });
+
+  const accepted=[];
+  const errors=[];
+
+  rows.forEach((row,index)=>{
+   const obj={};
+   headers.forEach((h,i)=>obj[h]=(row[i]||"").trim());
+
+   const code=obj.paper;
+   const options={A:obj.optionA,B:obj.optionB,C:obj.optionC,D:obj.optionD};
+
+   if(!paperCodes[code]){errors.push("Row "+(index+2)+": Unknown paper.");return}
+   if(!allowedSubjects(code).includes(obj.subject)){errors.push("Row "+(index+2)+": Invalid subject.");return}
+   if(!["Easy","Hard"].includes(obj.difficulty)){errors.push("Row "+(index+2)+": Invalid difficulty.");return}
+   if(!obj.question||Object.values(options).some(v=>!v)){errors.push("Row "+(index+2)+": Question/options missing.");return}
+   if(!["A","B","C","D"].includes(obj.correct)){errors.push("Row "+(index+2)+": Invalid correct option.");return}
+
+   const count=counts[code];
+   if(count[obj.difficulty]>=25||count.total>=50){
+    errors.push("Row "+(index+2)+": "+code+" has reached its question limit.");
+    return;
+   }
+
+   count[obj.difficulty]++;
+   count.total++;
+
+   accepted.push({
+    exam_paper_id:paperCodes[code],
+    subject:obj.subject,
+    difficulty:obj.difficulty,
+    question_text:obj.question,
+    options,
+    correct_option:obj.correct,
+    explanation:obj.explanation||null,
+    marks_correct:4,
+    marks_wrong:-1
+   });
+  });
+
+  pendingCSV=accepted;
+
+  const preview=document.createElement("div");
+  preview.style.fontSize="12px";
+  preview.textContent=accepted.length+" valid rows ready. "+errors.length+" rows rejected.";
+  $("csvPreview").appendChild(preview);
+
+  errors.slice(0,15).forEach(err=>{
+   const p=document.createElement("p");
+   p.className="error";
+   p.style.marginTop="6px";
+   p.textContent=err;
+   $("csvPreview").appendChild(p);
+  });
+
+  accepted.slice(0,8).forEach(q=>{
+   const p=document.createElement("p");
+   p.style.padding="8px";
+   p.style.borderBottom="1px solid #eee";
+   p.textContent=getPaperCode(q.exam_paper_id)+" | "+q.subject+" | "+q.difficulty+" | "+q.question_text;
+   $("csvPreview").appendChild(p);
+  });
+
+  $("importCSV").disabled=accepted.length===0;
+  setMessage("csvMessage",accepted.length+" valid questions ready for import.","success");
+
+ }catch(error){
+  pendingCSV=[];
+  setMessage("csvMessage",error.message,"error");
  }
+};
 
- const imported=rows.map(row=>{
-  const obj={};
-  headers.forEach((h,i)=>obj[h]=row[i]||"");
-  return obj;
- });
+$("importCSV").onclick=async()=>{
+ if(!pendingCSV.length)return;
 
- const preview=$("csvPreview");
- preview.innerHTML="";
+ $("importCSV").disabled=true;
+ setMessage("csvMessage","Importing questions...");
 
- const heading=document.createElement("p");
- heading.textContent=imported.length+" rows found. Preview only; not saved.";
- preview.appendChild(heading);
+ try{
+  const records=[];
 
- imported.slice(0,10).forEach(q=>{
-  const p=document.createElement("p");
-  p.style.padding="8px";
-  p.style.borderBottom="1px solid #eee";
-  p.textContent=q.paper+" | "+q.subject+" | "+q.difficulty+" | "+q.question;
-  preview.appendChild(p);
- });
+  for(const code of Object.keys(paperCodes)){
+   const paperQuestions=pendingCSV.filter(q=>q.exam_paper_id===paperCodes[code]);
+   const existing=questions.filter(q=>q.exam_paper_id===paperCodes[code]);
+   let order=existing.reduce((m,q)=>Math.max(m,q.question_order||0),0);
 
+   paperQuestions.forEach(q=>{
+    records.push({...q,question_order:++order});
+   });
+  }
+
+  const {error}=await db.from("scholarship_questions").insert(records);
+  if(error)throw error;
+
+  pendingCSV=[];
+  $("csvFile").value="";
+  $("csvPreview").innerHTML="";
+  setMessage("csvMessage",records.length+" questions imported successfully.","success");
+  await loadQuestions();
+
+ }catch(error){
+  setMessage("csvMessage","Import failed: "+error.message,"error");
+  $("importCSV").disabled=false;
+ }
 };
 
 $("exportCSV").onclick=()=>{
+ const headers=[
+  "paper","subject","difficulty","question",
+  "optionA","optionB","optionC","optionD","correct","explanation"
+ ];
 
- const content=[
-  columns.join(","),
-  ...questions.map(q=>columns.map(c=>csvEscape(q[c])).join(","))
- ].join("\n");
+ const rows=questions.map(q=>[
+  getPaperCode(q.exam_paper_id),q.subject,q.difficulty,
+  q.question_text,q.options?.A,q.options?.B,q.options?.C,
+  q.options?.D,q.correct_option,q.explanation
+ ]);
 
- downloadFile(
-  "rakeshh-question-bank.csv",
-  content,
-  "text/csv;charset=utf-8"
- );
+ const csv="\uFEFF"+[
+  headers.map(csvEscape).join(","),
+  ...rows.map(r=>r.map(csvEscape).join(","))
+ ].join("\r\n");
 
+ downloadFile("Rakeshh_Physics_Question_Bank.csv",csv,"text/csv;charset=utf-8");
 };
 
-updateDashboard();
+$("logoutBtn").onclick=async()=>{
+ const {error}=await db.auth.signOut();
+ if(error){alert(error.message);return}
+ window.location.replace("dashboard.html");
+};
 
+(async()=>{
+ try{
+  const authorized=await verifyAdmin();
+  if(!authorized)return;
+  await loadPapers();
+  await loadQuestions();
+ }catch(error){
+  setMessage("message","Initialization failed: "+error.message,"error");
+ }
+})();
 </script>
 
 </body>
