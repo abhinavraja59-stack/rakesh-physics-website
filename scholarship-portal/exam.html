@@ -3,688 +3,472 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Online Examination | Rakeshh Physics</title>
-
+<title>Scholarship Examination | Rakeshh Physics</title>
+<meta name="robots" content="noindex,nofollow">
 <style>
-:root {
-    --navy:#0A1931;
-    --gold:#D4AF37;
-    --bg:#f3f5f9;
-    --text:#172033;
-}
-
-* {
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-body {
-    font-family:Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
-
-header {
-    background:var(--navy);
-    color:white;
-    padding:17px 5%;
-    border-bottom:4px solid var(--gold);
-}
-
-.header-inner {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-}
-
-.brand {
-    color:var(--gold);
-    font-size:22px;
-    font-weight:900;
-}
-
-.brand small {
-    display:block;
-    color:white;
-    font-size:10px;
-    letter-spacing:2px;
-    margin-top:5px;
-}
-
-.exam-label {
-    font-size:12px;
-    color:#e0e7f1;
-    text-align:right;
-}
-
-.container {
-    max-width:1100px;
-    margin:25px auto;
-    padding:0 15px;
-}
-
-.exam-top {
-    background:white;
-    padding:18px;
-    border-radius:13px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    box-shadow:0 4px 15px #00000008;
-}
-
-.student-info h3 {
-    color:var(--navy);
-    margin-bottom:6px;
-}
-
-.student-info p {
-    color:#718096;
-    font-size:12px;
-}
-
-.timer-box {
-    background:#fff4d5;
-    border:1px solid #e8d28c;
-    border-radius:12px;
-    padding:10px 18px;
-    text-align:center;
-}
-
-.timer-box small {
-    display:block;
-    color:#80630c;
-    font-size:11px;
-    margin-bottom:5px;
-}
-
-#timer {
-    font-size:28px;
-    font-weight:900;
-    color:var(--navy);
-    font-variant-numeric:tabular-nums;
-}
-
-.progress-wrap {
-    margin:18px 0;
-}
-
-.progress-label {
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    color:#64748b;
-    margin-bottom:8px;
-}
-
-.progress {
-    height:8px;
-    background:#e1e6ee;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.progress-bar {
-    height:100%;
-    width:0%;
-    background:var(--gold);
-    transition:width .3s;
-}
-
-.exam-layout {
-    display:grid;
-    grid-template-columns:1fr 260px;
-    gap:18px;
-}
-
-.question-card,
-.side-card {
-    background:white;
-    border-radius:14px;
-    padding:24px;
-    box-shadow:0 4px 18px #00000008;
-}
-
-.question-heading {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:10px;
-    border-bottom:1px solid #e6eaf0;
-    padding-bottom:15px;
-}
-
-.question-heading h3 {
-    color:var(--navy);
-    font-size:17px;
-}
-
-.difficulty {
-    background:#edf3ff;
-    color:#24528d;
-    padding:7px 11px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:bold;
-}
-
-#questionText {
-    font-size:19px;
-    line-height:1.7;
-    margin:25px 0;
-    font-weight:600;
-}
-
-.option {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:15px;
-    border:1px solid #dfe5ed;
-    border-radius:10px;
-    margin:12px 0;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.option:hover {
-    border-color:var(--gold);
-    background:#fffcf1;
-}
-
-.option.selected {
-    border:2px solid var(--gold);
-    background:#fff9e8;
-}
-
-.option input {
-    accent-color:var(--navy);
-    width:17px;
-    height:17px;
-}
-
-.option span {
-    font-size:14px;
-    line-height:1.5;
-}
-
-.actions {
-    margin-top:25px;
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
-}
-
-button {
-    padding:13px 20px;
-    border:0;
-    border-radius:9px;
-    font-size:13px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.next-btn {
-    background:var(--navy);
-    color:white;
-}
-
-.submit-btn {
-    background:var(--gold);
-    color:var(--navy);
-    display:none;
-}
-
-button:disabled {
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.side-card h3 {
-    color:var(--navy);
-    margin-bottom:15px;
-}
-
-.side-stat {
-    background:#f5f6fa;
-    padding:13px;
-    border-radius:9px;
-    margin-bottom:10px;
-    font-size:13px;
-    display:flex;
-    justify-content:space-between;
-}
-
-.side-stat strong {
-    color:var(--navy);
-}
-
-.lock-note {
-    background:#fff6dc;
-    color:#795d0b;
-    padding:13px;
-    border-radius:9px;
-    font-size:12px;
-    line-height:1.6;
-    margin-top:15px;
-}
-
-.status {
-    font-size:12px;
-    color:#64748b;
-    margin-top:15px;
-    line-height:1.6;
-}
-
-footer {
-    text-align:center;
-    padding:20px;
-    background:var(--navy);
-    color:white;
-    margin-top:35px;
-    font-size:12px;
-}
-
-footer strong {
-    color:var(--gold);
-}
-
-@media(max-width:750px) {
-    .exam-layout {
-        grid-template-columns:1fr;
-    }
-
-    .exam-top {
-        align-items:flex-start;
-    }
-
-    .question-card {
-        padding:18px;
-    }
-
-    #questionText {
-        font-size:17px;
-    }
-
-    .header-inner {
-        align-items:flex-start;
-    }
-}
-
-@media(max-width:450px) {
-    .brand {
-        font-size:17px;
-    }
-
-    #timer {
-        font-size:23px;
-    }
-
-    .timer-box {
-        padding:9px 12px;
-    }
-
-    .actions button {
-        padding:12px;
-        font-size:12px;
-    }
-}
+:root{--navy:#0A1931;--gold:#D4AF37;--bg:#f2f4f8;--text:#18243a;--muted:#718096}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--navy);border-bottom:4px solid var(--gold);padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-size:21px;font-weight:900;color:var(--gold)}
+.tagline{font-size:9px;color:white;letter-spacing:2px;margin-top:5px}
+.header-label{color:white;font-size:12px;text-align:right}
+main{max-width:900px;margin:28px auto;padding:0 15px}
+.panel{background:white;border:1px solid #e4e8ef;border-radius:14px;padding:24px;box-shadow:0 5px 22px rgba(0,0,0,.045)}
+.center{text-align:center}
+.loading{padding:55px 15px;color:var(--navy);font-weight:bold;line-height:1.8}
+.hidden{display:none!important}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.paper-title{font-size:19px;color:var(--navy);font-weight:800}
+.question-count{font-size:13px;color:var(--muted);font-weight:bold}
+.timer-wrap{margin:20px 0}
+.timer-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;color:var(--muted)}
+.timer{font-size:27px;font-weight:900;color:var(--navy);font-variant-numeric:tabular-nums}
+.timer.warning{color:#b3261e}
+.track{height:9px;background:#e9edf3;border-radius:20px;overflow:hidden}
+.track-fill{height:100%;width:100%;background:var(--gold);transition:width .2s linear}
+.track-fill.warning{background:#c43d32}
+.progress-track{height:7px;background:#edf0f5;border-radius:20px;overflow:hidden;margin:12px 0 22px}
+.progress-fill{height:100%;background:var(--gold);width:0%;transition:width .2s}
+.question-meta{font-size:12px;color:var(--muted);margin-bottom:12px}
+.question-text{font-size:20px;line-height:1.65;font-weight:700;color:var(--navy);white-space:pre-wrap;overflow-wrap:anywhere}
+.options{display:grid;gap:12px;margin-top:24px}
+.option{width:100%;display:flex;align-items:flex-start;gap:13px;text-align:left;padding:15px;border:2px solid #e5e9f0;background:#fff;border-radius:10px;cursor:pointer;font-size:15px;line-height:1.55;color:var(--text)}
+.option:disabled{cursor:not-allowed;opacity:.75}
+.option.selected{border-color:var(--gold);background:#fffaf0}
+.option-key{flex:0 0 30px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf0f5;color:var(--navy);font-weight:800}
+.option.selected .option-key{background:var(--gold)}
+.option-text{padding-top:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.save-status{margin-top:18px;min-height:20px;font-size:12px;color:var(--muted)}
+.exam-warning{margin-top:18px;padding:12px;background:#fff8e7;color:#765c14;border-radius:8px;font-size:12px;line-height:1.6}
+.message{padding:16px;border-radius:10px;background:#f3f5f9;color:#526078;line-height:1.7;font-size:14px;margin-top:15px}
+.error-message{background:#fff0f0;color:#982c2c}
+.success-message{background:#edf8f0;color:#21643a}
+.result-number{font-size:42px;font-weight:900;color:var(--navy);margin:20px 0}
+.primary-button{display:inline-block;margin-top:20px;background:var(--gold);color:var(--navy);border:0;border-radius:9px;padding:14px 22px;font-weight:800;cursor:pointer;text-decoration:none}
+footer{text-align:center;color:#7a8494;font-size:12px;padding:25px}
+@media(max-width:600px){header{padding:15px}.brand{font-size:17px}.header-label{font-size:10px}main{margin:16px auto}.panel{padding:18px}.question-text{font-size:18px}.option{padding:12px;font-size:14px}.timer{font-size:24px}}
 </style>
 </head>
-
 <body>
-
 <header>
-<div class="header-inner">
-    <div class="brand">
-        RAKESHH PHYSICS
-        <small>ONLINE SCHOLARSHIP TEST 2027</small>
-    </div>
-
-    <div class="exam-label">
-        OFFICIAL EXAMINATION PORTAL
-    </div>
-</div>
+  <div>
+    <div class="brand">RAKESHH PHYSICS</div>
+    <div class="tagline">ANOTHER NAME FOR SUCCESS</div>
+  </div>
+  <div class="header-label">SCHOLARSHIP TEST 2027</div>
 </header>
 
-<main class="container">
+<main>
+  <section id="loadingPanel" class="panel center loading">
+    Verifying your account and preparing your examination...<br>
+    Please do not refresh repeatedly.
+  </section>
 
-<section class="exam-top">
+  <section id="errorPanel" class="panel hidden">
+    <h2 style="color:#982c2c">Examination unavailable</h2>
+    <div id="errorText" class="message error-message"></div>
+    <a class="primary-button" href="student-dashboard.html">Return to Dashboard</a>
+  </section>
 
-    <div class="student-info">
-        <h3>Scholarship Examination</h3>
-        <p>Candidate ID: RP27-DEMO001</p>
-        <p>Paper: Class 10 Combined JEE + NEET</p>
+  <section id="examPanel" class="panel hidden">
+    <div class="topline">
+      <div class="paper-title" id="paperTitle">Scholarship Examination</div>
+      <div class="question-count" id="questionCount">Question 1 of 50</div>
     </div>
 
-    <div class="timer-box">
-        <small>TIME REMAINING</small>
-        <div id="timer">00:45</div>
+    <div class="timer-wrap">
+      <div class="timer-label">
+        <span>Time remaining for this question</span>
+        <span class="timer" id="timer">00:45</span>
+      </div>
+      <div class="track">
+        <div class="track-fill" id="timerFill"></div>
+      </div>
     </div>
 
-</section>
-
-<div class="progress-wrap">
-
-    <div class="progress-label">
-        <span>Examination Progress</span>
-        <span id="progressText">Question 1 / 50</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
     </div>
 
-    <div class="progress">
-        <div class="progress-bar" id="progressBar"></div>
+    <div class="question-meta" id="questionMeta">Question 1</div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="options"></div>
+
+    <div class="save-status" id="saveStatus" role="status">
+      Select an answer. Your selection is saved securely.
     </div>
 
-</div>
-
-<div class="exam-layout">
-
-<section class="question-card">
-
-    <div class="question-heading">
-
-        <h3 id="questionNumber">Question 01</h3>
-
-        <span class="difficulty" id="difficulty">
-            EASY
-        </span>
-
+    <div class="exam-warning">
+      You must remain on each question for the full 45 seconds.
+      You can change your answer during this time. When the timer ends,
+      the answer locks and the next question opens automatically.
+      You cannot return to a previous question.
     </div>
+  </section>
 
-    <div id="questionText">
-        Loading Question...
+  <section id="completePanel" class="panel center hidden">
+    <h2 style="color:var(--navy)">Examination Submitted</h2>
+    <p style="margin-top:12px;color:var(--muted);line-height:1.7">
+      Your examination has been submitted successfully.
+      Your official result will be published by Rakeshh Physics.
+    </p>
+    <div class="result-number">Submitted</div>
+    <div class="message success-message" id="completionMessage">
+      Your responses have been recorded.
     </div>
-
-    <div id="options"></div>
-
-    <div class="actions">
-
-        <button class="next-btn" id="nextButton">
-            Save & Next →
-        </button>
-
-        <button class="submit-btn" id="submitButton">
-            Submit Examination
-        </button>
-
-    </div>
-
-    <div class="status" id="status">
-        Your selected answer is saved in this demo session.
-    </div>
-
-</section>
-
-<aside class="side-card">
-
-    <h3>Exam Information</h3>
-
-    <div class="side-stat">
-        <span>Total Questions</span>
-        <strong>50</strong>
-    </div>
-
-    <div class="side-stat">
-        <span>Easy Questions</span>
-        <strong>25</strong>
-    </div>
-
-    <div class="side-stat">
-        <span>Hard Questions</span>
-        <strong>25</strong>
-    </div>
-
-    <div class="side-stat">
-        <span>Time Per Question</span>
-        <strong>45 Sec</strong>
-    </div>
-
-    <div class="side-stat">
-        <span>Correct Answer</span>
-        <strong>+4</strong>
-    </div>
-
-    <div class="side-stat">
-        <span>Wrong Answer</span>
-        <strong>-1</strong>
-    </div>
-
-    <div class="lock-note">
-        <strong>Navigation Rules</strong><br><br>
-        • Automatic next question<br>
-        • Previous questions locked<br>
-        • No backward navigation<br>
-        • Auto submission after final question
-    </div>
-
-</aside>
-
-</div>
-
+    <a class="primary-button" href="student-dashboard.html">Return to Dashboard</a>
+  </section>
 </main>
 
-<footer>
-<strong>RAKESHH PHYSICS</strong>
-<p style="margin-top:7px;">Another Name For Success</p>
-</footer>
+<footer>RAKESHH PHYSICS · Another Name For Success</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+"use strict";
 
-// DEMO QUESTIONS ONLY.
-// Production question bank will be loaded securely from the server.
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-const demoQuestions = [
-    {
-        difficulty:"EASY",
-        question:"Which physical quantity is measured in Newton?",
-        options:["Mass","Force","Power","Energy"]
-    },
-    {
-        difficulty:"EASY",
-        question:"What is the SI unit of electric current?",
-        options:["Volt","Watt","Ampere","Ohm"]
-    },
-    {
-        difficulty:"EASY",
-        question:"Which organelle is known as the powerhouse of the cell?",
-        options:["Nucleus","Mitochondria","Ribosome","Golgi body"]
-    },
-    {
-        difficulty:"HARD",
-        question:"A body moves with a velocity of 20 m/s for 5 seconds. What distance does it cover?",
-        options:["25 m","50 m","100 m","200 m"]
-    },
-    {
-        difficulty:"HARD",
-        question:"Which of the following has the highest ionization energy in the second period?",
-        options:["Lithium","Carbon","Oxygen","Neon"]
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
     }
-];
+  }
+);
 
-let currentQuestion = 0;
-let remainingTime = 45;
-let selectedAnswers = {};
+const $ = (id) => document.getElementById(id);
+
+let attemptId = null;
+let currentQuestion = null;
+let remainingAtSync = 45;
+let timerEndPerformance = 0;
 let timerInterval = null;
-let finished = false;
+let advancing = false;
+let examFinished = false;
+let saveQueue = Promise.resolve();
+let selectedOption = null;
 
-const timer = document.getElementById("timer");
-const optionsBox = document.getElementById("options");
-const nextButton = document.getElementById("nextButton");
-const submitButton = document.getElementById("submitButton");
-
-function renderQuestion() {
-
-    if(finished) return;
-
-    const q = demoQuestions[currentQuestion];
-
-    document.getElementById("questionNumber").textContent =
-        "Question " + String(currentQuestion + 1).padStart(2,"0");
-
-    document.getElementById("difficulty").textContent =
-        q.difficulty;
-
-    document.getElementById("questionText").textContent =
-        q.question;
-
-    document.getElementById("progressText").textContent =
-        "Question " + (currentQuestion + 1) + " / 50 (Demo: 5 questions)";
-
-    document.getElementById("progressBar").style.width =
-        ((currentQuestion + 1) / 50 * 100) + "%";
-
-    optionsBox.innerHTML = "";
-
-    q.options.forEach((option,index) => {
-
-        const label = document.createElement("label");
-        label.className = "option";
-
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "answer";
-        input.value = index;
-
-        const text = document.createElement("span");
-        text.textContent = option;
-
-        if(selectedAnswers[currentQuestion] === index) {
-            input.checked = true;
-            label.classList.add("selected");
-        }
-
-        input.addEventListener("change", () => {
-
-            selectedAnswers[currentQuestion] = index;
-
-            document.querySelectorAll(".option").forEach(el => {
-                el.classList.remove("selected");
-            });
-
-            label.classList.add("selected");
-
-        });
-
-        label.appendChild(input);
-        label.appendChild(text);
-
-        optionsBox.appendChild(label);
-
-    });
-
-    nextButton.style.display =
-        currentQuestion === demoQuestions.length - 1
-        ? "none" : "block";
-
-    submitButton.style.display =
-        currentQuestion === demoQuestions.length - 1
-        ? "block" : "none";
-
-    remainingTime = 45;
-    startTimer();
-
+function showPanel(panelId) {
+  ["loadingPanel","errorPanel","examPanel","completePanel"].forEach(id => {
+    $(id).classList.toggle("hidden", id !== panelId);
+  });
 }
 
-function startTimer() {
+function showError(message) {
+  if (timerInterval) clearInterval(timerInterval);
+  examFinished = true;
+  $("errorText").textContent = message || "An unexpected error occurred.";
+  showPanel("errorPanel");
+}
 
-    clearInterval(timerInterval);
-
-    updateTimer();
-
-    timerInterval = setInterval(() => {
-
-        remainingTime--;
-
-        updateTimer();
-
-        if(remainingTime <= 0) {
-            moveNext(true);
-        }
-
-    },1000);
-
+function formatTime(seconds) {
+  const safe = Math.max(0, Math.ceil(seconds));
+  return "00:" + String(safe).padStart(2,"0");
 }
 
 function updateTimer() {
+  if (examFinished || !currentQuestion) return;
 
-    const seconds = Math.max(0,remainingTime);
+  const remaining = Math.max(
+    0,
+    (timerEndPerformance - performance.now()) / 1000
+  );
 
-    timer.textContent =
-        "00:" + String(seconds).padStart(2,"0");
+  const seconds = Math.ceil(remaining);
+  $("timer").textContent = formatTime(seconds);
+  $("timer").classList.toggle("warning", seconds <= 10);
+  $("timerFill").classList.toggle("warning", seconds <= 10);
+  $("timerFill").style.width = (Math.max(0,remaining) / 45 * 100) + "%";
 
-    if(seconds <= 10) {
-        timer.style.color = "#c0392b";
-    } else {
-        timer.style.color = "#0A1931";
+  if (remaining <= 0) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    expireCurrentQuestion();
+  }
+}
+
+function startLocalCountdown(remainingSeconds) {
+  if (timerInterval) clearInterval(timerInterval);
+
+  const safeRemaining = Math.max(0, Math.min(45, Number(remainingSeconds) || 0));
+  timerEndPerformance = performance.now() + safeRemaining * 1000;
+
+  updateTimer();
+
+  if (safeRemaining > 0) {
+    timerInterval = setInterval(updateTimer, 150);
+  }
+}
+
+function renderQuestion(payload, timing) {
+  currentQuestion = payload;
+  selectedOption = payload.selected_option || null;
+  advancing = false;
+
+  const order = Number(payload.question_order);
+  $("questionCount").textContent = `Question ${order} of 50`;
+  $("questionMeta").textContent = `Question ${order}`;
+  $("questionText").textContent = payload.question_text || "";
+  $("progressFill").style.width = ((order - 1) / 50 * 100) + "%";
+
+  const optionContainer = $("options");
+  optionContainer.replaceChildren();
+
+  const optionData = payload.options || {};
+  const keys = ["A","B","C","D"].filter(key =>
+    typeof optionData[key] === "string"
+  );
+
+  if (keys.length !== 4) {
+    showError("This question has an invalid option configuration. Please contact the institute.");
+    return;
+  }
+
+  keys.forEach(key => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "option" + (selectedOption === key ? " selected" : "");
+    button.setAttribute("aria-pressed", selectedOption === key ? "true" : "false");
+
+    const letter = document.createElement("span");
+    letter.className = "option-key";
+    letter.textContent = key;
+
+    const text = document.createElement("span");
+    text.className = "option-text";
+    text.textContent = optionData[key];
+
+    button.append(letter,text);
+    button.addEventListener("click", () => chooseOption(key));
+    optionContainer.append(button);
+  });
+
+  $("saveStatus").textContent = selectedOption
+    ? "Restored your previously saved answer: " + selectedOption
+    : "No answer selected. You may choose an option.";
+
+  showPanel("examPanel");
+  startLocalCountdown(timing.remaining_seconds);
+}
+
+function chooseOption(key) {
+  if (examFinished || advancing || !currentQuestion) return;
+
+  if (performance.now() >= timerEndPerformance) {
+    expireCurrentQuestion();
+    return;
+  }
+
+  selectedOption = key;
+
+  [...$("options").querySelectorAll(".option")].forEach(button => {
+    const isSelected = button.querySelector(".option-key").textContent === key;
+    button.classList.toggle("selected",isSelected);
+    button.setAttribute("aria-pressed",isSelected ? "true" : "false");
+  });
+
+  $("saveStatus").textContent = "Saving your selection...";
+
+  // Serialize saves so rapid option changes are sent in order.
+  const questionId = currentQuestion.id;
+  const thisAttemptId = attemptId;
+
+  saveQueue = saveQueue.then(async() => {
+    if (examFinished || thisAttemptId !== attemptId) return;
+
+    const {data,error} = await supabaseClient.functions.invoke(
+      "save-scholarship-answer",
+      {
+        body: {
+          attempt_id: thisAttemptId,
+          question_id: questionId,
+          selected_option: key
+        }
+      }
+    );
+
+    if (error) {
+      let message = error.message || "Answer could not be saved.";
+      if (error.context && typeof error.context.json === "function") {
+        try {
+          const details = await error.context.json();
+          message = details.error || details.message || message;
+        } catch {}
+      }
+      $("saveStatus").textContent = "Save issue: " + message;
+      throw new Error(message);
     }
 
-}
-
-function moveNext(auto = false) {
-
-    if(finished) return;
-
-    clearInterval(timerInterval);
-
-    if(currentQuestion < demoQuestions.length - 1) {
-
-        currentQuestion++;
-
-        document.getElementById("status").textContent =
-            auto
-            ? "Time expired. Previous question is locked."
-            : "Answer saved. Previous question is locked.";
-
-        renderQuestion();
-
-    } else {
-
-        finishExam();
-
+    if (!data || data.success !== true) {
+      const message = data?.error || data?.message || "Answer could not be saved.";
+      $("saveStatus").textContent = "Save issue: " + message;
+      throw new Error(message);
     }
 
+    if (
+      currentQuestion &&
+      currentQuestion.id === questionId &&
+      selectedOption === key &&
+      !examFinished
+    ) {
+      $("saveStatus").textContent = "Answer " + key + " saved securely.";
+    }
+  }).catch(error => {
+    console.error("Answer save:",error);
+  });
 }
 
-function finishExam() {
+async function expireCurrentQuestion() {
+  if (advancing || examFinished) return;
+  advancing = true;
 
-    if(finished) return;
+  [...$("options").querySelectorAll("button")].forEach(button => {
+    button.disabled = true;
+  });
 
-    finished = true;
+  $("timer").textContent = "00:00";
+  $("saveStatus").textContent = "Time is over. Locking answer and loading next question...";
 
-    clearInterval(timerInterval);
+  // Wait for any selection save already queued before requesting advance.
+  await saveQueue;
 
-    document.getElementById("questionNumber").textContent =
-        "DEMO COMPLETED";
+  if (examFinished) return;
 
-    document.getElementById("questionText").textContent =
-        "Your demo examination has been submitted successfully!";
-
-    optionsBox.innerHTML = "";
-
-    timer.textContent = "DONE";
-
-    nextButton.style.display = "none";
-    submitButton.style.display = "none";
-
-    document.getElementById("progressBar").style.width = "10%";
-
-    document.getElementById("status").textContent =
-        "This is a five-question preview only. Your official result will be published later by Rakeshh Physics.";
-
+  await advanceQuestion();
 }
 
-nextButton.addEventListener("click",() => moveNext(false));
+async function advanceQuestion() {
+  if (examFinished) return;
 
-submitButton.addEventListener("click",finishExam);
+  try {
+    const {data,error} = await supabaseClient.functions.invoke(
+      "advance-scholarship-question",
+      {body:{attempt_id:attemptId}}
+    );
 
-renderQuestion();
+    if (error) {
+      let message = error.message || "Unable to advance the examination.";
+      if (error.context && typeof error.context.json === "function") {
+        try {
+          const details = await error.context.json();
+          message = details.error || details.message || message;
+        } catch {}
+      }
+      throw new Error(message);
+    }
 
+    if (!data) throw new Error("No response received from exam server.");
+
+    if (data.action === "wait") {
+      advancing = false;
+      const waitSeconds = Math.max(1,Number(data.remaining_seconds) || 1);
+      $("saveStatus").textContent = "Please wait for the server timer.";
+      startLocalCountdown(waitSeconds);
+      return;
+    }
+
+    if (data.action === "completed" && data.success === true) {
+      finishExam(data);
+      return;
+    }
+
+    if (data.action === "next" && data.success === true && data.question) {
+      renderQuestion(data.question,data.timing || {remaining_seconds:45});
+      return;
+    }
+
+    if (data.action === "inactive") {
+      throw new Error(data.message || "This exam attempt is no longer active. Contact the institute.");
+    }
+
+    throw new Error(data.error || data.message || "Unexpected exam server response.");
+  } catch(error) {
+    console.error("Advance question:",error);
+    advancing = false;
+    showError(
+      (error.message || "Unable to continue the exam.") +
+      " Your saved responses remain on the server. Please contact the institute before trying again."
+    );
+  }
+}
+
+function finishExam(result) {
+  examFinished = true;
+  advancing = false;
+  if (timerInterval) clearInterval(timerInterval);
+
+  // The score is returned for confirmation only; official result publication
+  // remains controlled by the institute.
+  $("completionMessage").textContent =
+    "Submission recorded. Your responses have been received by the exam server. Official result publication will be announced by the institute.";
+
+  showPanel("completePanel");
+}
+
+async function startExam() {
+  showPanel("loadingPanel");
+
+  const {data:sessionData,error:sessionError} =
+    await supabaseClient.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  const user = sessionData.session.user;
+  if (user.user_metadata?.account_type !== "scholarship_student") {
+    showError("Only registered scholarship students can access this examination.");
+    return;
+  }
+
+  const {data,error} = await supabaseClient.functions.invoke(
+    "start-scholarship-exam",
+    {body:{}}
+  );
+
+  if (error) {
+    let message = error.message || "Unable to start the exam.";
+    if (error.context && typeof error.context.json === "function") {
+      try {
+        const details = await error.context.json();
+        message = details.error || details.message || message;
+      } catch {}
+    }
+    showError(message);
+    return;
+  }
+
+  if (!data || data.success !== true || !data.attempt || !data.question) {
+    showError(data?.error || "The exam server returned an incomplete response.");
+    return;
+  }
+
+  attemptId = data.attempt.id;
+  $("paperTitle").textContent = data.paper?.title || "Scholarship Examination";
+
+  renderQuestion(data.question,{
+    remaining_seconds:data.attempt.remaining_seconds
+  });
+}
+
+window.addEventListener("beforeunload",(event)=>{
+  if (!examFinished && attemptId) {
+    event.preventDefault();
+    event.returnValue = "";
+  }
+});
+
+startExam().catch(error=>{
+  console.error("Exam initialization:",error);
+  showError("Unable to load the examination. Please refresh once or contact the institute.");
+});
 </script>
-
 </body>
 </html>
