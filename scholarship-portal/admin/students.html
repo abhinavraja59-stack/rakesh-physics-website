@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Student Records | Rakeshh Physics</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{--navy:#0A1931;--gold:#D4AF37}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -11,7 +14,7 @@ body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
 header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
 header h2{color:var(--gold);font-size:22px}
 header p{font-size:11px;margin-top:5px}
-.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.container{max-width:1250px;margin:25px auto;padding:0 15px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--navy);font-size:25px}
 .card{background:white;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
@@ -25,203 +28,479 @@ input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;
 button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);color:white;font-size:12px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
 .gold{background:var(--gold);color:var(--navy)}
 .light{background:#edf1f7;color:var(--navy)}
+button:disabled{opacity:.6;cursor:not-allowed}
 .toolbar{display:flex;gap:9px;flex-wrap:wrap}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:850px}
+table{width:100%;border-collapse:collapse;min-width:900px}
 th,td{padding:13px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
 th{background:#f4f6fa;color:#536078}
 .notice{background:#fff6dc;color:#775d0e;padding:13px;border-radius:9px;font-size:12px;line-height:1.6;margin-bottom:17px}
-#message{font-size:12px;margin-top:12px;color:#176b43}
+#message{font-size:12px;margin-top:12px;line-height:1.6}
+.success{color:#176b43}
+.error{color:#b42318}
+.muted{color:#718096}
+.badge{background:#e9f6ee;color:#176b43;padding:5px 8px;border-radius:20px;font-size:10px}
+.view-btn{padding:7px 10px;font-size:11px}
+.empty{text-align:center;padding:30px;color:#718096}
 footer{text-align:center;background:var(--navy);color:white;padding:20px;margin-top:30px;font-size:12px}
-@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.card{padding:15px}}
+#detailsModal{display:none;position:fixed;inset:0;background:#0009;z-index:10;padding:20px;overflow:auto}
+.modal-card{background:white;max-width:600px;margin:35px auto;padding:23px;border-radius:13px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+.detail-item{background:#f5f6fa;padding:12px;border-radius:8px;overflow-wrap:anywhere}
+.detail-item small{display:block;color:#718096;margin-bottom:6px}
+.detail-item strong{font-size:13px}
+@media(max-width:700px){
+ .stats{grid-template-columns:1fr 1fr}
+ .grid{grid-template-columns:1fr}
+ .card{padding:15px}
+ .detail-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h2>RAKESHH PHYSICS</h2>
-<p>SCHOLARSHIP TEST 2027 | STUDENT MANAGEMENT</p>
+ <h2>RAKESHH PHYSICS</h2>
+ <p>SCHOLARSHIP TEST 2027 | STUDENT MANAGEMENT</p>
 </header>
 
 <main class="container">
 
-<div class="top">
-<div>
-<h1>Student Records</h1>
-<p style="font-size:12px;color:#718096;margin-top:7px">Manage scholarship test candidates.</p>
-</div>
-<a href="dashboard.html" class="btn light">← Dashboard</a>
-</div>
+ <div class="top">
+  <div>
+   <h1>Student Records</h1>
+   <p class="muted" style="font-size:12px;margin-top:7px">
+    Live scholarship student database
+   </p>
+  </div>
+  <div class="toolbar">
+   <a href="dashboard.html" class="btn light">← Dashboard</a>
+   <button id="logoutBtn">Logout</button>
+  </div>
+ </div>
 
-<div class="notice">
-<strong>Preview Mode:</strong> Student records will appear here after secure Supabase database integration. No real student data is currently connected.
-</div>
+ <div class="notice">
+  <strong>LIVE DATABASE:</strong>
+  Student records are loaded from the secure Supabase database.
+  Only authorized Scholarship Administrators can access this page.
+ </div>
 
-<section class="stats">
-<div class="stat"><small>Total Registered</small><strong id="total">0</strong></div>
-<div class="stat"><small>Class 10 Passed</small><strong id="class10">0</strong></div>
-<div class="stat"><small>Class 11</small><strong id="class11">0</strong></div>
-<div class="stat"><small>Class 12</small><strong id="class12">0</strong></div>
-</section>
+ <section class="stats">
+  <div class="stat"><small>Total Registered</small><strong id="total">--</strong></div>
+  <div class="stat"><small>Class 10 Passed</small><strong id="class10">--</strong></div>
+  <div class="stat"><small>Class 11</small><strong id="class11">--</strong></div>
+  <div class="stat"><small>Class 12</small><strong id="class12">--</strong></div>
+ </section>
 
-<section class="card" style="margin-top:20px">
-<h3 style="color:#0A1931;margin-bottom:17px">Search & Filter Students</h3>
+ <section class="card" style="margin-top:20px">
+  <h3 style="color:#0A1931;margin-bottom:17px">Search & Filter Students</h3>
 
-<div class="grid">
+  <div class="grid">
+   <div>
+    <label>Search Student</label>
+    <input id="search" placeholder="Name, Registration ID or Mobile">
+   </div>
 
-<div>
-<label>Search Student</label>
-<input id="search" placeholder="Name, Registration ID or Mobile">
-</div>
+   <div>
+    <label>Academic Category</label>
+    <select id="classFilter">
+     <option value="">All Classes</option>
+     <option value="10th">10th Passed</option>
+     <option value="11th">Class 11</option>
+     <option value="12th">Class 12</option>
+    </select>
+   </div>
 
-<div>
-<label>Academic Category</label>
-<select id="classFilter">
-<option value="">All Classes</option>
-<option value="10th">10th Passed</option>
-<option value="11th">Class 11</option>
-<option value="12th">Class 12</option>
-</select>
-</div>
+   <div>
+    <label>Stream</label>
+    <select id="streamFilter">
+     <option value="">All Streams</option>
+     <option value="PCB">PCB</option>
+     <option value="PCM">PCM</option>
+    </select>
+   </div>
 
-<div>
-<label>Stream</label>
-<select id="streamFilter">
-<option value="">All Streams</option>
-<option value="Combined">Combined JEE + NEET</option>
-<option value="PCB">PCB</option>
-<option value="PCM">PCM</option>
-</select>
-</div>
+   <div>
+    <label>Board</label>
+    <select id="boardFilter">
+     <option value="">All Boards</option>
+     <option value="BSEB">Bihar Board</option>
+     <option value="CBSE">CBSE</option>
+     <option value="ICSE">ICSE</option>
+     <option value="Other">Other</option>
+    </select>
+   </div>
+  </div>
 
-<div>
-<label>Board</label>
-<select id="boardFilter">
-<option value="">All Boards</option>
-<option value="BSEB">Bihar Board</option>
-<option value="CBSE">CBSE</option>
-<option value="ICSE">ICSE</option>
-<option value="Other">Other</option>
-</select>
-</div>
+  <div class="toolbar" style="margin-top:18px">
+   <button id="filterBtn">Apply Filters</button>
+   <button id="resetBtn" class="light">Reset</button>
+   <button id="exportBtn" class="gold">Export CSV</button>
+   <button id="refreshBtn" class="light">↻ Refresh</button>
+  </div>
 
-<div>
-<label>Registration Status</label>
-<select id="statusFilter">
-<option value="">All Status</option>
-<option value="Registered">Registered</option>
-<option value="Approved">Approved</option>
-</select>
-</div>
+  <p id="message" role="status" aria-live="polite"></p>
+ </section>
 
-</div>
+ <section class="card">
+  <div class="top">
+   <h3 style="color:#0A1931">Registered Students</h3>
+   <span class="muted" style="font-size:12px" id="count">Loading...</span>
+  </div>
 
-<div class="toolbar" style="margin-top:18px">
-<button id="filterBtn">Apply Filters</button>
-<button id="resetBtn" class="light">Reset</button>
-<button id="exportBtn" class="gold">Export CSV</button>
-</div>
-
-<p id="message" role="status"></p>
-</section>
-
-<section class="card">
-
-<div class="top">
-<h3 style="color:#0A1931">Registered Students</h3>
-<span style="font-size:12px;color:#718096" id="count">0 Records</span>
-</div>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>Registration ID</th>
-<th>Student Name</th>
-<th>Mobile</th>
-<th>Class</th>
-<th>Stream</th>
-<th>Board</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody id="studentTable">
-<tr><td colspan="7" style="text-align:center;padding:30px">
-No student records available. Connect Supabase to load records.
-</td></tr>
-</tbody>
-</table>
-</div>
-
-</section>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Registration ID</th>
+      <th>Student Name</th>
+      <th>Mobile</th>
+      <th>Class</th>
+      <th>Stream</th>
+      <th>Board</th>
+      <th>District</th>
+      <th>Details</th>
+     </tr>
+    </thead>
+    <tbody id="studentTable">
+     <tr><td colspan="8" class="empty">Checking Admin Access...</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
 
 </main>
 
+<div id="detailsModal">
+ <div class="modal-card">
+  <div class="top">
+   <h3 style="color:#0A1931">Student Details</h3>
+   <button id="closeModal" class="light">Close ✕</button>
+  </div>
+  <div id="detailContent" class="detail-grid"></div>
+ </div>
+</div>
+
 <footer>
-RAKESHH PHYSICS | Another Name For Success
+ RAKESHH PHYSICS | Another Name For Success
 </footer>
 
 <script>
-const students = [];
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-const fields = [
-"search","classFilter","streamFilter","boardFilter","statusFilter"
-];
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-function render(){
+const $ = id => document.getElementById(id);
 
- const q=document.getElementById("search").value.toLowerCase();
- const cls=document.getElementById("classFilter").value;
- const stream=document.getElementById("streamFilter").value;
- const board=document.getElementById("boardFilter").value;
- const status=document.getElementById("statusFilter").value;
+let students = [];
+let filteredStudents = [];
 
- const filtered=students.filter(s=>
-  (!q || [s.id,s.name,s.mobile].some(v=>v.toLowerCase().includes(q))) &&
-  (!cls || s.className===cls) &&
-  (!stream || s.stream===stream) &&
-  (!board || s.board===board) &&
-  (!status || s.status===status)
- );
-
- document.getElementById("count").textContent=filtered.length+" Records";
-
- const tbody=document.getElementById("studentTable");
- tbody.innerHTML="";
-
- if(!filtered.length){
-  tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px">No matching student records. Database integration pending.</td></tr>';
- }
-
- filtered.forEach(s=>{
-  const tr=document.createElement("tr");
-  [s.id,s.name,s.mobile,s.className,s.stream,s.board,s.status].forEach(v=>{
-   const td=document.createElement("td");
-   td.textContent=v;
-   tr.appendChild(td);
-  });
-  tbody.appendChild(tr);
- });
-
+function setMessage(message,type="muted"){
+ $("message").textContent = message;
+ $("message").className = type;
 }
 
-document.getElementById("filterBtn").onclick=render;
+function escapeCSV(value){
+ const text = String(value ?? "");
+ return '"' + text.replace(/"/g,'""') + '"';
+}
 
-fields.forEach(id=>{
- document.getElementById(id).addEventListener("input",render);
+function displayCategory(value){
+ if(value==="10th") return "10th Passed";
+ if(value==="11th") return "Class 11";
+ if(value==="12th") return "Class 12";
+ return value || "—";
+}
+
+function displayValue(value){
+ return value === null || value === undefined || value === ""
+  ? "—" : String(value);
+}
+
+async function verifyAdmin(){
+ const {data:{user},error} = await db.auth.getUser();
+
+ if(error || !user){
+  window.location.replace("dashboard.html");
+  return false;
+ }
+
+ const {data:role,error:roleError} = await db
+  .from("scholarship_admin_roles")
+  .select("admin_role")
+  .eq("user_id",user.id)
+  .maybeSingle();
+
+ if(roleError || !role){
+  await db.auth.signOut();
+  alert("Access denied. Authorized Admin account required.");
+  window.location.replace("dashboard.html");
+  return false;
+ }
+
+ return true;
+}
+
+async function loadStudents(){
+ $("refreshBtn").disabled = true;
+ $("count").textContent = "Loading records...";
+ setMessage("Loading student records from Supabase...");
+
+ try{
+  let allRecords = [];
+  const pageSize = 500;
+
+  for(let start=0; ; start+=pageSize){
+   const {data,error} = await db
+    .from("scholarship_students")
+    .select(`
+     id,
+     registration_id,
+     student_name,
+     father_name,
+     mobile,
+     whatsapp,
+     date_of_birth,
+     gender,
+     category,
+     stream,
+     board,
+     school,
+     district,
+     state,
+     created_at
+    `)
+    .order("created_at",{ascending:false})
+    .range(start,start+pageSize-1);
+
+   if(error) throw error;
+
+   allRecords = allRecords.concat(data || []);
+
+   if(!data || data.length < pageSize) break;
+  }
+
+  students = allRecords;
+  updateStats();
+  renderStudents();
+
+  setMessage(
+   "Successfully loaded " + students.length + " student records from Supabase.",
+   "success"
+  );
+
+ }catch(error){
+  console.error(error);
+  $("count").textContent = "Unable to load";
+  $("studentTable").innerHTML =
+   '<tr><td colspan="8" class="empty">Database error: ' +
+   escapeHTML(error.message) + '</td></tr>';
+
+  setMessage(
+   "Could not load records. Check your Admin permissions and database connection. " + error.message,
+   "error"
+  );
+ }finally{
+  $("refreshBtn").disabled = false;
+ }
+}
+
+function escapeHTML(value){
+ return String(value ?? "").replace(/[&<>"']/g,char=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ })[char]);
+}
+
+function updateStats(){
+ $("total").textContent = students.length;
+ $("class10").textContent = students.filter(s=>s.category==="10th").length;
+ $("class11").textContent = students.filter(s=>s.category==="11th").length;
+ $("class12").textContent = students.filter(s=>s.category==="12th").length;
+}
+
+function renderStudents(){
+ const q = $("search").value.trim().toLowerCase();
+ const cls = $("classFilter").value;
+ const stream = $("streamFilter").value;
+ const board = $("boardFilter").value;
+
+ filteredStudents = students.filter(s=>{
+  const matchesSearch = !q || [
+   s.registration_id,
+   s.student_name,
+   s.mobile
+  ].some(v=>String(v || "").toLowerCase().includes(q));
+
+  return matchesSearch &&
+   (!cls || s.category===cls) &&
+   (!stream || s.stream===stream) &&
+   (!board || s.board===board);
+ });
+
+ $("count").textContent = filteredStudents.length + " Records";
+
+ const tbody = $("studentTable");
+ tbody.innerHTML = "";
+
+ if(!filteredStudents.length){
+  tbody.innerHTML =
+   '<tr><td colspan="8" class="empty">No matching student records found.</td></tr>';
+  return;
+ }
+
+ filteredStudents.forEach(student=>{
+  const tr = document.createElement("tr");
+
+  const values = [
+   student.registration_id,
+   student.student_name,
+   student.mobile,
+   displayCategory(student.category),
+   student.stream || "—",
+   student.board || "—",
+   student.district || "—"
+  ];
+
+  values.forEach(value=>{
+   const td = document.createElement("td");
+   td.textContent = displayValue(value);
+   tr.appendChild(td);
+  });
+
+  const actionCell = document.createElement("td");
+  const viewButton = document.createElement("button");
+  viewButton.textContent = "View";
+  viewButton.className = "view-btn gold";
+  viewButton.addEventListener("click",()=>showDetails(student));
+  actionCell.appendChild(viewButton);
+  tr.appendChild(actionCell);
+
+  tbody.appendChild(tr);
+ });
+}
+
+function showDetails(s){
+ const details = [
+  ["Registration ID",s.registration_id],
+  ["Student Name",s.student_name],
+  ["Father's Name",s.father_name],
+  ["Mobile",s.mobile],
+  ["WhatsApp",s.whatsapp],
+  ["Date of Birth",s.date_of_birth],
+  ["Gender",s.gender],
+  ["Category",displayCategory(s.category)],
+  ["Stream",s.stream],
+  ["Board",s.board],
+  ["School",s.school],
+  ["District",s.district],
+  ["State",s.state],
+  ["Registration Date",s.created_at ? new Date(s.created_at).toLocaleString("en-IN") : "—"]
+ ];
+
+ $("detailContent").innerHTML = "";
+
+ details.forEach(([label,value])=>{
+  const item = document.createElement("div");
+  item.className = "detail-item";
+
+  const small = document.createElement("small");
+  small.textContent = label;
+
+  const strong = document.createElement("strong");
+  strong.textContent = displayValue(value);
+
+  item.append(small,strong);
+  $("detailContent").appendChild(item);
+ });
+
+ $("detailsModal").style.display = "block";
+}
+
+function exportCSV(){
+ if(!filteredStudents.length){
+  setMessage("No student records available for export.","error");
+  return;
+ }
+
+ const headers = [
+  "Registration ID","Student Name","Father Name","Mobile",
+  "WhatsApp","Date of Birth","Gender","Category","Stream",
+  "Board","School","District","State","Registration Date"
+ ];
+
+ const rows = filteredStudents.map(s=>[
+  s.registration_id,s.student_name,s.father_name,s.mobile,
+  s.whatsapp,s.date_of_birth,s.gender,s.category,s.stream,
+  s.board,s.school,s.district,s.state,s.created_at
+ ]);
+
+ const csv = "\uFEFF" + [
+  headers.map(escapeCSV).join(","),
+  ...rows.map(row=>row.map(escapeCSV).join(","))
+ ].join("\r\n");
+
+ const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+ const url = URL.createObjectURL(blob);
+ const link = document.createElement("a");
+
+ link.href = url;
+ link.download = "Rakeshh_Physics_Students.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ URL.revokeObjectURL(url);
+
+ setMessage(filteredStudents.length + " student records exported successfully.","success");
+}
+
+$("filterBtn").addEventListener("click",renderStudents);
+
+["search","classFilter","streamFilter","boardFilter"].forEach(id=>{
+ $(id).addEventListener("input",renderStudents);
 });
 
-document.getElementById("resetBtn").onclick=()=>{
- fields.forEach(id=>document.getElementById(id).value="");
- render();
-};
+$("resetBtn").addEventListener("click",()=>{
+ ["search","classFilter","streamFilter","boardFilter"].forEach(id=>{
+  $(id).value="";
+ });
+ renderStudents();
+ setMessage("Filters reset.","success");
+});
 
-document.getElementById("exportBtn").onclick=()=>{
- document.getElementById("message").textContent=
- "No database records are available to export yet. CSV export will be enabled after Supabase integration.";
-};
+$("exportBtn").addEventListener("click",exportCSV);
+$("refreshBtn").addEventListener("click",loadStudents);
 
-render();
+$("closeModal").addEventListener("click",()=>{
+ $("detailsModal").style.display="none";
+});
+
+$("detailsModal").addEventListener("click",event=>{
+ if(event.target === $("detailsModal")){
+  $("detailsModal").style.display="none";
+ }
+});
+
+$("logoutBtn").addEventListener("click",async()=>{
+ const {error} = await db.auth.signOut();
+
+ if(error){
+  setMessage("Logout failed: "+error.message,"error");
+  return;
+ }
+
+ window.location.replace("dashboard.html");
+});
+
+(async()=>{
+ const authorized = await verifyAdmin();
+ if(authorized) await loadStudents();
+})();
 </script>
 
 </body>
