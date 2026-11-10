@@ -170,6 +170,7 @@ Please complete your registration information carefully.
 </p>
 
 <form id="registrationForm">
+
 <div class="section-title">Personal Information</div>
 <div class="form-grid">
 
@@ -259,6 +260,26 @@ Please complete your registration information carefully.
 </div>
 </div>
 
+<div class="section-title">Create Student Login Password</div>
+<div class="form-grid">
+
+<div class="field">
+<label for="password">Create Password *</label>
+<input type="password" id="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+</div>
+
+<div class="field">
+<label for="confirmPassword">Confirm Password *</label>
+<input type="password" id="confirmPassword" minlength="8" maxlength="72" autocomplete="new-password" required>
+</div>
+
+</div>
+
+<div class="note">
+<strong>Student Login Instructions:</strong><br>
+Create a password of at least 8 characters. After successful registration, you will receive a Registration ID. Use your Registration ID and this password to log in to the student portal. Keep both details safe.
+</div>
+
 <div class="category-box">
 <small>Selected Scholarship Category</small>
 <h3 id="selectedCategory">Please select your academic category</h3>
@@ -266,7 +287,7 @@ Please complete your registration information carefully.
 
 <div class="note">
 <strong>Important Information:</strong><br>
-Please verify all details before submitting. Your registration will be saved securely after successful submission.
+Please verify all details before submitting. Your registration and student login account will be created after successful submission.
 </div>
 
 <label class="consent">
@@ -279,6 +300,7 @@ I agree to the examination rules and the processing of my registration informati
 
 <button type="submit" id="submitBtn">Submit Registration</button>
 <div id="message" class="message" role="status" aria-live="polite"></div>
+
 </form>
 </div>
 </main>
@@ -291,6 +313,7 @@ I agree to the examination rules and the processing of my registration informati
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
@@ -325,10 +348,12 @@ function updateSelectedCategory() {
     if (category === "10th") {
         selectedCategory.textContent = "10th Passed Students";
     } else if (category === "11th" || category === "12th") {
-        selectedCategory.textContent = categoryNames[category] +
+        selectedCategory.textContent =
+            categoryNames[category] +
             (selectedStream ? " – " + selectedStream : " – Select PCB or PCM");
     } else {
-        selectedCategory.textContent = "Please select your academic category";
+        selectedCategory.textContent =
+            "Please select your academic category";
     }
 }
 
@@ -344,7 +369,9 @@ function updateCategory(category, selectedStream = "") {
         streamField.style.display = "flex";
         stream.disabled = false;
         stream.required = true;
-        stream.value = ["PCB", "PCM"].includes(selectedStream) ? selectedStream : "";
+        stream.value = ["PCB", "PCM"].includes(selectedStream)
+            ? selectedStream
+            : "";
     } else {
         streamField.style.display = "flex";
         stream.disabled = true;
@@ -355,7 +382,10 @@ function updateCategory(category, selectedStream = "") {
     updateSelectedCategory();
 }
 
-className.addEventListener("change", () => updateCategory(className.value));
+className.addEventListener("change", () => {
+    updateCategory(className.value);
+});
+
 stream.addEventListener("change", updateSelectedCategory);
 
 const params = new URLSearchParams(window.location.search);
@@ -376,23 +406,32 @@ function validMobile(value) {
 function showMessage(type, text) {
     message.className = "message " + type;
     message.textContent = text;
-    message.scrollIntoView({behavior:"smooth",block:"center"});
+    message.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 }
 
 form.addEventListener("submit", async function(event) {
     event.preventDefault();
+
     message.className = "message";
     message.textContent = "";
 
     if (!form.reportValidity()) return;
 
-   if (!supabaseClient) {
-        showMessage("error", "Registration service could not load. Please refresh and try again.");
+    if (!supabaseClient) {
+        showMessage(
+            "error",
+            "Registration service could not load. Please refresh and try again."
+        );
         return;
     }
 
     const mobile = document.getElementById("mobile").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
     if (!validMobile(mobile)) {
         showMessage("error", "Please enter a valid 10-digit mobile number.");
@@ -401,6 +440,19 @@ form.addEventListener("submit", async function(event) {
 
     if (whatsapp && !validMobile(whatsapp)) {
         showMessage("error", "Please enter a valid WhatsApp number.");
+        return;
+    }
+
+    if (password.length < 8 || password.length > 72) {
+        showMessage(
+            "error",
+            "Password must contain between 8 and 72 characters."
+        );
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showMessage("error", "Passwords do not match.");
         return;
     }
 
@@ -418,61 +470,87 @@ form.addEventListener("submit", async function(event) {
     }
 
     const dob = document.getElementById("dob").value;
+
     if (dob > new Date().toISOString().split("T")[0]) {
         showMessage("error", "Date of birth cannot be in the future.");
         return;
     }
 
     const payload = {
-        p_student_name: document.getElementById("studentName").value.trim(),
-        p_father_name: document.getElementById("fatherName").value.trim(),
-        p_mobile: mobile,
-        p_whatsapp: whatsapp || null,
-        p_date_of_birth: dob,
-        p_gender: document.getElementById("gender").value,
-        p_category: category,
-        p_stream: selectedStream,
-        p_board: document.getElementById("board").value,
-        p_school: document.getElementById("school").value.trim(),
-        p_district: document.getElementById("district").value.trim(),
-        p_state: document.getElementById("state").value
+        student_name: document.getElementById("studentName").value.trim(),
+        father_name: document.getElementById("fatherName").value.trim(),
+        mobile: mobile,
+        whatsapp: whatsapp || null,
+        date_of_birth: dob,
+        gender: document.getElementById("gender").value,
+        category: category,
+        stream: selectedStream,
+        board: document.getElementById("board").value,
+        school: document.getElementById("school").value.trim(),
+        district: document.getElementById("district").value.trim(),
+        state: document.getElementById("state").value,
+        password: password
     };
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting Registration...";
+    submitBtn.textContent = "Creating Registration & Login...";
 
     try {
-        const {data, error} = await supabaseClient.rpc(
-            "register_scholarship_student",
-            payload
-        );
+        const { data, error } =
+            await supabaseClient.functions.invoke(
+                "register-scholarship-student",
+                {
+                    body: payload
+                }
+            );
 
-        if (error) throw error;
-
-        if (!data || typeof data !== "string") {
-            throw new Error("Registration ID was not returned. Please contact the institute.");
+        if (error) {
+            console.error("Edge Function error:", error);
+            throw new Error(
+                data?.error ||
+                error.message ||
+                "Registration failed. Please try again."
+            );
         }
+
+        if (
+            !data ||
+            data.success !== true ||
+            !data.registration_id
+        ) {
+            throw new Error(
+                data?.error ||
+                "Registration ID was not returned. Please contact the institute."
+            );
+        }
+
+        const registrationId = data.registration_id;
 
         form.reset();
         updateCategory("");
+
         showMessage(
             "success",
-            "Registration successful! Your Registration ID is: " +
-            data +
-            ". Please save this ID for future reference."
+            "Congratulations! Your registration and student login account have been created successfully. Your Registration ID is: " +
+            registrationId +
+            ". Please save this ID and your password safely. You will need them to log in."
         );
 
     } catch (error) {
         console.error("Registration error:", error);
+
         showMessage(
             "error",
-            error.message || "Registration could not be completed. Please try again."
+            error.message ||
+            "Registration could not be completed. Please try again."
         );
+
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Registration";
     }
 });
 </script>
+
 </body>
 </html>
