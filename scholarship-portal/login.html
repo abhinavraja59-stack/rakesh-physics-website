@@ -11,11 +11,8 @@
     --navy:#0A1931;
     --gold:#D4AF37;
 }
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+* {margin:0;padding:0;box-sizing:border-box}
+
 body {
     font-family:Arial,sans-serif;
     background:#f3f5f9;
@@ -24,23 +21,27 @@ body {
     display:flex;
     flex-direction:column;
 }
+
 header {
     background:var(--navy);
     padding:22px 6%;
     border-bottom:4px solid var(--gold);
 }
+
 .brand {
     color:var(--gold);
     font-size:25px;
     font-weight:900;
     letter-spacing:1px;
 }
+
 .subtitle {
     color:white;
     font-size:11px;
     letter-spacing:2px;
     margin-top:6px;
 }
+
 main {
     flex:1;
     display:flex;
@@ -48,6 +49,7 @@ main {
     justify-content:center;
     padding:35px 15px;
 }
+
 .login-card {
     background:white;
     width:100%;
@@ -56,6 +58,7 @@ main {
     border-radius:16px;
     box-shadow:0 8px 30px rgba(0,0,0,.07);
 }
+
 .login-icon {
     width:65px;
     height:65px;
@@ -68,12 +71,14 @@ main {
     font-size:29px;
     margin:0 auto 18px;
 }
+
 h1 {
     text-align:center;
     color:var(--navy);
     font-size:27px;
     margin-bottom:9px;
 }
+
 .intro {
     text-align:center;
     color:#68758a;
@@ -81,16 +86,19 @@ h1 {
     line-height:1.7;
     margin-bottom:28px;
 }
+
 .field {
     display:flex;
     flex-direction:column;
     gap:8px;
     margin-bottom:19px;
 }
+
 .field label {
     font-size:13px;
     font-weight:bold;
 }
+
 .field input {
     padding:15px;
     border:1px solid #d6dce6;
@@ -98,17 +106,16 @@ h1 {
     font-size:15px;
     width:100%;
 }
+
 .field input:focus {
     outline:none;
     border-color:var(--gold);
     box-shadow:0 0 0 2px rgba(212,175,55,.12);
 }
-.password-wrap {
-    position:relative;
-}
-.password-wrap input {
-    padding-right:75px;
-}
+
+.password-wrap {position:relative}
+.password-wrap input {padding-right:75px}
+
 .show-password {
     position:absolute;
     right:12px;
@@ -123,6 +130,7 @@ h1 {
     width:auto;
     padding:5px;
 }
+
 button.login-btn {
     width:100%;
     background:var(--navy);
@@ -135,13 +143,10 @@ button.login-btn {
     cursor:pointer;
     margin-top:8px;
 }
-button.login-btn:hover {
-    background:#19385d;
-}
-button:disabled {
-    opacity:.6;
-    cursor:not-allowed;
-}
+
+button.login-btn:hover {background:#19385d}
+button:disabled {opacity:.6;cursor:not-allowed}
+
 .message {
     display:none;
     padding:14px;
@@ -151,24 +156,28 @@ button:disabled {
     line-height:1.7;
     overflow-wrap:anywhere;
 }
+
 .message.error {
     display:block;
     background:#fff0f0;
     border:1px solid #efc0c0;
     color:#9b2828;
 }
+
 .message.success {
     display:block;
     background:#eaf8ef;
     border:1px solid #a8d8b5;
     color:#176534;
 }
+
 .message.info {
     display:block;
     background:#eaf2ff;
     border:1px solid #b9d0f2;
     color:#174578;
 }
+
 .help {
     background:#fff8e3;
     border:1px solid #ead58a;
@@ -179,17 +188,20 @@ button:disabled {
     line-height:1.7;
     margin-top:22px;
 }
+
 .register-link {
     text-align:center;
     margin-top:24px;
     font-size:13px;
     color:#68758a;
 }
+
 .register-link a {
     color:#173c69;
     font-weight:bold;
     text-decoration:none;
 }
+
 footer {
     text-align:center;
     padding:24px 15px;
@@ -198,9 +210,9 @@ footer {
     font-size:12px;
     line-height:1.9;
 }
-footer strong {
-    color:var(--gold);
-}
+
+footer strong {color:var(--gold)}
+
 @media(max-width:500px) {
     header {padding:19px 20px}
     .login-card {padding:25px 21px}
@@ -244,7 +256,6 @@ footer strong {
 
         <div class="field">
             <label for="password">Password *</label>
-
             <div class="password-wrap">
                 <input
                     type="password"
@@ -265,12 +276,7 @@ footer strong {
             Login to Student Portal
         </button>
 
-        <div
-            id="message"
-            class="message"
-            role="status"
-            aria-live="polite"
-        ></div>
+        <div id="message" class="message" role="status" aria-live="polite"></div>
 
     </form>
 
@@ -306,6 +312,8 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
+const DASHBOARD_URL = "student-dashboard.html";
+
 const supabaseClient =
     window.supabase &&
     window.supabase.createClient
@@ -323,14 +331,10 @@ const supabaseClient =
         : null;
 
 const form = document.getElementById("loginForm");
-const registrationInput =
-    document.getElementById("registrationId");
-const passwordInput =
-    document.getElementById("password");
-const loginBtn =
-    document.getElementById("loginBtn");
-const message =
-    document.getElementById("message");
+const registrationInput = document.getElementById("registrationId");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const message = document.getElementById("message");
 
 function showMessage(type, text) {
     message.className = "message " + type;
@@ -344,7 +348,6 @@ function showMessage(type, text) {
 document.getElementById("togglePassword")
 .addEventListener("click", function() {
     const visible = passwordInput.type === "text";
-
     passwordInput.type = visible ? "password" : "text";
     this.textContent = visible ? "SHOW" : "HIDE";
 });
@@ -356,10 +359,7 @@ form.addEventListener("submit", async function(event) {
     message.textContent = "";
 
     if (!supabaseClient) {
-        showMessage(
-            "error",
-            "Login service could not load. Please refresh the page."
-        );
+        showMessage("error", "Login service could not load. Please refresh.");
         return;
     }
 
@@ -369,10 +369,7 @@ form.addEventListener("submit", async function(event) {
     const password = passwordInput.value;
 
     if (!/^RP[0-9]{9}$/.test(registrationId)) {
-        showMessage(
-            "error",
-            "Please enter a valid Registration ID."
-        );
+        showMessage("error", "Please enter a valid Registration ID.");
         return;
     }
 
@@ -381,8 +378,6 @@ form.addEventListener("submit", async function(event) {
         return;
     }
 
-    // The internal email is generated by the registration
-    // Edge Function. Students only need their Registration ID.
     const internalEmail =
         "rp-" +
         registrationId.toLowerCase() +
@@ -400,7 +395,6 @@ form.addEventListener("submit", async function(event) {
 
         if (error) {
             console.error("Student login failed:", error);
-
             showMessage(
                 "error",
                 "Invalid Registration ID or Password. Please check your details and try again."
@@ -412,47 +406,44 @@ form.addEventListener("submit", async function(event) {
             throw new Error("Student account could not be verified.");
         }
 
-        const accountType =
-            data.user.user_metadata?.account_type;
-
-        const savedRegistrationId =
-            data.user.user_metadata?.registration_id;
+        const metadata = data.user.user_metadata || {};
 
         if (
-            accountType !== "scholarship_student" ||
-            savedRegistrationId !== registrationId
+            metadata.account_type !== "scholarship_student" ||
+            metadata.registration_id !== registrationId
         ) {
             await supabaseClient.auth.signOut();
+            throw new Error("This is not a valid scholarship student account.");
+        }
 
-            showMessage(
-                "error",
-                "This account is not a valid scholarship student account."
-            );
-            return;
+        // Confirm that the login session has been saved.
+        const { data: sessionData, error: sessionError } =
+            await supabaseClient.auth.getSession();
+
+        if (sessionError || !sessionData.session) {
+            throw new Error("Login session could not be saved. Please try again.");
         }
 
         showMessage(
             "success",
-            "Login successful! Your student account has been verified. Student Dashboard will be available after it is connected."
+            "Login successful! Redirecting to your Student Dashboard..."
         );
 
-        loginBtn.textContent = "Login Verified";
+        loginBtn.textContent = "Login Successful";
+
+        // Redirect after successful authentication.
+        window.location.replace(DASHBOARD_URL);
 
     } catch (error) {
         console.error("Login error:", error);
 
         showMessage(
             "error",
-            error.message ||
-            "Unable to login. Please try again."
+            error.message || "Unable to login. Please try again."
         );
 
-    } finally {
         loginBtn.disabled = false;
-
-        if (loginBtn.textContent !== "Login Verified") {
-            loginBtn.textContent = "Login to Student Portal";
-        }
+        loginBtn.textContent = "Login to Student Portal";
     }
 });
 </script>
