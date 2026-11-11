@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Dashboard | Rakeshh Physics</title>
 <meta name="description" content="Rakeshh Physics Scholarship Test 2027 Student Dashboard">
+
 <style>
 :root{--navy:#0A1931;--gold:#D4AF37;--bg:#f3f5f9;--text:#172033;--muted:#718096}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -36,11 +37,49 @@ header{background:var(--navy);border-bottom:4px solid var(--gold);padding:20px 5
 .loading{text-align:center;padding:65px 15px;color:var(--navy);font-weight:bold}
 .error{margin:30px auto;background:#fff0f0;color:#9b2828;border:1px solid #efc0c0;border-radius:10px;padding:20px;max-width:600px;line-height:1.7;text-align:center}
 .notice{margin-top:14px;padding:12px;border-radius:8px;background:#f4f6fa;color:#526078;font-size:13px;line-height:1.6}
+.result-card{background:white;border:2px solid var(--gold);border-radius:14px;padding:23px;margin:16px 0;box-shadow:0 5px 20px rgba(0,0,0,.04)}
+.result-brand{text-align:center;border-bottom:2px solid var(--gold);padding-bottom:16px;margin-bottom:18px}
+.result-brand h2{color:var(--navy);font-size:23px}
+.result-brand p{color:#866815;font-size:11px;letter-spacing:2px;margin-top:6px}
+.result-heading{text-align:center;color:var(--navy);font-size:20px;margin:15px 0}
+.result-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.result-meta div,.result-marks div{background:#f5f6fa;border-radius:9px;padding:13px}
+.result-meta small,.result-marks small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+.result-meta strong,.result-marks strong{color:var(--navy);font-size:14px;overflow-wrap:anywhere}
+.result-marks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.result-marks strong{font-size:21px}
+.result-note{background:#fff8e6;padding:13px;border-radius:8px;color:#725a17;font-size:12px;line-height:1.6;margin-top:15px}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.result-actions button{padding:12px 16px;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
+.download-btn{background:var(--gold);color:var(--navy)}
+.refresh-btn{background:#edf1f7;color:var(--navy)}
+.result-status{display:inline-block;background:#e6f7ed;color:#167443;border-radius:20px;padding:7px 12px;font-size:12px;font-weight:bold}
+.result-error{color:#9b2828;font-size:13px;line-height:1.6;margin-top:12px}
 footer{margin-top:45px;background:var(--navy);color:white;text-align:center;padding:25px;line-height:1.9;font-size:13px}
 footer strong{color:var(--gold)}
-@media(max-width:700px){header{padding:17px;align-items:flex-start}.brand{font-size:19px}.subtitle{font-size:9px}.logout{padding:9px 12px;font-size:12px}.container{margin:20px auto;padding:0 13px}.welcome{padding:23px}.welcome h1{font-size:23px}.grid{grid-template-columns:1fr}.card{padding:19px}}
+@media(max-width:700px){
+header{padding:17px;align-items:flex-start}
+.brand{font-size:19px}
+.subtitle{font-size:9px}
+.logout{padding:9px 12px;font-size:12px}
+.container{margin:20px auto;padding:0 13px}
+.welcome{padding:23px}
+.welcome h1{font-size:23px}
+.grid{grid-template-columns:1fr}
+.card{padding:19px}
+.result-marks{grid-template-columns:1fr 1fr}
+}
+@media print{
+body{background:white}
+body *{visibility:hidden!important}
+#printArea,#printArea *{visibility:visible!important}
+#printArea{position:absolute;left:0;top:0;width:100%;margin:0;padding:15px}
+.result-card{box-shadow:none;border:2px solid #D4AF37;break-inside:avoid}
+.no-print{display:none!important}
+}
 </style>
 </head>
+
 <body>
 <header>
   <div>
@@ -115,10 +154,21 @@ footer strong{color:var(--gold)}
     <h2 class="section-title">My Results</h2>
     <section class="card">
       <div class="card-icon">🏆</div>
-      <div class="card-value">Result Not Published</div>
-      <p style="color:#718096;font-size:14px;margin-top:10px;line-height:1.6">
-        Your official result will appear here after publication by the institute.
+      <h3 style="color:#0A1931">Published Examination Results</h3>
+      <p style="color:#718096;font-size:13px;margin-top:7px;line-height:1.6">
+        Your official results will appear here after publication by Rakeshh Physics.
       </p>
+
+      <div id="resultsLoading" class="notice">Checking your published results...</div>
+      <div id="resultsEmpty" class="notice" hidden>
+        Your result has not been published yet. Please check again later.
+      </div>
+      <div id="resultsError" class="result-error" hidden></div>
+      <div id="resultsList"></div>
+
+      <div class="result-actions no-print">
+        <button class="refresh-btn" id="refreshResultsBtn" type="button">Refresh My Results</button>
+      </div>
     </section>
   </div>
 
@@ -152,6 +202,8 @@ const errorBox = document.getElementById("errorBox");
 const startButton = document.getElementById("startExamBtn");
 const examMessage = document.getElementById("examMessage");
 
+let studentRegistrationId = "";
+
 async function verifyStudent(){
   try{
     const {data,error} = await supabaseClient.auth.getUser();
@@ -162,9 +214,14 @@ async function verifyStudent(){
       throw new Error("Student account verification failed.");
     }
 
-    document.getElementById("registrationId").textContent = metadata.registration_id;
+    studentRegistrationId = metadata.registration_id;
+    document.getElementById("registrationId").textContent = studentRegistrationId;
+
     loading.hidden = true;
     dashboard.hidden = false;
+
+    await loadMyResults();
+
   }catch(error){
     console.error("Dashboard verification:",error);
     loading.hidden = true;
@@ -173,33 +230,186 @@ async function verifyStudent(){
   }
 }
 
-startButton.addEventListener("click",async()=>{
-  startButton.disabled = true;
-  startButton.textContent = "Connecting to Exam Server...";
-  examMessage.textContent = "Verifying your exam eligibility. Please wait.";
+async function loadMyResults(){
+  const resultLoading=document.getElementById("resultsLoading");
+  const resultsEmpty=document.getElementById("resultsEmpty");
+  const resultsError=document.getElementById("resultsError");
+  const resultsList=document.getElementById("resultsList");
+
+  resultLoading.hidden=false;
+  resultsEmpty.hidden=true;
+  resultsError.hidden=true;
+  resultsList.replaceChildren();
 
   try{
-    const {data,error} = await supabaseClient.auth.getSession();
+    const {data,error}=await supabaseClient.rpc(
+      "get_my_published_scholarship_results"
+    );
+
+    if(error) throw error;
+
+    resultLoading.hidden=true;
+
+    if(!data || data.length===0){
+      resultsEmpty.hidden=false;
+      return;
+    }
+
+    data.forEach(result=>{
+      resultsList.appendChild(createResultCard(result));
+    });
+
+  }catch(error){
+    console.error("Published result loading error:",error);
+    resultLoading.hidden=true;
+    resultsError.hidden=false;
+    resultsError.textContent=
+      "Unable to load your result. Please try again later. "+(error.message||"");
+  }
+}
+
+function createResultCard(result){
+  const marks=Number(result.total_marks||0);
+  const percentage=(marks/200*100).toFixed(2);
+
+  const wrapper=document.createElement("div");
+  wrapper.className="result-card";
+  wrapper.id="printArea";
+
+  const brand=document.createElement("div");
+  brand.className="result-brand";
+
+  const brandTitle=document.createElement("h2");
+  brandTitle.textContent="RAKESHH PHYSICS";
+
+  const brandSubtitle=document.createElement("p");
+  brandSubtitle.textContent="ANOTHER NAME FOR SUCCESS";
+
+  brand.append(brandTitle,brandSubtitle);
+  wrapper.appendChild(brand);
+
+  const heading=document.createElement("h3");
+  heading.className="result-heading";
+  heading.textContent="SCHOLARSHIP TEST 2027";
+  wrapper.appendChild(heading);
+
+  const published=document.createElement("div");
+  published.style.textAlign="center";
+
+  const publishedBadge=document.createElement("span");
+  publishedBadge.className="result-status";
+  publishedBadge.textContent="OFFICIAL RESULT · PUBLISHED";
+  published.appendChild(publishedBadge);
+  wrapper.appendChild(published);
+
+  const meta=document.createElement("div");
+  meta.className="result-meta";
+
+  addMeta(meta,"Registration ID",studentRegistrationId);
+  addMeta(meta,"Examination Paper",result.paper_title);
+  addMeta(meta,"Category",result.category);
+  addMeta(meta,"Stream",result.stream||"Not Applicable");
+
+  wrapper.appendChild(meta);
+
+  const marksGrid=document.createElement("div");
+  marksGrid.className="result-marks";
+
+  addMark(marksGrid,"Obtained Marks",marks+"/200");
+  addMark(marksGrid,"Percentage",percentage+"%");
+  addMark(marksGrid,"Category Rank",result.rank ? "#"+result.rank : "Not Available");
+
+  wrapper.appendChild(marksGrid);
+
+  if(result.remarks){
+    const remarks=document.createElement("div");
+    remarks.className="result-note";
+    remarks.textContent="Institute Remarks: "+result.remarks;
+    wrapper.appendChild(remarks);
+  }
+
+  const note=document.createElement("div");
+  note.className="result-note";
+  note.textContent=
+    "This is an official published result from Rakeshh Physics. Please retain this result card for your records.";
+  wrapper.appendChild(note);
+
+  const footer=document.createElement("p");
+  footer.style.cssText="text-align:center;color:#718096;font-size:11px;margin-top:18px";
+  footer.textContent="Rakeshh Physics | Another Name For Success";
+  wrapper.appendChild(footer);
+
+  const actions=document.createElement("div");
+  actions.className="result-actions no-print";
+
+  const printButton=document.createElement("button");
+  printButton.className="download-btn";
+  printButton.textContent="Download Result Card PDF";
+  printButton.onclick=()=>{
+    document.querySelectorAll(".result-card").forEach(card=>{
+      card.removeAttribute("id");
+    });
+    wrapper.id="printArea";
+    window.print();
+  };
+
+  actions.appendChild(printButton);
+  wrapper.appendChild(actions);
+
+  return wrapper;
+}
+
+function addMeta(parent,label,value){
+  const box=document.createElement("div");
+  const small=document.createElement("small");
+  small.textContent=label;
+  const strong=document.createElement("strong");
+  strong.textContent=value===null||value===undefined||value===""?"—":String(value);
+  box.append(small,strong);
+  parent.appendChild(box);
+}
+
+function addMark(parent,label,value){
+  const box=document.createElement("div");
+  const small=document.createElement("small");
+  small.textContent=label;
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+  box.append(small,strong);
+  parent.appendChild(box);
+}
+
+startButton.addEventListener("click",async()=>{
+  startButton.disabled=true;
+  startButton.textContent="Connecting to Exam Server...";
+  examMessage.textContent="Verifying your exam eligibility. Please wait.";
+
+  try{
+    const {data,error}=await supabaseClient.auth.getSession();
     if(error || !data.session) throw new Error("Your login session has expired. Please log in again.");
 
-    window.location.href = "exam.html";
+    window.location.href="exam.html";
   }catch(error){
-    examMessage.textContent = error.message || "Unable to open examination.";
-    startButton.disabled = false;
-    startButton.textContent = "Start / Resume Examination";
+    examMessage.textContent=error.message||"Unable to open examination.";
+    startButton.disabled=false;
+    startButton.textContent="Start / Resume Examination";
   }
 });
 
+document.getElementById("refreshResultsBtn").addEventListener("click",loadMyResults);
+
 document.getElementById("logoutBtn").addEventListener("click",async function(){
-  this.disabled = true;
-  this.textContent = "Logging out...";
-  const {error} = await supabaseClient.auth.signOut();
+  this.disabled=true;
+  this.textContent="Logging out...";
+  const {error}=await supabaseClient.auth.signOut();
+
   if(error){
-    this.disabled = false;
-    this.textContent = "Logout";
+    this.disabled=false;
+    this.textContent="Logout";
     alert("Logout failed. Please try again.");
     return;
   }
+
   window.location.replace("login.html");
 });
 
