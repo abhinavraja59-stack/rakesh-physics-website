@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Answer Sheets | Rakeshh Physics</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{--navy:#0A1931;--gold:#D4AF37}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -11,33 +13,53 @@ body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
 header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
 header h2{color:var(--gold);font-size:22px}
 header p{font-size:11px;margin-top:5px}
-.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.container{max-width:1250px;margin:25px auto;padding:0 15px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--navy);font-size:25px}
 .card{background:white;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat{background:#f5f6fa;padding:16px;border-radius:9px}
-.stat small{color:#718096;font-size:11px}
-.stat strong{display:block;font-size:24px;color:var(--navy);margin-top:8px}
+.stat small{color:#718096;font-size:12px}
+.stat strong{display:block;font-size:25px;color:var(--navy);margin-top:8px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 label{display:block;font-size:12px;font-weight:bold;margin-bottom:8px}
-input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;font-size:13px;background:white}
+input,select{width:100%;padding:12px;border:1px solid #d9e0e9;border-radius:8px;font-size:14px;background:white}
 button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);color:white;font-size:12px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
 .gold{background:var(--gold);color:var(--navy)}
 .light{background:#edf1f7;color:var(--navy)}
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 .notice{background:#fff6dc;color:#775d0e;padding:13px;border-radius:9px;font-size:12px;line-height:1.6;margin-bottom:18px}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:750px}
-th,td{padding:13px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px;vertical-align:top}
 th{background:#f4f6fa;color:#536078}
 .empty{text-align:center;padding:35px;color:#718096;font-size:13px}
-#message{font-size:12px;color:#176b43;margin-top:12px;line-height:1.6}
+#message{font-size:13px;margin-top:12px;line-height:1.6}
+.success{color:#176b43}
+.error{color:#b42318}
+.muted{color:#718096}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
+.completed{background:#e6f7ed;color:#167443}
+.incomplete{background:#fff2d5;color:#946200}
+.correct{color:#167443;font-weight:bold}
+.wrong{color:#b42318;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:1000;padding:15px;overflow:auto}
+.modal-box{background:white;max-width:1050px;margin:25px auto;border-radius:13px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.question-card{border:1px solid #e2e7ef;border-radius:10px;padding:15px;margin:12px 0}
+.question-card h4{color:var(--navy);margin-bottom:10px;font-size:14px;line-height:1.6}
+.answer-line{font-size:13px;line-height:1.8}
+.answer-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.option{background:#f4f6fa;padding:9px;border-radius:7px;font-size:12px}
+.option.selected{border:1px solid var(--gold);background:#fff9e7}
+.option.answer-correct{border:1px solid #27965c;background:#eaf8ef}
 footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-top:30px;font-size:12px}
 @media(max-width:700px){
 .stats{grid-template-columns:1fr 1fr}
 .grid{grid-template-columns:1fr}
 .card{padding:15px}
+.modal-box{padding:13px}
+.answer-options{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -54,67 +76,47 @@ footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-
 <div class="top">
 <div>
 <h1>Student Answer Sheets</h1>
-<p style="font-size:12px;color:#718096;margin-top:7px">
-Review examination submissions and student responses.
+<p class="muted" style="font-size:13px;margin-top:7px">
+Live examination submissions and detailed student responses.
 </p>
 </div>
 <a href="dashboard.html" class="btn light">← Dashboard</a>
 </div>
 
 <div class="notice">
-<strong>PREVIEW MODE:</strong>
-Real answer sheets will appear after Supabase integration.
-This page does not currently access or modify student submissions.
+<strong>LIVE ADMIN PANEL:</strong>
+Actual examination records are retrieved from Supabase.
+Correct answers and explanations are visible only in this authorized admin panel.
 </div>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:17px">Submission Overview</h3>
-
 <div class="stats">
-<div class="stat">
-<small>Total Submissions</small>
-<strong>--</strong>
+<div class="stat"><small>Total Submissions</small><strong id="total">0</strong></div>
+<div class="stat"><small>Completed Exams</small><strong id="completed">0</strong></div>
+<div class="stat"><small>Incomplete Exams</small><strong id="incomplete">0</strong></div>
+<div class="stat"><small>Pending Review</small><strong id="pending">0</strong></div>
 </div>
-<div class="stat">
-<small>Completed Exams</small>
-<strong>--</strong>
-</div>
-<div class="stat">
-<small>Incomplete Exams</small>
-<strong>--</strong>
-</div>
-<div class="stat">
-<small>Pending Review</small>
-<strong>--</strong>
-</div>
-</div>
-
 </section>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:17px">Search Answer Sheets</h3>
-
 <div class="grid">
-
 <div>
 <label>Registration ID / Student Name</label>
 <input id="search" placeholder="Enter registration ID or name">
 </div>
-
 <div>
 <label>Examination Paper</label>
 <select id="paper">
 <option value="">All Papers</option>
-<option value="RP10">10th Passed</option>
-<option value="RP11PCB">Class 11 PCB</option>
-<option value="RP11PCM">Class 11 PCM</option>
-<option value="RP12PCB">Class 12 PCB</option>
-<option value="RP12PCM">Class 12 PCM</option>
+<option value="8ef2cdd9-29e1-4775-94f6-c622499bb9e1">10th Passed</option>
+<option value="16b47af1-2959-493e-8f92-c4f89ae21999">Class 11 PCB</option>
+<option value="5b4e711f-b637-4e68-bd40-5a8544647b71">Class 11 PCM</option>
+<option value="0b0d9b22-8c01-488e-a9cd-e6f4c505542e">Class 12 PCB</option>
+<option value="d08b2a65-b3cc-426c-8637-366e55642c37">Class 12 PCM</option>
 </select>
 </div>
-
 <div>
 <label>Submission Status</label>
 <select id="status">
@@ -123,26 +125,21 @@ This page does not currently access or modify student submissions.
 <option value="Incomplete">Incomplete</option>
 </select>
 </div>
-
 </div>
-
 <div class="toolbar">
 <button id="searchBtn">Search</button>
 <button class="light" id="resetBtn">Reset</button>
 <button class="gold" id="exportBtn">Export CSV</button>
+<button class="light" id="refreshBtn">Refresh Data</button>
 </div>
-
 <p id="message" role="status"></p>
-
 </section>
 
 <section class="card">
-
 <div class="top">
 <h3 style="color:#0A1931">Examination Submissions</h3>
-<span style="font-size:12px;color:#718096" id="count">0 Records</span>
+<span class="muted" id="count">0 Records</span>
 </div>
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -152,134 +149,446 @@ This page does not currently access or modify student submissions.
 <th>Paper</th>
 <th>Attempted</th>
 <th>Unattempted</th>
-<th>Submission Status</th>
+<th>Score</th>
+<th>Status</th>
 <th>Action</th>
 </tr>
 </thead>
-
 <tbody id="records">
-<tr>
-<td colspan="7" class="empty">
-No answer sheet records available.<br><br>
-Connect the examination database to view student submissions.
-</td>
-</tr>
+<tr><td colspan="8" class="empty">Loading records...</td></tr>
 </tbody>
-
 </table>
 </div>
-
-</section>
-
-<section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:14px">Answer Sheet Review Process</h3>
-
-<div style="font-size:13px;line-height:2;color:#536078">
-<p>1. Student completes the online examination.</p>
-<p>2. System automatically submits the final answers.</p>
-<p>3. Answers are stored securely in Supabase.</p>
-<p>4. Admin can retrieve the student's answer sheet.</p>
-<p>5. Admin can review attempted and unattempted questions.</p>
-<p>6. Final marks will be uploaded separately through Result Management.</p>
-</div>
-
 </section>
 
 </main>
 
-<footer>
-RAKESHH PHYSICS | Another Name For Success
-</footer>
+<div class="modal" id="detailModal">
+<div class="modal-box">
+<div class="modal-head">
+<div>
+<h2 style="color:#0A1931">Student Answer Sheet</h2>
+<p id="detailStudent" class="muted" style="margin-top:6px;font-size:13px"></p>
+</div>
+<button class="light" id="closeModal">Close ×</button>
+</div>
+<div id="detailSummary" class="notice"></div>
+<div class="toolbar" style="margin-bottom:15px">
+<button class="gold" id="downloadDetail">Download Answer Sheet CSV</button>
+</div>
+<div id="questionDetails"></div>
+</div>
+</div>
+
+<footer>RAKESHH PHYSICS | Another Name For Success</footer>
 
 <script>
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-const submissions=[];
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function filterRecords(){
+let attempts = [];
+let students = [];
+let papers = [];
+let responses = [];
+let questions = [];
+let currentDetail = null;
 
-const search=document.getElementById("search").value.toLowerCase();
-const paper=document.getElementById("paper").value;
-const status=document.getElementById("status").value;
+const $ = id => document.getElementById(id);
 
-return submissions.filter(s=>
-(!search || s.id.toLowerCase().includes(search) ||
-s.name.toLowerCase().includes(search)) &&
-(!paper || s.paper===paper) &&
-(!status || s.status===status)
-);
+function setMessage(message,type="success"){
+  $("message").textContent = message;
+  $("message").className = type;
+}
 
+function isCompleted(a){
+  return !!a.submitted_at ||
+    ["completed","submitted"].includes(String(a.status || "").toLowerCase());
+}
+
+function getStudent(id){
+  return students.find(s=>s.id===id) || {};
+}
+
+function getPaper(id){
+  return papers.find(p=>p.id===id) || {};
+}
+
+function safe(value){
+  return value === null || value === undefined || value === "" ? "—" : String(value);
+}
+
+async function loadData(){
+  setMessage("Checking administrator login and loading records...");
+
+  try{
+    const {data:{user},error:authError} = await client.auth.getUser();
+
+    if(authError || !user){
+      setMessage("Admin login required. Please login again.","error");
+      $("records").innerHTML =
+        '<tr><td colspan="8" class="empty">Please login as an authorized Scholarship Administrator.</td></tr>';
+      return;
+    }
+
+    const [aResult,sResult,pResult] = await Promise.all([
+      client.from("scholarship_exam_attempts").select("*").order("started_at",{ascending:false}).limit(2000),
+      client.from("scholarship_students").select("*").limit(2000),
+      client.from("scholarship_exam_papers").select("*")
+    ]);
+
+    if(aResult.error) throw aResult.error;
+    if(sResult.error) throw sResult.error;
+    if(pResult.error) throw pResult.error;
+
+    attempts = aResult.data || [];
+    students = sResult.data || [];
+    papers = pResult.data || [];
+
+    const attemptIds = attempts.map(a=>a.id).filter(Boolean);
+
+    if(attemptIds.length){
+      const [rResult,qResult] = await Promise.all([
+        client.from("scholarship_student_responses")
+          .select("*")
+          .in("attempt_id",attemptIds)
+          .limit(100000),
+
+        client.from("scholarship_questions")
+          .select("id,exam_paper_id,question_text,options,correct_option,explanation,subject,question_order,marks_correct,marks_wrong")
+          .limit(10000)
+      ]);
+
+      if(rResult.error) throw rResult.error;
+      if(qResult.error) throw qResult.error;
+
+      responses = rResult.data || [];
+      questions = qResult.data || [];
+    }else{
+      responses = [];
+      questions = [];
+    }
+
+    updateStats();
+    render();
+
+    setMessage("Live data successfully loaded from Supabase. "+attempts.length+" attempts found.","success");
+
+  }catch(error){
+    console.error(error);
+    setMessage("Unable to load data: "+(error.message || "Unknown error")+
+      ". Check admin login and Supabase RLS policies.","error");
+    $("records").innerHTML =
+      '<tr><td colspan="8" class="empty">Data could not be loaded. See the error message above.</td></tr>';
+  }
+}
+
+function updateStats(){
+  const done = attempts.filter(isCompleted).length;
+  $("total").textContent = attempts.length;
+  $("completed").textContent = done;
+  $("incomplete").textContent = attempts.length-done;
+  $("pending").textContent = done;
+}
+
+function filteredAttempts(){
+  const term=$("search").value.trim().toLowerCase();
+  const paper=$("paper").value;
+  const status=$("status").value;
+
+  return attempts.filter(a=>{
+    const student=getStudent(a.student_id);
+    const id=String(student.registration_id || "").toLowerCase();
+    const name=String(student.student_name || "").toLowerCase();
+    const completed=isCompleted(a);
+
+    return (!term || id.includes(term) || name.includes(term)) &&
+      (!paper || a.exam_paper_id===paper) &&
+      (!status || (status==="Completed" ? completed : !completed));
+  });
 }
 
 function render(){
+  const data=filteredAttempts();
+  $("count").textContent=data.length+" Records";
+  const tbody=$("records");
+  tbody.replaceChildren();
 
-const data=filterRecords();
-const tbody=document.getElementById("records");
+  if(!data.length){
+    const tr=document.createElement("tr");
+    const td=document.createElement("td");
+    td.colSpan=8;
+    td.className="empty";
+    td.textContent="No matching examination submissions found.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
 
-document.getElementById("count").textContent=
-data.length+" Records";
+  data.forEach(a=>{
+    const student=getStudent(a.student_id);
+    const paper=getPaper(a.exam_paper_id);
+    const done=isCompleted(a);
+    const submitted=responses.filter(r=>r.attempt_id===a.id);
+    const attempted=submitted.filter(r=>r.selected_option!==null && r.selected_option!=="").length;
+    const unattempted=Math.max(0,Number(paper.total_questions || 50)-attempted);
 
-tbody.innerHTML="";
+    const tr=document.createElement("tr");
 
-if(!data.length){
+    [
+      safe(student.registration_id),
+      safe(student.student_name),
+      safe(paper.title),
+      attempted,
+      unattempted,
+      a.score===null || a.score===undefined ? "Pending" : a.score
+    ].forEach(value=>{
+      const td=document.createElement("td");
+      td.textContent=value;
+      tr.appendChild(td);
+    });
 
-const tr=document.createElement("tr");
-const td=document.createElement("td");
+    const statusTd=document.createElement("td");
+    const pill=document.createElement("span");
+    pill.className="pill "+(done?"completed":"incomplete");
+    pill.textContent=done?"Completed":"In Progress";
+    statusTd.appendChild(pill);
+    tr.appendChild(statusTd);
 
-td.colSpan=7;
-td.className="empty";
-td.textContent="No matching submissions. Database integration pending.";
+    const actionTd=document.createElement("td");
+    const btn=document.createElement("button");
+    btn.className="gold";
+    btn.textContent="View Answers";
+    btn.onclick=()=>openDetail(a.id);
+    actionTd.appendChild(btn);
+    tr.appendChild(actionTd);
 
-tr.appendChild(td);
-tbody.appendChild(tr);
-return;
-
+    tbody.appendChild(tr);
+  });
 }
 
-data.forEach(s=>{
-
-const tr=document.createElement("tr");
-
-[s.id,s.name,s.paper,s.attempted,s.unattempted,s.status]
-.forEach(value=>{
-
-const td=document.createElement("td");
-td.textContent=value;
-tr.appendChild(td);
-
-});
-
-const action=document.createElement("td");
-action.textContent="Database integration pending";
-tr.appendChild(action);
-
-tbody.appendChild(tr);
-
-});
-
+function answerLabel(q,key){
+  if(!key) return "Not Attempted";
+  const opts=q.options;
+  if(Array.isArray(opts)){
+    const found=opts.find(o=>String(o.key||o.id||"").toUpperCase()===String(key).toUpperCase());
+    return found ? (found.text || found.value || key) : key;
+  }
+  if(opts && typeof opts==="object"){
+    const val=opts[key] ?? opts[String(key).toUpperCase()];
+    if(typeof val==="string") return val;
+    if(val && typeof val==="object") return val.text || val.value || key;
+  }
+  return key;
 }
 
-document.getElementById("searchBtn").onclick=render;
+function optionEntries(options){
+  if(Array.isArray(options)){
+    return options.map((o,i)=>({
+      key:String(o.key || o.id || String.fromCharCode(65+i)),
+      text:typeof o==="string"?o:(o.text || o.value || "")
+    }));
+  }
+  if(options && typeof options==="object"){
+    return Object.entries(options).map(([key,value])=>({
+      key,
+      text:typeof value==="string"?value:(value?.text || value?.value || "")
+    }));
+  }
+  return [];
+}
 
-document.getElementById("resetBtn").onclick=()=>{
+function openDetail(attemptId){
+  const a=attempts.find(x=>x.id===attemptId);
+  if(!a) return;
 
-document.getElementById("search").value="";
-document.getElementById("paper").value="";
-document.getElementById("status").value="";
+  const student=getStudent(a.student_id);
+  const paper=getPaper(a.exam_paper_id);
+  const done=isCompleted(a);
 
-render();
+  const answerRows=responses
+    .filter(r=>r.attempt_id===a.id);
 
+  const paperQuestions=questions
+    .filter(q=>q.exam_paper_id===a.exam_paper_id)
+    .sort((x,y)=>Number(x.question_order)-Number(y.question_order));
+
+  const attempted=answerRows.filter(r=>r.selected_option!==null && r.selected_option!=="").length;
+  const correct=answerRows.filter(r=>r.is_correct===true).length;
+  const wrong=answerRows.filter(r=>r.is_correct===false).length;
+  const unattempted=Math.max(0,Number(paper.total_questions || 50)-attempted);
+
+  $("detailStudent").textContent =
+    safe(student.student_name)+" | "+safe(student.registration_id)+" | "+safe(paper.title);
+
+  $("detailSummary").textContent =
+    "Status: "+(done?"Completed":"In Progress")+
+    " | Score: "+safe(a.score)+
+    " | Attempted: "+attempted+
+    " | Correct: "+correct+
+    " | Wrong: "+wrong+
+    " | Unattempted: "+unattempted;
+
+  const container=$("questionDetails");
+  container.replaceChildren();
+
+  if(!paperQuestions.length){
+    container.textContent="Question records were not found for this examination paper.";
+  }
+
+  paperQuestions.forEach(q=>{
+    const response=answerRows.find(r=>r.question_id===q.id);
+    const selected=response?.selected_option || "";
+    const correctOption=q.correct_option || "";
+    const result=response?.is_correct===true?"Correct":
+      response?.is_correct===false?"Wrong":
+      selected?"Not Evaluated":"Not Attempted";
+
+    const box=document.createElement("div");
+    box.className="question-card";
+
+    const heading=document.createElement("h4");
+    heading.textContent="Question "+q.question_order+" | "+safe(q.subject);
+    box.appendChild(heading);
+
+    const question=document.createElement("p");
+    question.textContent=q.question_text || "";
+    question.style.cssText="font-size:14px;line-height:1.7;margin-bottom:10px";
+    box.appendChild(question);
+
+    const options=document.createElement("div");
+    options.className="answer-options";
+
+    optionEntries(q.options).forEach(o=>{
+      const item=document.createElement("div");
+      item.className="option";
+      if(o.key===selected) item.classList.add("selected");
+      if(o.key===correctOption) item.classList.add("answer-correct");
+      item.textContent=o.key+". "+o.text;
+      options.appendChild(item);
+    });
+
+    box.appendChild(options);
+
+    const details=document.createElement("div");
+    details.className="answer-line";
+
+    const selectedLine=document.createElement("p");
+    selectedLine.textContent="Student Answer: "+(selected ? selected+". "+answerLabel(q,selected) : "Not Attempted");
+    details.appendChild(selectedLine);
+
+    const correctLine=document.createElement("p");
+    correctLine.textContent="Correct Answer: "+(correctOption ? correctOption+". "+answerLabel(q,correctOption) : "Not available");
+    correctLine.className="correct";
+    details.appendChild(correctLine);
+
+    const resultLine=document.createElement("p");
+    resultLine.textContent="Evaluation: "+result+
+      " | Marks: "+safe(response?.marks_awarded ?? (selected?"Pending":"0"));
+    resultLine.className=response?.is_correct===true?"correct":
+      response?.is_correct===false?"wrong":"";
+    details.appendChild(resultLine);
+
+    if(q.explanation){
+      const explanation=document.createElement("p");
+      explanation.textContent="Explanation: "+q.explanation;
+      explanation.style.cssText="margin-top:7px;color:#536078";
+      details.appendChild(explanation);
+    }
+
+    box.appendChild(details);
+    container.appendChild(box);
+  });
+
+  currentDetail={attempt:a,student,paper,answerRows,paperQuestions};
+  $("detailModal").style.display="block";
+}
+
+function csvCell(value){
+  return '"'+String(value??"").replace(/"/g,'""')+'"';
+}
+
+function downloadCSV(filename,rows){
+  const csv=rows.map(row=>row.map(csvCell).join(",")).join("\n");
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download=filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+$("downloadDetail").onclick=()=>{
+  if(!currentDetail) return;
+
+  const {attempt,student,paper,answerRows,paperQuestions}=currentDetail;
+  const rows=[[
+    "Registration ID","Student Name","Paper","Question No","Subject",
+    "Question","Student Answer","Correct Answer","Is Correct","Marks","Explanation"
+  ]];
+
+  paperQuestions.forEach(q=>{
+    const r=answerRows.find(x=>x.question_id===q.id);
+    rows.push([
+      student.registration_id,student.student_name,paper.title,q.question_order,
+      q.subject,q.question_text,
+      r?.selected_option || "Not Attempted",
+      q.correct_option || "",
+      r?.is_correct===true?"Correct":r?.is_correct===false?"Wrong":"Not Evaluated",
+      r?.marks_awarded ?? "",
+      q.explanation || ""
+    ]);
+  });
+
+  downloadCSV((student.registration_id || "student")+"-answer-sheet.csv",rows);
 };
 
-document.getElementById("exportBtn").onclick=()=>{
+$("exportBtn").onclick=()=>{
+  const data=filteredAttempts();
+  const rows=[[
+    "Registration ID","Student Name","Paper","Attempted","Unattempted",
+    "Score","Status","Started At","Submitted At"
+  ]];
 
-document.getElementById("message").textContent=
-"No real submissions are connected yet. CSV export will be enabled after database integration.";
+  data.forEach(a=>{
+    const s=getStudent(a.student_id);
+    const p=getPaper(a.exam_paper_id);
+    const r=responses.filter(x=>x.attempt_id===a.id);
+    const attempted=r.filter(x=>x.selected_option!==null && x.selected_option!=="").length;
 
+    rows.push([
+      s.registration_id,s.student_name,p.title,attempted,
+      Math.max(0,Number(p.total_questions||50)-attempted),
+      a.score,isCompleted(a)?"Completed":"In Progress",
+      a.started_at,a.submitted_at
+    ]);
+  });
+
+  downloadCSV("Rakeshh-Physics-Answer-Sheets.csv",rows);
+  setMessage("CSV export generated successfully.");
 };
 
-render();
+$("searchBtn").onclick=render;
+$("search").addEventListener("input",render);
+$("paper").onchange=render;
+$("status").onchange=render;
 
+$("resetBtn").onclick=()=>{
+  $("search").value="";
+  $("paper").value="";
+  $("status").value="";
+  render();
+};
+
+$("refreshBtn").onclick=loadData;
+$("closeModal").onclick=()=>{$("detailModal").style.display="none";};
+$("detailModal").onclick=e=>{
+  if(e.target===$("detailModal")) $("detailModal").style.display="none";
+};
+
+loadData();
 </script>
 
 </body>
