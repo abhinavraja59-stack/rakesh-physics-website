@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Result Management | Rakeshh Physics</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{--navy:#0A1931;--gold:#D4AF37}
@@ -12,7 +13,7 @@ body{font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
 header{background:var(--navy);color:white;padding:20px 5%;border-bottom:4px solid var(--gold)}
 header h2{color:var(--gold);font-size:22px}
 header p{font-size:11px;margin-top:5px}
-.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.container{max-width:1250px;margin:25px auto;padding:0 15px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--navy);font-size:25px}
 .card{background:white;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px #00000008}
@@ -32,11 +33,17 @@ button,.btn{border:0;border-radius:8px;padding:12px 16px;background:var(--navy);
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
 .notice{background:#fff6dc;color:#775d0e;padding:13px;border-radius:9px;font-size:12px;line-height:1.7;margin-bottom:18px}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:750px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e7ebf1;font-size:12px;vertical-align:middle}
 th{background:#f4f6fa;color:#536078}
-.badge{padding:5px 8px;border-radius:20px;background:#fff2d1;color:#80600b;font-size:10px}
-#message{font-size:12px;margin-top:12px;line-height:1.6;color:#176b43}
+.badge{padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold}
+.published{background:#e6f7ed;color:#167443}
+.unpublished{background:#fff2d1;color:#80600b}
+#message,#publishMessage{font-size:13px;margin-top:12px;line-height:1.6}
+.success{color:#176b43}
+.error{color:#b42318}
+.muted{color:#718096}
+.empty{text-align:center;padding:30px;color:#718096}
 footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-top:30px;font-size:12px}
 @media(max-width:700px){
 .grid{grid-template-columns:1fr}
@@ -58,7 +65,7 @@ footer{text-align:center;padding:20px;background:var(--navy);color:white;margin-
 <div class="top">
 <div>
 <h1>Result Management</h1>
-<p style="font-size:12px;color:#718096;margin-top:7px">
+<p class="muted" style="font-size:13px;margin-top:7px">
 Official scholarship examination result administration.
 </p>
 </div>
@@ -66,124 +73,70 @@ Official scholarship examination result administration.
 </div>
 
 <div class="notice">
-<strong>ADMIN PREVIEW MODE:</strong>
-Results uploaded here are currently processed in browser memory.
-Official publication, permanent storage and student access require
-secure Supabase integration and Director authentication.
+<strong>LIVE RESULT MANAGEMENT:</strong>
+Results are retrieved from Supabase. Merit ranks are calculated separately for each examination paper. Publication changes are saved to the database.
 </div>
 
 <section class="card">
-
 <h3 style="color:#0A1931;margin-bottom:16px">Result Overview</h3>
-
 <div class="stats">
-<div class="stat">
-<small>Total Results Loaded</small>
-<strong id="total">0</strong>
+<div class="stat"><small>Total Results</small><strong id="total">0</strong></div>
+<div class="stat"><small>Published Results</small><strong id="publishedCount">0</strong></div>
+<div class="stat"><small>Highest Marks</small><strong id="highest">--</strong></div>
+<div class="stat"><small>Pending Publication</small><strong id="pending">0</strong></div>
 </div>
-<div class="stat">
-<small>Qualified Students</small>
-<strong id="qualified">0</strong>
-</div>
-<div class="stat">
-<small>Highest Marks</small>
-<strong id="highest">--</strong>
-</div>
-<div class="stat">
-<small>Publication Status</small>
-<strong id="publication" style="font-size:15px">Unpublished</strong>
-</div>
-</div>
-
 </section>
 
 <section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:18px">Select Result Category</h3>
+<h3 style="color:#0A1931;margin-bottom:17px">Select Result Category</h3>
 
 <div class="grid">
-
 <div class="field">
 <label>Examination Paper</label>
 <select id="paper">
-<option value="RP10">10th Passed – Combined JEE + NEET</option>
-<option value="RP11PCB">Class 11 – PCB</option>
-<option value="RP11PCM">Class 11 – PCM</option>
-<option value="RP12PCB">Class 12 – PCB</option>
-<option value="RP12PCM">Class 12 – PCM</option>
+<option value="8ef2cdd9-29e1-4775-94f6-c622499bb9e1">10th Passed – Combined JEE + NEET</option>
+<option value="16b47af1-2959-493e-8f92-c4f89ae21999">Class 11 – PCB</option>
+<option value="5b4e711f-b637-4e68-bd40-5a8544647b71">Class 11 – PCM</option>
+<option value="0b0d9b22-8c01-488e-a9cd-e6f4c505542e">Class 12 – PCB</option>
+<option value="d08b2a65-b3cc-426c-8637-366e55642c37">Class 12 – PCM</option>
 </select>
 </div>
 
 <div class="field">
 <label>Result Session</label>
-<input id="session" value="Scholarship Test 2027">
+<input id="session" value="Scholarship Test 2027" readonly>
 </div>
 
 <div class="field">
-<label>Result Status</label>
-<select id="status">
-<option value="Draft">Draft</option>
-<option value="Final">Final Result</option>
+<label>Publication Status</label>
+<select id="filterStatus">
+<option value="">All Results</option>
+<option value="Published">Published</option>
+<option value="Unpublished">Unpublished</option>
 </select>
 </div>
-
-</div>
-
-</section>
-
-<section class="card">
-
-<h3 style="color:#0A1931;margin-bottom:15px">Upload Result CSV</h3>
-
-<div class="notice">
-CSV format must contain these columns:
-
-<strong>registration_id, student_name, paper, marks</strong>
-
-Maximum marks: 200. Valid marks range: 0 to 200.
-Negative marks are already included in the final marks you upload.
-</div>
-
-<div class="field">
-<label>Select Result CSV File</label>
-<input type="file" id="resultFile" accept=".csv,text/csv">
 </div>
 
 <div class="toolbar">
-<button class="light" id="templateBtn">Download CSV Template</button>
-<button class="gold" id="uploadBtn">Preview & Validate Result</button>
+<button id="refreshBtn" class="light">Refresh Results</button>
+<button id="exportBtn" class="gold">Export Merit List CSV</button>
 </div>
 
 <p id="message" role="status"></p>
-
 </section>
 
 <section class="card">
 
 <div class="top">
-<h3 style="color:#0A1931">Result Records & Merit List</h3>
-<button class="light" id="exportBtn">Export Result CSV</button>
+<h3 style="color:#0A1931">Merit List</h3>
+<span class="muted" id="recordCount">0 Records</span>
 </div>
 
 <div class="grid">
-
 <div class="field">
 <label>Search Student</label>
-<input id="search" placeholder="Registration ID or Name">
+<input id="search" placeholder="Registration ID or student name">
 </div>
-
-<div class="field">
-<label>Filter Paper</label>
-<select id="filterPaper">
-<option value="">All Papers</option>
-<option value="RP10">RP10</option>
-<option value="RP11PCB">RP11PCB</option>
-<option value="RP11PCM">RP11PCM</option>
-<option value="RP12PCB">RP12PCB</option>
-<option value="RP12PCM">RP12PCM</option>
-</select>
-</div>
-
 </div>
 
 <div class="table-wrap">
@@ -196,13 +149,11 @@ Negative marks are already included in the final marks you upload.
 <th>Paper</th>
 <th>Marks / 200</th>
 <th>Percentage</th>
-<th>Status</th>
+<th>Publication</th>
 </tr>
 </thead>
 <tbody id="resultTable">
-<tr><td colspan="7" style="text-align:center;padding:30px">
-No result records available.
-</td></tr>
+<tr><td colspan="7" class="empty">Loading results...</td></tr>
 </tbody>
 </table>
 </div>
@@ -211,329 +162,356 @@ No result records available.
 
 <section class="card">
 
-<h3 style="color:#0A1931;margin-bottom:14px">Result Publication</h3>
+<h3 style="color:#0A1931;margin-bottom:12px">Result Publication</h3>
 
 <div class="notice">
-Publishing results on this preview page does not make them
-visible to students. Live publication will be connected to
-the authenticated Director Admin account later.
+Select one examination paper above. The Publish button publishes all available result records for that paper. Unpublish reverses publication for that paper. Please verify the merit list before publishing.
 </div>
+
+<p id="selectedPaperName" style="font-weight:bold;color:#0A1931;font-size:13px"></p>
 
 <div class="toolbar">
-<button class="green" id="publishBtn">Publish Preview</button>
-<button class="red" id="unpublishBtn">Unpublish Preview</button>
+<button class="green" id="publishBtn">Publish Selected Paper</button>
+<button class="red" id="unpublishBtn">Unpublish Selected Paper</button>
 </div>
 
-<p id="publishMessage" style="font-size:12px;margin-top:12px"></p>
+<p id="publishMessage" role="status"></p>
 
 </section>
 
 </main>
 
 <footer>
-RAKESHH PHYSICS | Another Name For Success
+RAKESHH PHYSICS | Vidya | Gyana | Vikas
 </footer>
 
 <script>
+const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-let results=[];
-let published=false;
+const client = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-function escapeCSV(value){
- return '"'+String(value??"").replace(/"/g,'""')+'"';
-}
-
-function downloadFile(name,content){
- const blob=new Blob(["\uFEFF"+content],{
-  type:"text/csv;charset=utf-8"
- });
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;
- a.download=name;
- a.click();
- URL.revokeObjectURL(url);
-}
-
-$("templateBtn").onclick=()=>{
-
- const header=[
-  "registration_id",
-  "student_name",
-  "paper",
-  "marks"
- ];
-
- const sample=[
-  "RP2027001",
-  "Student Name",
-  "RP10",
-  "165"
- ];
-
- downloadFile(
-  "rakeshh-result-template.csv",
-  header.join(",")+"\n"+
-  sample.map(escapeCSV).join(",")+"\n"
- );
-
+const PAPER_NAMES = {
+"8ef2cdd9-29e1-4775-94f6-c622499bb9e1":"10th Passed",
+"16b47af1-2959-493e-8f92-c4f89ae21999":"Class 11 PCB",
+"5b4e711f-b637-4e68-bd40-5a8544647b71":"Class 11 PCM",
+"0b0d9b22-8c01-488e-a9cd-e6f4c505542e":"Class 12 PCB",
+"d08b2a65-b3cc-426c-8637-366e55642c37":"Class 12 PCM"
 };
 
-function parseCSV(text){
+let results = [];
+let students = [];
+let papers = [];
+let rankedResults = [];
 
- const rows=[];
- let row=[],cell="",quoted=false;
+function message(text,type="success"){
+ $("message").textContent=text;
+ $("message").className=type;
+}
 
- for(let i=0;i<text.length;i++){
+function publishMessage(text,type="success"){
+ $("publishMessage").textContent=text;
+ $("publishMessage").className=type;
+}
 
-  const ch=text[i];
+function isPublished(r){
+ return r.is_published===true;
+}
 
-  if(ch==='"'){
-   if(quoted && text[i+1]==='"'){
-    cell+='"';i++;
-   }else{
-    quoted=!quoted;
+function studentFor(id){
+ return students.find(s=>s.id===id) || {};
+}
+
+function paperFor(id){
+ return papers.find(p=>p.id===id) || {};
+}
+
+function calculateRanks(){
+ const groups={};
+
+ results.forEach(r=>{
+  const key=r.exam_paper_id;
+  if(!groups[key]) groups[key]=[];
+  groups[key].push(r);
+ });
+
+ rankedResults=[];
+
+ Object.values(groups).forEach(group=>{
+  group.sort((a,b)=>
+   Number(b.total_marks||0)-Number(a.total_marks||0)
+  );
+
+  let previousMarks=null;
+  let currentRank=0;
+
+  group.forEach((r,index)=>{
+   const marks=Number(r.total_marks||0);
+   if(previousMarks===null || marks!==previousMarks){
+    currentRank=index+1;
    }
-  }else if(ch===","&&!quoted){
-   row.push(cell);cell="";
-  }else if((ch==="\n"||ch==="\r")&&!quoted){
-   if(ch==="\r"&&text[i+1]==="\n")i++;
-   row.push(cell);
-   if(row.some(x=>x.trim()))rows.push(row);
-   row=[];cell="";
-  }else{
-   cell+=ch;
-  }
 
- }
+   previousMarks=marks;
 
- row.push(cell);
- if(row.some(x=>x.trim()))rows.push(row);
+   rankedResults.push({
+    ...r,
+    calculatedRank:currentRank
+   });
+  });
+ });
+}
 
- return rows;
+function updateStats(){
+ const total=results.length;
+ const published=results.filter(isPublished).length;
 
+ const highest=total
+  ? Math.max(...results.map(r=>Number(r.total_marks||0)))
+  : null;
+
+ $("total").textContent=total;
+ $("publishedCount").textContent=published;
+ $("pending").textContent=total-published;
+ $("highest").textContent=highest===null?"--":highest;
+}
+
+function filteredResults(){
+ const term=$("search").value.trim().toLowerCase();
+ const paper=$("paper").value;
+ const status=$("filterStatus").value;
+
+ return rankedResults
+  .filter(r=>{
+   const s=studentFor(r.student_id);
+   const name=String(s.student_name||"").toLowerCase();
+   const reg=String(s.registration_id||"").toLowerCase();
+
+   return r.exam_paper_id===paper &&
+    (!term||name.includes(term)||reg.includes(term)) &&
+    (!status||(status==="Published"?isPublished(r):!isPublished(r)));
+  })
+  .sort((a,b)=>a.calculatedRank-b.calculatedRank);
 }
 
 function render(){
+ const data=filteredResults();
+ const tbody=$("resultTable");
 
- const search=$("search").value.toLowerCase();
- const paper=$("filterPaper").value;
+ tbody.replaceChildren();
+ $("recordCount").textContent=data.length+" Records";
+ $("selectedPaperName").textContent="Selected Paper: "+(PAPER_NAMES[$("paper").value]||"");
 
- const filtered=results
- .filter(r=>
-  (!search||
-   r.registration_id.toLowerCase().includes(search)||
-   r.student_name.toLowerCase().includes(search)
-  )&&(!paper||r.paper===paper)
- )
- .sort((a,b)=>b.marks-a.marks);
-
- $("resultTable").innerHTML="";
-
- if(!filtered.length){
-  $("resultTable").innerHTML=
-   '<tr><td colspan="7" style="text-align:center;padding:30px">No matching results.</td></tr>';
+ if(!data.length){
+  const tr=document.createElement("tr");
+  const td=document.createElement("td");
+  td.colSpan=7;
+  td.className="empty";
+  td.textContent="No result records found for this examination paper.";
+  tr.appendChild(td);
+  tbody.appendChild(tr);
+  return;
  }
 
- filtered.forEach((r,i)=>{
+ data.forEach(r=>{
+  const s=studentFor(r.student_id);
+  const p=paperFor(r.exam_paper_id);
+  const marks=Number(r.total_marks||0);
+  const percentage=(marks/200*100).toFixed(2);
 
   const tr=document.createElement("tr");
 
   [
-   i+1,
-   r.registration_id,
-   r.student_name,
-   r.paper,
-   r.marks,
-   r.marks/2+"%",
-   r.status
+   r.calculatedRank,
+   s.registration_id||"—",
+   s.student_name||"—",
+   p.title||PAPER_NAMES[r.exam_paper_id]||"—",
+   marks,
+   percentage+"%"
   ].forEach(value=>{
    const td=document.createElement("td");
    td.textContent=value;
    tr.appendChild(td);
   });
 
-  $("resultTable").appendChild(tr);
+  const statusTd=document.createElement("td");
+  const badge=document.createElement("span");
+  badge.className="badge "+(isPublished(r)?"published":"unpublished");
+  badge.textContent=isPublished(r)?"Published":"Unpublished";
+  statusTd.appendChild(badge);
+  tr.appendChild(statusTd);
 
+  tbody.appendChild(tr);
  });
-
- $("total").textContent=results.length;
-
- $("qualified").textContent=
- results.filter(r=>r.marks>=80).length;
-
- $("highest").textContent=results.length?
- Math.max(...results.map(r=>r.marks)):"--";
-
- $("publication").textContent=
- published?"Published":"Unpublished";
-
 }
 
-$("uploadBtn").onclick=async()=>{
+async function loadResults(){
+ message("Loading live results from Supabase...");
 
- const file=$("resultFile").files[0];
+ try{
+  const {data:{user},error:authError}=await client.auth.getUser();
 
- if(!file){
-  $("message").textContent="Please select a CSV file.";
-  return;
- }
-
- const rows=parseCSV(await file.text());
-
- if(rows.length<2){
-  $("message").textContent="CSV file has no result records.";
-  return;
- }
-
- const headers=rows[0].map(h=>h.trim().toLowerCase());
-
- const required=[
-  "registration_id",
-  "student_name",
-  "paper",
-  "marks"
- ];
-
- if(required.some(h=>!headers.includes(h))){
-  $("message").textContent="Invalid CSV headers. Download our template.";
-  return;
- }
-
- const index=Object.fromEntries(
-  headers.map((h,i)=>[h,i])
- );
-
- const allowedPapers=[
-  "RP10","RP11PCB","RP11PCM","RP12PCB","RP12PCM"
- ];
-
- const imported=[];
- const seen=new Set();
- const errors=[];
-
- rows.slice(1).forEach((row,i)=>{
-
-  const id=(row[index.registration_id]||"").trim();
-  const name=(row[index.student_name]||"").trim();
-  const paper=(row[index.paper]||"").trim().toUpperCase();
-  const raw=(row[index.marks]||"").trim();
-  const marks=Number(raw);
-
-  if(!id||!name||!allowedPapers.includes(paper)||
-     raw===""||!Number.isFinite(marks)||marks<0||marks>200||
-     !Number.isInteger(marks)){
-   errors.push("Row "+(i+2)+": Invalid or missing data.");
-   return;
+  if(authError||!user){
+   throw new Error("Admin login required. Please login again.");
   }
 
-  if(seen.has(id)){
-   errors.push("Row "+(i+2)+": Duplicate registration ID.");
-   return;
-  }
+  const [r,s,p]=await Promise.all([
+   client.from("scholarship_results")
+    .select("*")
+    .order("created_at",{ascending:false})
+    .limit(5000),
 
-  seen.add(id);
+   client.from("scholarship_students")
+    .select("id,registration_id,student_name")
+    .limit(5000),
 
-  imported.push({
-   registration_id:id,
-   student_name:name,
-   paper,
-   marks,
-   status:"Preview"
-  });
+   client.from("scholarship_exam_papers")
+    .select("id,title,category,stream,total_questions")
+  ]);
 
- });
+  if(r.error) throw r.error;
+  if(s.error) throw s.error;
+  if(p.error) throw p.error;
 
- if(errors.length){
-  $("message").textContent=
-   "Import rejected. "+errors.slice(0,5).join(" ");
-  return;
+  results=r.data||[];
+  students=s.data||[];
+  papers=p.data||[];
+
+  calculateRanks();
+  updateStats();
+  render();
+
+  message("Live results loaded successfully. "+results.length+" result records found.","success");
+
+ }catch(error){
+  console.error(error);
+  message("Unable to load results: "+(error.message||"Unknown error")+
+   ". Check administrator login and Supabase RLS policies.","error");
+
+  $("resultTable").innerHTML=
+   '<tr><td colspan="7" class="empty">Results could not be loaded.</td></tr>';
  }
+}
 
- const selectedPaper=$("paper").value;
+function csvCell(value){
+ return '"'+String(value??"").replace(/"/g,'""')+'"';
+}
 
- if(imported.some(r=>r.paper!==selectedPaper)){
-  $("message").textContent=
-   "Selected paper and CSV paper do not match. Please select the correct paper.";
-  return;
- }
-
- if(!confirm(imported.length+
-  " valid results found. Replace the current preview records?")){
-  return;
- }
-
- results=imported;
- published=false;
-
- render();
-
- $("message").textContent=
- imported.length+
- " records successfully loaded into browser preview. Not saved to database.";
-
-};
-
-$("search").oninput=render;
-$("filterPaper").onchange=render;
+function downloadCSV(filename,rows){
+ const content=rows.map(row=>row.map(csvCell).join(",")).join("\n");
+ const blob=new Blob(["\uFEFF"+content],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download=filename;
+ a.click();
+ URL.revokeObjectURL(url);
+}
 
 $("exportBtn").onclick=()=>{
+ const data=filteredResults();
 
- const columns=[
-  "registration_id",
-  "student_name",
-  "paper",
-  "marks",
-  "rank"
- ];
+ const rows=[[
+  "Rank","Registration ID","Student Name","Paper",
+  "Marks","Maximum Marks","Percentage","Publication Status"
+ ]];
 
- const sorted=[...results].sort((a,b)=>b.marks-a.marks);
+ data.forEach(r=>{
+  const s=studentFor(r.student_id);
+  const p=paperFor(r.exam_paper_id);
+  const marks=Number(r.total_marks||0);
 
- const content=[
-  columns.join(","),
-  ...sorted.map((r,i)=>[
-   r.registration_id,
-   r.student_name,
-   r.paper,
-   r.marks,
-   i+1
-  ].map(escapeCSV).join(","))
- ].join("\n");
+  rows.push([
+   r.calculatedRank,
+   s.registration_id,
+   s.student_name,
+   p.title||PAPER_NAMES[r.exam_paper_id],
+   marks,
+   200,
+   (marks/200*100).toFixed(2)+"%",
+   isPublished(r)?"Published":"Unpublished"
+  ]);
+ });
 
- downloadFile("rakeshh-scholarship-results.csv",content);
-
+ downloadCSV("Rakeshh-Physics-Merit-List.csv",rows);
 };
 
-$("publishBtn").onclick=()=>{
+async function changePublication(shouldPublish){
+ const paperId=$("paper").value;
+ const paperName=PAPER_NAMES[paperId];
 
- if(!results.length){
-  $("publishMessage").textContent=
-   "Upload and validate results first.";
+ const paperResults=rankedResults.filter(r=>r.exam_paper_id===paperId);
+
+ if(!paperResults.length){
+  publishMessage("No results available for the selected paper.","error");
   return;
  }
 
- published=true;
- render();
+ const action=shouldPublish?"PUBLISH":"UNPUBLISH";
 
- $("publishMessage").textContent=
- "Preview marked as Published in this browser only. Students cannot access these results yet.";
+ const confirmation=confirm(
+  action+" results for "+paperName+"?\n\n"+
+  paperResults.length+" result records will be updated in Supabase.\n\n"+
+  "Please verify the merit list before continuing."
+ );
 
-};
+ if(!confirmation) return;
 
-$("unpublishBtn").onclick=()=>{
+ $("publishBtn").disabled=true;
+ $("unpublishBtn").disabled=true;
 
- published=false;
- render();
+ publishMessage("Updating publication status in Supabase...");
 
- $("publishMessage").textContent=
- "Preview publication status changed to Unpublished.";
+ try{
+  const now=new Date().toISOString();
 
-};
+  for(const r of paperResults){
+   const updateData={
+    is_published:shouldPublish,
+    published_at:shouldPublish?now:null,
+    rank:r.calculatedRank
+   };
 
-render();
+   const {error}=await client
+    .from("scholarship_results")
+    .update(updateData)
+    .eq("id",r.id);
 
+   if(error) throw error;
+  }
+
+  publishMessage(
+   shouldPublish
+    ?"Results successfully published in the database."
+    :"Results successfully unpublished in the database.",
+   "success"
+  );
+
+  await loadResults();
+
+ }catch(error){
+  console.error(error);
+  publishMessage(
+   "Publication update failed: "+(error.message||"Unknown error")+
+   ". Check the Results table RLS update policy.",
+   "error"
+  );
+ }finally{
+  $("publishBtn").disabled=false;
+  $("unpublishBtn").disabled=false;
+ }
+}
+
+$("publishBtn").onclick=()=>changePublication(true);
+$("unpublishBtn").onclick=()=>changePublication(false);
+
+$("refreshBtn").onclick=loadResults;
+$("paper").onchange=render;
+$("filterStatus").onchange=render;
+$("search").oninput=render;
+
+loadResults();
 </script>
 
 </body>
