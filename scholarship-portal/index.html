@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<title>Student Portal | Rakeshh Physics</title>
+<meta name="description" content="Rakeshh Physics Digital Examination Portal">
+
+<style>
+:root {
+  --bg:#000000;
+  --navy:#091B38;
+  --gold:#E8B51E;
+  --green:#00D987;
+  --white:#FFFFFF;
+  --muted:#AAB4C4;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+header {
+  padding:25px 6%;
+  border-bottom:1px solid #24334a;
+  text-align:center;
+}
+
+.brand {
+  color:var(--gold);
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.tagline {
+  color:#fff;
+  font-size:10px;
+  letter-spacing:3px;
+  margin-top:7px;
+}
+
+main {
+  width:100%;
+  max-width:1050px;
+  margin:auto;
+  padding:55px 20px 65px;
+}
+
+.section-label {
+  display:table;
+  margin:0 auto 17px;
+  padding:7px 15px;
+  border-radius:5px;
+  background:#004B43;
+  color:var(--green);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+
+h1 {
+  text-align:center;
+  color:var(--gold);
+  font-size:clamp(25px,4vw,36px);
+  margin-bottom:12px;
+}
+
+.intro {
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+  margin-bottom:40px;
+}
+
+.portal-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:24px;
+}
+
+.portal-card {
+  background:var(--navy);
+  border:1px solid #263b5b;
+  border-radius:15px;
+  padding:35px 25px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:245px;
+  transition:border-color .2s,transform .2s;
+}
+
+.portal-card:hover {
+  border-color:var(--gold);
+  transform:translateY(-3px);
+}
+
+.portal-number {
+  color:var(--green);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+  margin-bottom:19px;
+}
+
+.portal-card h2 {
+  color:var(--gold);
+  font-size:clamp(19px,3vw,25px);
+  font-weight:900;
+  line-height:1.4;
+  margin-bottom:25px;
+}
+
+.portal-btn {
+  display:inline-block;
+  background:var(--gold);
+  color:#091B38;
+  padding:13px 24px;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+  min-width:175px;
+  transition:background .2s;
+}
+
+.portal-btn:hover {
+  background:#ffd45a;
+}
+
+footer {
+  border-top:1px solid #24334a;
+  padding:22px 15px;
+  text-align:center;
+  color:#8995a8;
+  font-size:12px;
+  line-height:1.8;
+}
+
+footer strong {color:var(--gold)}
+
+@media(max-width:650px) {
+  header {padding:21px 15px}
+  .brand {font-size:21px}
+  main {padding:40px 17px}
+  .portal-grid {grid-template-columns:1fr;gap:17px}
+  .portal-card {min-height:205px;padding:28px 18px}
+  .intro {margin-bottom:30px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">RAKESHH PHYSICS</div>
+  <div class="tagline">ANOTHER NAME FOR SUCCESS</div>
+</header>
+
+<main>
+
+  <div class="section-label">STUDENT PORTAL</div>
+
+  <h1>Choose Your Examination Portal</h1>
+
+  <p class="intro">
+    Select your portal to continue.
+  </p>
+
+  <section class="portal-grid">
+
+    <article class="portal-card">
+      <div class="portal-number">01</div>
+      <h2>RP SCHOLASTIC ARENA</h2>
+      <a class="portal-btn" href="scholarship.html">
+        ENTER PORTAL
+      </a>
+    </article>
+
+    <article class="portal-card">
+      <div class="portal-number">02</div>
+      <h2>RP ACADEMIC TEST HUB</h2>
+      <a class="portal-btn" href="academic-test-hub.html">
+        ENTER PORTAL
+      </a>
+    </article>
+
+  </section>
+
+</main>
+
+<footer>
+  <strong>RAKESHH PHYSICS</strong>
+  <p>Another Name For Success</p>
+  <p>© 2026 Rakeshh Physics. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
