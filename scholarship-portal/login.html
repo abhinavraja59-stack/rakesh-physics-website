@@ -371,9 +371,15 @@ form.addEventListener("submit", async function(event) {
     }
 
     // Identify student account type.
-    const isInstitute = /^RPI[0-9]{9}$/.test(registrationId);
-    const isScholarship = /^RP[0-9]{9}$/.test(registrationId);
+    const isInstitute =
+    registrationId.length === 12 &&
+    registrationId.startsWith("RPI") &&
+    /^RPI\d{9}$/.test(registrationId);
 
+    const isScholarship =
+    registrationId.length === 11 &&
+    registrationId.startsWith("RP") &&
+    /^RP\d{9}$/.test(registrationId);
     if (!isInstitute && !isScholarship) {
         showMessage(
             "error",
