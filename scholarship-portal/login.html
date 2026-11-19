@@ -247,7 +247,10 @@ footer strong {color:var(--gold)}
             <input
                 type="text"
                 id="registrationId"
-                placeholder="Example: RP202601002"
+                <p class="intro">
+    Welcome to Rakeshh Physics Digital Examination Portal.
+    Login using your Scholarship or Institute Registration ID and Password.
+</p>
                 maxlength="30"
                 autocomplete="username"
                 required
@@ -312,23 +315,20 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
-const DASHBOARD_URL = "student-dashboard.html";
+const SCHOLARSHIP_DASHBOARD = "student-dashboard.html";
+const INSTITUTE_DASHBOARD = "academic-test-hub-dashboard.html";
 
-const supabaseClient =
-    window.supabase &&
-    window.supabase.createClient
-        ? window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_KEY,
-            {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: true
-                }
-            }
-        )
-        : null;
+const supabaseClient = window.supabase?.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+        }
+    }
+);
 
 const form = document.getElementById("loginForm");
 const registrationInput = document.getElementById("registrationId");
@@ -345,6 +345,11 @@ function showMessage(type, text) {
     });
 }
 
+function resetLoginButton() {
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Login to Student Portal";
+}
+
 document.getElementById("togglePassword")
 .addEventListener("click", function() {
     const visible = passwordInput.type === "text";
@@ -358,18 +363,25 @@ form.addEventListener("submit", async function(event) {
     message.className = "message";
     message.textContent = "";
 
-    if (!supabaseClient) {
-        showMessage("error", "Login service could not load. Please refresh.");
-        return;
-    }
-
     const registrationId =
         registrationInput.value.trim().toUpperCase();
 
     const password = passwordInput.value;
 
-    if (!/^RP[0-9]{9}$/.test(registrationId)) {
-        showMessage("error", "Please enter a valid Registration ID.");
+    if (!supabaseClient) {
+        showMessage("error", "Login service could not load. Please refresh.");
+        return;
+    }
+
+    // Identify student account type.
+    const isInstitute = /^RPI[0-9]{9}$/.test(registrationId);
+    const isScholarship = /^RP[0-9]{9}$/.test(registrationId);
+
+    if (!isInstitute && !isScholarship) {
+        showMessage(
+            "error",
+            "Invalid Registration ID. Enter your RP or RPI Registration ID."
+        );
         return;
     }
 
@@ -378,10 +390,12 @@ form.addEventListener("submit", async function(event) {
         return;
     }
 
-    const internalEmail =
-        "rp-" +
-        registrationId.toLowerCase() +
-        "@student-login.rakeshphysics.com";
+    // Match the email alias created by the respective Edge Function.
+    const internalEmail = isInstitute
+        ? "rpi-" + registrationId.toLowerCase() +
+          "@student-login.rakeshphysics.com"
+        : "rp-" + registrationId.toLowerCase() +
+          "@student-login.rakeshphysics.com";
 
     loginBtn.disabled = true;
     loginBtn.textContent = "Verifying Login...";
@@ -393,57 +407,144 @@ form.addEventListener("submit", async function(event) {
                 password: password
             });
 
-        if (error) {
-            console.error("Student login failed:", error);
+        if (error || !data.user) {
             showMessage(
                 "error",
-                "Invalid Registration ID or Password. Please check your details and try again."
+                "Invalid Registration ID or Password. Please try again."
             );
+            resetLoginButton();
             return;
-        }
-
-        if (!data.user) {
-            throw new Error("Student account could not be verified.");
         }
 
         const metadata = data.user.user_metadata || {};
 
+        const expectedAccountType = isInstitute
+            ? "institute_student"
+            : "scholarship_student";
+
         if (
-            metadata.account_type !== "scholarship_student" ||
+            metadata.account_type !== expectedAccountType ||
             metadata.registration_id !== registrationId
         ) {
             await supabaseClient.auth.signOut();
-            throw new Error("This is not a valid scholarship student account.");
+
+            showMessage(
+                "error",
+                "Your account details could not be verified."
+            );
+            resetLoginButton();
+            return;
         }
 
-        // Confirm that the login session has been saved.
+        // Verify the saved authentication session.
         const { data: sessionData, error: sessionError } =
             await supabaseClient.auth.getSession();
 
         if (sessionError || !sessionData.session) {
-            throw new Error("Login session could not be saved. Please try again.");
+            await supabaseClient.auth.signOut();
+
+            showMessage(
+                "error",
+                "Login session could not be verified. Please try again."
+            );
+            resetLoginButton();
+            return;
         }
 
+        // Institute Student: check approval directly from database.
+        if (isInstitute) {
+
+            const { data: student, error: studentError } =
+                await supabaseClient
+                    .from("institute_students")
+                    .select("status")
+                    .eq("auth_user_id", data.user.id)
+                    .maybeSingle();
+
+            if (studentError || !student) {
+                await supabaseClient.auth.signOut();
+
+                showMessage(
+                    "error",
+                    "Institute student record could not be verified. Contact the institute."
+                );
+                resetLoginButton();
+                return;
+            }
+
+            const status = String(student.status).toLowerCase();
+
+            if (status === "pending") {
+                await supabaseClient.auth.signOut();
+
+                showMessage(
+                    "info",
+                    "Your registration is submitted successfully. Your RPI ID is " +
+                    registrationId +
+                    ". Your account is awaiting Admin Approval. Please try again after approval."
+                );
+
+                resetLoginButton();
+                return;
+            }
+
+            if (status === "rejected") {
+                await supabaseClient.auth.signOut();
+
+                showMessage(
+                    "error",
+                    "Your registration has not been approved. Please contact the institute."
+                );
+
+                resetLoginButton();
+                return;
+            }
+
+            if (status !== "approved") {
+                await supabaseClient.auth.signOut();
+
+                showMessage(
+                    "error",
+                    "Your account status is not valid. Please contact the institute."
+                );
+
+                resetLoginButton();
+                return;
+            }
+
+            // Approved Institute Student.
+            showMessage(
+                "success",
+                "Institute Login successful! Opening Academic Test Hub..."
+            );
+
+            loginBtn.textContent = "Login Successful";
+
+            window.location.replace(INSTITUTE_DASHBOARD);
+            return;
+        }
+
+        // Scholarship Student: preserve the existing login flow.
         showMessage(
             "success",
-            "Login successful! Redirecting to your Student Dashboard..."
+            "Scholarship Login successful! Opening Student Dashboard..."
         );
 
         loginBtn.textContent = "Login Successful";
 
-        // Redirect after successful authentication.
-        window.location.replace(DASHBOARD_URL);
+        window.location.replace(SCHOLARSHIP_DASHBOARD);
 
     } catch (error) {
-        console.error("Login error:", error);
+        console.error("Student login error:", error);
+
+        await supabaseClient.auth.signOut();
 
         showMessage(
             "error",
-            error.message || "Unable to login. Please try again."
+            "Unable to complete login. Please try again."
         );
 
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Login to Student Portal";
+        resetLoginButton();
     }
 });
 </script>
