@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration | Rakeshh Physics</title>
+
+<style>
+:root {
+  --navy: #0A1931;
+  --gold: #D4AF37;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #F3F5F9;
+  color: #172033;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  border-bottom: 4px solid var(--gold);
+  padding: 22px 6%;
+}
+
+.brand {
+  color: var(--gold);
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.subtitle {
+  color: white;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+
+main {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 45px 18px;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.heading h1 {
+  color: var(--navy);
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.heading p {
+  color: #68758A;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #E0E5ED;
+  border-radius: 15px;
+  padding: 28px 23px;
+  text-align: center;
+  box-shadow: 0 7px 25px rgba(0,0,0,.05);
+}
+
+.icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #F8F3DF;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 29px;
+  margin: 0 auto 18px;
+}
+
+.card h2 {
+  color: var(--navy);
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #68758A;
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 65px;
+  margin-bottom: 20px;
+}
+
+.card a {
+  display: block;
+  background: var(--navy);
+  color: white;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.card a:hover {
+  background: #19385D;
+}
+
+.back {
+  text-align: center;
+  margin-top: 28px;
+}
+
+.back a {
+  color: #173C69;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  background: var(--navy);
+  color: white;
+  padding: 22px 12px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+footer strong {
+  color: var(--gold);
+}
+
+@media(max-width: 650px) {
+  main {
+    padding: 30px 15px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .heading h1 {
+    font-size: 24px;
+  }
+
+  .card p {
+    min-height: auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">RAKESHH PHYSICS</div>
+  <div class="subtitle">ANOTHER NAME FOR SUCCESS</div>
+</header>
+
+<main>
+
+  <section class="heading">
+    <h1>Student Registration</h1>
+    <p>
+      Select your registration category to continue.
+      Choose the correct portal before proceeding.
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h2>RP SCHOLASTIC ARENA</h2>
+      <p>
+        For students registering for Rakeshh Physics
+        Scholarship Tests.
+      </p>
+      <a href="register.html">
+        Scholarship Registration
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎓</div>
+      <h2>RP ACADEMIC TEST HUB</h2>
+      <p>
+        For enrolled Rakeshh Physics students
+        registering for the Institute Student Portal.
+      </p>
+      <a href="institute-register.html">
+        Institute Student Registration
+      </a>
+    </div>
+
+  </section>
+
+  <div class="back">
+    <a href="login.html">← Back to Student Login</a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>RAKESHH PHYSICS</strong>
+  <p>Another Name For Success</p>
+  <p>© 2026 Rakeshh Physics. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
