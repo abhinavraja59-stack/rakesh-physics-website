@@ -4,219 +4,374 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Login | Rakeshh Physics</title>
-<meta name="description" content="Student login for Rakeshh Physics Scholarship Test 2027.">
+<meta name="description" content="Student login for Rakeshh Physics Scholarship and Academic Test Portal.">
 
 <style>
 :root {
-    --navy:#0A1931;
-    --gold:#D4AF37;
+    --navy: #0A1931;
+    --gold: #D4AF37;
+    --background: #F3F5F9;
+    --text: #172033;
+    --muted: #68758A;
 }
-* {margin:0;padding:0;box-sizing:border-box}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
 
 body {
-    font-family:Arial,sans-serif;
-    background:#f3f5f9;
-    color:#172033;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
+    width: 100%;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
+/* HEADER */
+
 header {
-    background:var(--navy);
-    padding:22px 6%;
-    border-bottom:4px solid var(--gold);
+    width: 100%;
+    background: var(--navy);
+    padding: 20px 6%;
+    border-bottom: 4px solid var(--gold);
 }
 
 .brand {
-    color:var(--gold);
-    font-size:25px;
-    font-weight:900;
-    letter-spacing:1px;
+    color: var(--gold);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 1px;
 }
 
 .subtitle {
-    color:white;
-    font-size:11px;
-    letter-spacing:2px;
-    margin-top:6px;
+    color: white;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 6px;
 }
+
+/* MAIN SECTION */
 
 main {
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:35px 15px;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 16px;
 }
 
+/* LOGIN CARD */
+
 .login-card {
-    background:white;
-    width:100%;
-    max-width:460px;
-    padding:35px;
-    border-radius:16px;
-    box-shadow:0 8px 30px rgba(0,0,0,.07);
+    width: 100%;
+    max-width: 460px;
+    background: white;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.07);
 }
 
 .login-icon {
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    background:#f8f3df;
-    border:2px solid var(--gold);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:29px;
-    margin:0 auto 18px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #F8F3DF;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+    margin: 0 auto 18px;
 }
 
 h1 {
-    text-align:center;
-    color:var(--navy);
-    font-size:27px;
-    margin-bottom:9px;
+    text-align: center;
+    color: var(--navy);
+    font-size: 27px;
+    margin-bottom: 10px;
 }
 
 .intro {
-    text-align:center;
-    color:#68758a;
-    font-size:13px;
-    line-height:1.7;
-    margin-bottom:28px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 26px;
 }
 
+/* FORM */
+
 .field {
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-bottom:19px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 19px;
+    width: 100%;
 }
 
 .field label {
-    font-size:13px;
-    font-weight:bold;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .field input {
-    padding:15px;
-    border:1px solid #d6dce6;
-    border-radius:9px;
-    font-size:15px;
-    width:100%;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid #D6DCE6;
+    border-radius: 9px;
+    font-size: 15px;
+    background: white;
+    color: var(--text);
 }
 
 .field input:focus {
-    outline:none;
-    border-color:var(--gold);
-    box-shadow:0 0 0 2px rgba(212,175,55,.12);
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,.13);
 }
 
-.password-wrap {position:relative}
-.password-wrap input {padding-right:75px}
+.password-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrap input {
+    padding-right: 75px;
+}
 
 .show-password {
-    position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-    border:0;
-    background:transparent;
-    color:#52627a;
-    font-size:12px;
-    font-weight:bold;
-    cursor:pointer;
-    width:auto;
-    padding:5px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #52627A;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px;
 }
 
-button.login-btn {
-    width:100%;
-    background:var(--navy);
-    color:white;
-    border:0;
-    padding:16px;
-    border-radius:9px;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:8px;
+.login-btn {
+    width: 100%;
+    background: var(--navy);
+    color: white;
+    border: 0;
+    padding: 16px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background .2s;
 }
 
-button.login-btn:hover {background:#19385d}
-button:disabled {opacity:.6;cursor:not-allowed}
+.login-btn:hover {
+    background: #19385D;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* MESSAGES */
 
 .message {
-    display:none;
-    padding:14px;
-    margin-top:19px;
-    border-radius:9px;
-    font-size:13px;
-    line-height:1.7;
-    overflow-wrap:anywhere;
+    display: none;
+    padding: 14px;
+    margin-top: 19px;
+    border-radius: 9px;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.message.error,
+.message.success,
+.message.info {
+    display: block;
 }
 
 .message.error {
-    display:block;
-    background:#fff0f0;
-    border:1px solid #efc0c0;
-    color:#9b2828;
+    background: #FFF0F0;
+    border: 1px solid #EFC0C0;
+    color: #9B2828;
 }
 
 .message.success {
-    display:block;
-    background:#eaf8ef;
-    border:1px solid #a8d8b5;
-    color:#176534;
+    background: #EAF8EF;
+    border: 1px solid #A8D8B5;
+    color: #176534;
 }
 
 .message.info {
-    display:block;
-    background:#eaf2ff;
-    border:1px solid #b9d0f2;
-    color:#174578;
+    background: #EAF2FF;
+    border: 1px solid #B9D0F2;
+    color: #174578;
 }
 
+/* INSTRUCTIONS */
+
 .help {
-    background:#fff8e3;
-    border:1px solid #ead58a;
-    padding:14px;
-    border-radius:9px;
-    font-size:12px;
-    color:#755b13;
-    line-height:1.7;
-    margin-top:22px;
+    background: #FFF8E3;
+    border: 1px solid #EAD58A;
+    padding: 15px;
+    border-radius: 9px;
+    font-size: 12px;
+    color: #755B13;
+    line-height: 1.7;
+    margin-top: 22px;
+    overflow-wrap: anywhere;
 }
 
 .register-link {
-    text-align:center;
-    margin-top:24px;
-    font-size:13px;
-    color:#68758a;
+    text-align: center;
+    margin-top: 23px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
 }
 
 .register-link a {
-    color:#173c69;
-    font-weight:bold;
-    text-decoration:none;
+    color: #173C69;
+    font-weight: bold;
+    text-decoration: none;
 }
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* FOOTER */
 
 footer {
-    text-align:center;
-    padding:24px 15px;
-    background:var(--navy);
-    color:white;
-    font-size:12px;
-    line-height:1.9;
+    width: 100%;
+    text-align: center;
+    padding: 22px 15px;
+    background: var(--navy);
+    color: white;
+    font-size: 12px;
+    line-height: 1.9;
 }
 
-footer strong {color:var(--gold)}
+footer strong {
+    color: var(--gold);
+}
 
-@media(max-width:500px) {
-    header {padding:19px 20px}
-    .login-card {padding:25px 21px}
-    h1 {font-size:24px}
+/* TABLET */
+
+@media (max-width: 768px) {
+    header {
+        padding: 19px 22px;
+    }
+
+    main {
+        padding: 28px 16px;
+    }
+
+    .login-card {
+        max-width: 440px;
+        padding: 30px 25px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 500px) {
+    body {
+        min-width: 0;
+    }
+
+    header {
+        padding: 17px 18px;
+    }
+
+    .brand {
+        font-size: 20px;
+    }
+
+    .subtitle {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+
+    main {
+        padding: 24px 14px;
+        align-items: flex-start;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 25px 20px;
+        border-radius: 13px;
+    }
+
+    .login-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .intro {
+        font-size: 13px;
+        margin-bottom: 23px;
+    }
+
+    .field input {
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    .login-btn {
+        padding: 15px;
+        font-size: 15px;
+    }
+
+    .help {
+        font-size: 12px;
+        padding: 13px;
+    }
+
+    footer {
+        padding: 19px 12px;
+    }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 350px) {
+    .login-card {
+        padding: 22px 15px;
+    }
+
+    .brand {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
 }
 </style>
 </head>
@@ -229,6 +384,7 @@ footer strong {color:var(--gold)}
 </header>
 
 <main>
+
 <div class="login-card">
 
     <div class="login-icon">🎓</div>
@@ -236,33 +392,32 @@ footer strong {color:var(--gold)}
     <h1>Student Login</h1>
 
     <p class="intro">
-        Welcome to Rakeshh Physics Online Scholarship Test 2027.
-        Login using your Registration ID and Password.
+        Welcome to Rakeshh Physics Digital Examination Portal.
+        Login using your Scholarship or Institute Registration ID
+        and Password.
     </p>
 
     <form id="loginForm">
 
         <div class="field">
-    <label for="registrationId">Registration ID *</label>
-    <input
-        type="text"
-        id="registrationId"
-        placeholder="RP202601002 / RPI202600001"
-        maxlength="12"
-        autocomplete="username"
-        required
-    >
-</div>
+            <label for="registrationId">Registration ID *</label>
 
-<p class="intro">
-    Welcome to Rakeshh Physics Digital Examination Portal.
-    Login using your Scholarship or Institute Registration ID and Password.
-</p>
+            <input
+                type="text"
+                id="registrationId"
+                placeholder="RP202601002 / RPI202600001"
+                maxlength="12"
+                autocomplete="username"
+                autocapitalize="characters"
+                required
+            >
         </div>
 
         <div class="field">
             <label for="password">Password *</label>
+
             <div class="password-wrap">
+
                 <input
                     type="password"
                     id="password"
@@ -270,28 +425,39 @@ footer strong {color:var(--gold)}
                     autocomplete="current-password"
                     required
                 >
+
                 <button
                     type="button"
                     class="show-password"
                     id="togglePassword"
                 >SHOW</button>
+
             </div>
         </div>
 
-        <button type="submit" class="login-btn" id="loginBtn">
+        <button
+            type="submit"
+            class="login-btn"
+            id="loginBtn"
+        >
             Login to Student Portal
         </button>
 
-        <div id="message" class="message" role="status" aria-live="polite"></div>
+        <div
+            id="message"
+            class="message"
+            role="status"
+            aria-live="polite"
+        ></div>
 
     </form>
 
     <div class="help">
         <strong>Login Instructions:</strong><br>
-        Enter the Registration ID received after registration
-        and the password you created.
-        Keep your login details confidential.
-        If you forget your password, contact the institute.
+        1. Enter your Registration ID received after registration.<br>
+        2. Enter the password you created.<br>
+        3. Keep your login details confidential.<br>
+        4. If you forget your password, contact the institute.
     </div>
 
     <div class="register-link">
@@ -300,18 +466,21 @@ footer strong {color:var(--gold)}
     </div>
 
 </div>
+
 </main>
 
 <footer>
     <strong>RAKESHH PHYSICS</strong>
     <p>Another Name For Success</p>
-    <p>Online Scholarship Test 2027</p>
-    <p>© 2027 Rakeshh Physics. All Rights Reserved.</p>
+    <p>Digital Examination Portal</p>
+    <p>© <span id="currentYear"></span> Rakeshh Physics. All Rights Reserved.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+"use strict";
+
 const SUPABASE_URL =
     "https://yrqdkzphsjqkrfbeupkj.supabase.co";
 
@@ -319,7 +488,7 @@ const SUPABASE_KEY =
     "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
 
 const SCHOLARSHIP_DASHBOARD = "student-dashboard.html";
-const INSTITUTE_DASHBOARD = "academic-test-hub-dashboard.html";
+const INSTITUTE_DASHBOARD = "academic-test-hub.html";
 
 const supabaseClient = window.supabase?.createClient(
     SUPABASE_URL,
@@ -339,13 +508,12 @@ const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("loginBtn");
 const message = document.getElementById("message");
 
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
 function showMessage(type, text) {
     message.className = "message " + type;
     message.textContent = text;
-    message.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
 }
 
 function resetLoginButton() {
@@ -353,39 +521,46 @@ function resetLoginButton() {
     loginBtn.textContent = "Login to Student Portal";
 }
 
+/* SHOW / HIDE PASSWORD */
+
 document.getElementById("togglePassword")
 .addEventListener("click", function() {
+
     const visible = passwordInput.type === "text";
+
     passwordInput.type = visible ? "password" : "text";
+
     this.textContent = visible ? "SHOW" : "HIDE";
 });
 
+/* STUDENT LOGIN */
+
 form.addEventListener("submit", async function(event) {
+
     event.preventDefault();
 
     message.className = "message";
     message.textContent = "";
+
+    if (!supabaseClient) {
+        showMessage(
+            "error",
+            "Login service could not load. Please refresh the page."
+        );
+        return;
+    }
 
     const registrationId =
         registrationInput.value.trim().toUpperCase();
 
     const password = passwordInput.value;
 
-    if (!supabaseClient) {
-        showMessage("error", "Login service could not load. Please refresh.");
-        return;
-    }
-
-    // Identify student account type.
     const isInstitute =
-    registrationId.length === 12 &&
-    registrationId.startsWith("RPI") &&
-    /^RPI\d{9}$/.test(registrationId);
+        /^RPI\d{9}$/.test(registrationId);
 
     const isScholarship =
-    registrationId.length === 11 &&
-    registrationId.startsWith("RP") &&
-    /^RP\d{9}$/.test(registrationId);
+        /^RP\d{9}$/.test(registrationId);
+
     if (!isInstitute && !isScholarship) {
         showMessage(
             "error",
@@ -395,11 +570,13 @@ form.addEventListener("submit", async function(event) {
     }
 
     if (!password) {
-        showMessage("error", "Please enter your password.");
+        showMessage(
+            "error",
+            "Please enter your password."
+        );
         return;
     }
 
-    // Match the email alias created by the respective Edge Function.
     const internalEmail = isInstitute
         ? "rpi-" + registrationId.toLowerCase() +
           "@student-login.rakeshphysics.com"
@@ -410,6 +587,7 @@ form.addEventListener("submit", async function(event) {
     loginBtn.textContent = "Verifying Login...";
 
     try {
+
         const { data, error } =
             await supabaseClient.auth.signInWithPassword({
                 email: internalEmail,
@@ -417,10 +595,12 @@ form.addEventListener("submit", async function(event) {
             });
 
         if (error || !data.user) {
+
             showMessage(
                 "error",
                 "Invalid Registration ID or Password. Please try again."
             );
+
             resetLoginButton();
             return;
         }
@@ -435,32 +615,38 @@ form.addEventListener("submit", async function(event) {
             metadata.account_type !== expectedAccountType ||
             metadata.registration_id !== registrationId
         ) {
+
             await supabaseClient.auth.signOut();
 
             showMessage(
                 "error",
                 "Your account details could not be verified."
             );
+
             resetLoginButton();
             return;
         }
 
-        // Verify the saved authentication session.
+        /* VERIFY SESSION */
+
         const { data: sessionData, error: sessionError } =
             await supabaseClient.auth.getSession();
 
         if (sessionError || !sessionData.session) {
+
             await supabaseClient.auth.signOut();
 
             showMessage(
                 "error",
                 "Login session could not be verified. Please try again."
             );
+
             resetLoginButton();
             return;
         }
 
-        // Institute Student: check approval directly from database.
+        /* INSTITUTE STUDENT APPROVAL CHECK */
+
         if (isInstitute) {
 
             const { data: student, error: studentError } =
@@ -468,22 +654,27 @@ form.addEventListener("submit", async function(event) {
                     .from("institute_students")
                     .select("status")
                     .eq("auth_user_id", data.user.id)
+                    .eq("student_id", registrationId)
                     .maybeSingle();
 
             if (studentError || !student) {
+
                 await supabaseClient.auth.signOut();
 
                 showMessage(
                     "error",
                     "Institute student record could not be verified. Contact the institute."
                 );
+
                 resetLoginButton();
                 return;
             }
 
-            const status = String(student.status).toLowerCase();
+            const status =
+                String(student.status).toLowerCase();
 
             if (status === "pending") {
+
                 await supabaseClient.auth.signOut();
 
                 showMessage(
@@ -498,6 +689,7 @@ form.addEventListener("submit", async function(event) {
             }
 
             if (status === "rejected") {
+
                 await supabaseClient.auth.signOut();
 
                 showMessage(
@@ -510,6 +702,7 @@ form.addEventListener("submit", async function(event) {
             }
 
             if (status !== "approved") {
+
                 await supabaseClient.auth.signOut();
 
                 showMessage(
@@ -521,7 +714,6 @@ form.addEventListener("submit", async function(event) {
                 return;
             }
 
-            // Approved Institute Student.
             showMessage(
                 "success",
                 "Institute Login successful! Opening Academic Test Hub..."
@@ -533,7 +725,8 @@ form.addEventListener("submit", async function(event) {
             return;
         }
 
-        // Scholarship Student: preserve the existing login flow.
+        /* SCHOLARSHIP STUDENT LOGIN */
+
         showMessage(
             "success",
             "Scholarship Login successful! Opening Student Dashboard..."
@@ -544,6 +737,7 @@ form.addEventListener("submit", async function(event) {
         window.location.replace(SCHOLARSHIP_DASHBOARD);
 
     } catch (error) {
+
         console.error("Student login error:", error);
 
         await supabaseClient.auth.signOut();
@@ -555,6 +749,7 @@ form.addEventListener("submit", async function(event) {
 
         resetLoginButton();
     }
+
 });
 </script>
 
