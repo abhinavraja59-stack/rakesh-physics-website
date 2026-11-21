@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institute Student Registration | Rakeshh Physics</title>
+<meta name="description" content="Register for RP Academic Test Hub.">
+
+<style>
+:root {
+  --navy: #0A1931;
+  --gold: #D4AF37;
+  --muted: #68758A;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #F3F5F9;
+  color: #172033;
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  border-bottom: 4px solid var(--gold);
+  padding: 20px 6%;
+}
+
+.brand {
+  color: var(--gold);
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.subtitle {
+  color: white;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+
+main {
+  width: 100%;
+  max-width: 650px;
+  margin: auto;
+  padding: 32px 16px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 7px 28px rgba(0,0,0,.06);
+}
+
+.icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: #F8F3DF;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 17px;
+}
+
+h1 {
+  text-align: center;
+  color: var(--navy);
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.intro {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 17px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #D6DCE6;
+  border-radius: 8px;
+  background: white;
+  color: #172033;
+  font-size: 15px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,175,55,.12);
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  background: var(--navy);
+  color: white;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+button:hover {
+  background: #19385D;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.note {
+  background: #FFF8E3;
+  border: 1px solid #EAD58A;
+  color: #755B13;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 19px;
+}
+
+.message {
+  display: none;
+  padding: 14px;
+  margin-top: 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.message.error {
+  display: block;
+  background: #FFF0F0;
+  border: 1px solid #EFC0C0;
+  color: #9B2828;
+}
+
+.message.success {
+  display: block;
+  background: #EAF8EF;
+  border: 1px solid #A8D8B5;
+  color: #176534;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+a {
+  color: #173C69;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+footer {
+  background: var(--navy);
+  color: white;
+  text-align: center;
+  padding: 21px 12px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+footer strong {
+  color: var(--gold);
+}
+
+@media(max-width: 500px) {
+  header {
+    padding: 17px 18px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  main {
+    padding: 22px 13px;
+  }
+
+  .card {
+    padding: 23px 18px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  input, select {
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">RAKESHH PHYSICS</div>
+  <div class="subtitle">RP ACADEMIC TEST HUB</div>
+</header>
+
+<main>
+<div class="card">
+
+  <div class="icon">🎓</div>
+
+  <h1>Institute Student Registration</h1>
+
+  <p class="intro">
+    Register for Rakeshh Physics Academic Test Hub.
+    Fill in your correct details to create your Institute Student Account.
+  </p>
+
+  <form id="registrationForm">
+
+    <div class="field">
+      <label for="studentName">Student Name *</label>
+      <input
+        type="text"
+        id="studentName"
+        maxlength="100"
+        placeholder="Enter student's full name"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="fatherName">Father's Name *</label>
+      <input
+        type="text"
+        id="fatherName"
+        maxlength="100"
+        placeholder="Enter father's full name"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="mobile">Mobile Number *</label>
+      <input
+        type="tel"
+        id="mobile"
+        inputmode="numeric"
+        maxlength="10"
+        pattern="[6-9][0-9]{9}"
+        placeholder="10-digit mobile number"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="studentClass">Class *</label>
+      <select id="studentClass" required>
+        <option value="">Select Class</option>
+        <option value="11th">Class 11th</option>
+        <option value="12th">Class 12th</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="stream">Stream *</label>
+      <select id="stream" required>
+        <option value="">Select Stream</option>
+        <option value="PCB">PCB</option>
+        <option value="PCM">PCM</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="batch">Batch *</label>
+      <input
+        type="text"
+        id="batch"
+        maxlength="50"
+        placeholder="Example: 2027"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="password">Create Password *</label>
+      <input
+        type="password"
+        id="password"
+        minlength="8"
+        autocomplete="new-password"
+        placeholder="Minimum 8 characters"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="confirmPassword">Confirm Password *</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        minlength="8"
+        autocomplete="new-password"
+        placeholder="Re-enter your password"
+        required
+      >
+    </div>
+
+    <button type="submit" id="submitBtn">
+      Submit Registration
+    </button>
+
+    <div
+      id="message"
+      class="message"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+  </form>
+
+  <div class="note">
+    <strong>Important Registration Instructions:</strong><br>
+    1. Enter your correct personal details.<br>
+    2. Mobile number must be 10 digits.<br>
+    3. Password must contain at least 8 characters.<br>
+    4. Your account will remain Pending until Admin Approval.<br>
+    5. Your RPI Registration ID will be generated after successful registration.
+  </div>
+
+  <div class="login-link">
+    Already registered?
+    <a href="login.html">Login Here</a>
+    <br><br>
+    <a href="registration-type.html">← Back to Registration Options</a>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <strong>RAKESHH PHYSICS</strong>
+  <p>Another Name For Success</p>
+  <p>© <span id="year"></span> Rakeshh Physics. All Rights Reserved.</p>
+</footer>
+
+<script>
+"use strict";
+
+const SUPABASE_URL =
+  "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+
+const FUNCTION_URL =
+  SUPABASE_URL + "/functions/v1/register-institute-student";
+
+const form = document.getElementById("registrationForm");
+const submitBtn = document.getElementById("submitBtn");
+const message = document.getElementById("message");
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+function showMessage(type, text) {
+  message.className = "message " + type;
+  message.textContent = text;
+  message.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  message.className = "message";
+  message.textContent = "";
+
+  const studentName =
+    document.getElementById("studentName").value.trim();
+
+  const fatherName =
+    document.getElementById("fatherName").value.trim();
+
+  const mobileNumber =
+    document.getElementById("mobile").value.trim();
+
+  const studentClass =
+    document.getElementById("studentClass").value;
+
+  const stream =
+    document.getElementById("stream").value;
+
+  const batch =
+    document.getElementById("batch").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const confirmPassword =
+    document.getElementById("confirmPassword").value;
+
+  if (
+    !studentName ||
+    !fatherName ||
+    !mobileNumber ||
+    !studentClass ||
+    !stream ||
+    !batch ||
+    !password
+  ) {
+    showMessage("error", "Please fill in all required fields.");
+    return;
+  }
+
+  if (!/^[6-9][0-9]{9}$/.test(mobileNumber)) {
+    showMessage(
+      "error",
+      "Enter a valid 10-digit mobile number."
+    );
+    return;
+  }
+
+  if (password.length < 8) {
+    showMessage(
+      "error",
+      "Password must contain at least 8 characters."
+    );
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showMessage(
+      "error",
+      "Password and Confirm Password do not match."
+    );
+    return;
+  }
+
+  if (studentClass !== "11th" && studentClass !== "12th") {
+    showMessage("error", "Please select a valid class.");
+    return;
+  }
+
+  if (stream !== "PCB" && stream !== "PCM") {
+    showMessage("error", "Please select a valid stream.");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting Registration...";
+
+  try {
+
+    const response = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY
+      },
+      body: JSON.stringify({
+        student_name: studentName,
+        father_name: fatherName,
+        mobile_number: mobileNumber,
+        class: studentClass,
+        stream: stream,
+        batch: batch,
+        password: password
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.error || "Registration failed. Please try again."
+      );
+    }
+
+    form.reset();
+
+    showMessage(
+      "success",
+      "Registration Successful!\n" +
+      "Your Institute Student ID: " + result.student_id + "\n" +
+      "Account Status: Pending Approval\n\n" +
+      "Your account has been created successfully. Please wait for Admin Approval before logging in."
+    );
+
+    submitBtn.textContent = "Registration Submitted";
+
+  } catch (error) {
+
+    console.error("Institute registration error:", error);
+
+    showMessage(
+      "error",
+      error.message || "Unable to submit registration. Please try again."
+    );
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Registration";
+  }
+});
+</script>
+
+</body>
+</html>
