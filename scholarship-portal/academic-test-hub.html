@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RP Academic Test Hub | Rakeshh Physics</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --black: #000000;
+      --navy: #091B38;
+      --gold: #E8B51E;
+      --green: #004B43;
+      --white: #FFFFFF;
+      --muted: #AAB4C3;
+      --border: #233653;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #050505;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--white);
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-top: 5px;
+    }
+
+    .logout {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 9px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1100px;
+      margin: 30px auto;
+    }
+
+    .welcome {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 22px;
+    }
+
+    .welcome .tag {
+      display: inline-block;
+      background: var(--green);
+      color: #00D987;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 27px;
+      margin-bottom: 9px;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .welcome p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+      margin-top: 23px;
+    }
+
+    .profile-item {
+      background: #061329;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .profile-item small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .profile-item strong {
+      color: var(--white);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .section-title {
+      color: var(--gold);
+      font-size: 19px;
+      margin: 28px 0 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 21px;
+      min-height: 145px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .empty {
+      background: #080E18;
+      border: 1px dashed #40516A;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .empty strong {
+      display: block;
+      color: var(--white);
+      margin-bottom: 7px;
+    }
+
+    .notice {
+      margin-top: 25px;
+      padding: 15px;
+      background: #101A28;
+      border-left: 4px solid var(--gold);
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: #78869A;
+      padding: 28px 15px;
+      font-size: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 70px 15px;
+      color: var(--gold);
+    }
+
+    .error {
+      color: #FF7777;
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    @media(max-width: 700px) {
+      .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .topbar {
+        padding: 14px 4%;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+    }
+
+    @media(max-width: 380px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      RAKESHH PHYSICS
+      <small>RP ACADEMIC TEST HUB</small>
+    </div>
+
+    <button class="logout" id="logoutBtn" type="button">
+      Logout
+    </button>
+  </header>
+
+  <main class="container">
+
+    <div id="loading" class="loading">
+      Verifying Student Account...
+    </div>
+
+    <div id="dashboard" hidden>
+
+      <section class="welcome">
+        <div class="tag">INSTITUTE STUDENT PORTAL</div>
+
+        <h1>Welcome, <span id="studentName">Student</span></h1>
+
+        <p>
+          Welcome to RP Academic Test Hub.
+          Your digital examination dashboard is ready.
+        </p>
+
+        <div class="profile-grid">
+
+          <div class="profile-item">
+            <small>Registration ID</small>
+            <strong id="studentId">—</strong>
+          </div>
+
+          <div class="profile-item">
+            <small>Class</small>
+            <strong id="studentClass">—</strong>
+          </div>
+
+          <div class="profile-item">
+            <small>Stream</small>
+            <strong id="studentStream">—</strong>
+          </div>
+
+          <div class="profile-item">
+            <small>Batch</small>
+            <strong id="studentBatch">—</strong>
+          </div>
+
+          <div class="profile-item">
+            <small>Account Status</small>
+            <strong id="studentStatus">Approved</strong>
+          </div>
+
+          <div class="profile-item">
+            <small>Portal</small>
+            <strong>Academic Test Hub</strong>
+          </div>
+
+        </div>
+      </section>
+
+      <h2 class="section-title">My Examination Dashboard</h2>
+
+      <section class="cards">
+
+        <div class="card">
+          <h3>My Tests</h3>
+          <p>
+            Your assigned academic examinations will appear here.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Upcoming Tests</h3>
+          <p>
+            Check your upcoming examination schedule here.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>My Results</h3>
+          <p>
+            Your published examination results will appear here.
+          </p>
+        </div>
+
+      </section>
+
+      <h2 class="section-title">Examination Updates</h2>
+
+      <div class="empty">
+        <strong>No Examination Assigned Yet</strong>
+        Your institute has not assigned any examination to your
+        account yet. Please check again later.
+      </div>
+
+      <div class="notice">
+        <strong>Important:</strong>
+        Your Registration ID is your permanent Institute Student ID.
+        Keep your login credentials secure. Do not share your password
+        with anyone.
+      </div>
+
+    </div>
+
+    <div id="errorMessage" class="error" hidden></div>
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> Rakeshh Physics.
+    All Rights Reserved.
+    <br><br>
+    Another Name For Success
+  </footer>
+
+<script>
+  const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const LOGIN_PAGE = "login.html";
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  function showError(message) {
+    document.getElementById("loading").hidden = true;
+    document.getElementById("dashboard").hidden = true;
+
+    const errorBox = document.getElementById("errorMessage");
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  async function verifyStudent() {
+    try {
+      const {
+        data: { user },
+        error: authError
+      } = await supabaseClient.auth.getUser();
+
+      if (authError || !user) {
+        window.location.replace(LOGIN_PAGE);
+        return;
+      }
+
+      const metadata = user.user_metadata || {};
+
+      if (
+        metadata.account_type !== "institute_student" ||
+        !metadata.registration_id
+      ) {
+        await supabaseClient.auth.signOut();
+        window.location.replace(LOGIN_PAGE);
+        return;
+      }
+
+      const registrationId = metadata.registration_id;
+
+      const { data: student, error: studentError } =
+        await supabaseClient
+          .from("institute_students")
+          .select(`
+            student_id,
+            student_name,
+            class,
+            stream,
+            batch,
+            status
+          `)
+          .eq("auth_user_id", user.id)
+          .eq("student_id", registrationId)
+          .maybeSingle();
+
+      if (studentError) {
+        console.error("Student verification error:", studentError);
+        showError(
+          "Unable to verify your student profile. Please try again later."
+        );
+        return;
+      }
+
+      if (!student) {
+        await supabaseClient.auth.signOut();
+        window.location.replace(LOGIN_PAGE);
+        return;
+      }
+
+      if (student.status !== "approved") {
+        await supabaseClient.auth.signOut();
+        window.location.replace(LOGIN_PAGE);
+        return;
+      }
+
+      document.getElementById("studentName").textContent =
+        student.student_name || "Student";
+
+      document.getElementById("studentId").textContent =
+        student.student_id || "—";
+
+      document.getElementById("studentClass").textContent =
+        student.class || "—";
+
+      document.getElementById("studentStream").textContent =
+        student.stream || "—";
+
+      document.getElementById("studentBatch").textContent =
+        student.batch || "—";
+
+      document.getElementById("studentStatus").textContent =
+        "Approved";
+
+      document.getElementById("loading").hidden = true;
+      document.getElementById("dashboard").hidden = false;
+
+    } catch (error) {
+      console.error("Dashboard error:", error);
+      showError("Something went wrong. Please refresh the page.");
+    }
+  }
+
+  document.getElementById("logoutBtn").addEventListener(
+    "click",
+    async () => {
+      const button = document.getElementById("logoutBtn");
+      button.disabled = true;
+      button.textContent = "Logging out...";
+
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        button.disabled = false;
+        button.textContent = "Logout";
+        alert("Logout failed. Please try again.");
+        return;
+      }
+
+      window.location.replace(LOGIN_PAGE);
+    }
+  );
+
+  verifyStudent();
+</script>
+
+</body>
+</html>
