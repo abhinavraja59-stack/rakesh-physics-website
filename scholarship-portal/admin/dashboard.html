@@ -1,763 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Central Admin Dashboard | Rakeshh Physics</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-:root {
- --navy:#0A1931;
- --gold:#D4AF37;
- --bg:#f3f5f9;
- --text:#18243a;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input{font:inherit}
-.sidebar{
- position:fixed;left:0;top:0;bottom:0;width:245px;
- background:var(--navy);padding:25px 16px;color:white;
- overflow-y:auto;
-}
-.brand{font-size:21px;font-weight:900;color:var(--gold)}
-.brand small{display:block;color:white;font-size:10px;letter-spacing:2px;margin-top:6px}
-.admin-label{margin:32px 0 13px;color:#aebbd0;font-size:11px;letter-spacing:1px}
-.nav a{
- display:block;padding:13px 14px;margin:5px 0;
- border-radius:8px;text-decoration:none;color:#e2e8f0;font-size:13px;
-}
-.nav a.active,.nav a:hover{background:#1d385b;color:var(--gold)}
-.main{margin-left:245px;padding:27px}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}
-.topbar h1{font-size:25px;color:var(--navy)}
-.admin-chip{background:white;padding:11px 15px;border-radius:9px;font-size:12px}
+:root{--navy:#0A1931;--gold:#D4AF37;--bg:#f3f5f9;--text:#18243a}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:25px 16px;color:#fff;overflow-y:auto}
+.brand{font-size:21px;font-weight:900;color:var(--gold)}.brand small{display:block;color:#fff;font-size:10px;letter-spacing:2px;margin-top:6px}
+.admin-label{margin:32px 0 13px;color:#aebbd0;font-size:11px;letter-spacing:1px}.nav a{display:block;padding:13px 14px;margin:5px 0;border-radius:8px;text-decoration:none;color:#e2e8f0;font-size:13px}.nav a.active,.nav a:hover{background:#1d385b;color:var(--gold)}
+.main{margin-left:245px;padding:27px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px}.topbar h1{font-size:25px;color:var(--navy)}.admin-chip{background:#fff;padding:11px 15px;border-radius:9px;font-size:12px}
 .notice{background:#fff5d9;border:1px solid #ead58a;padding:13px;border-radius:10px;font-size:12px;line-height:1.6;margin-bottom:22px;color:#765d12}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.stat,.panel,.paper{background:white;border-radius:13px;padding:20px;box-shadow:0 4px 15px #00000007}
-.stat small{color:#758197;font-size:12px}
-.stat h2{font-size:27px;color:var(--navy);margin:12px 0 5px}
-.stat p{font-size:11px;color:#758197}
-.section-title{font-size:19px;color:var(--navy);margin:30px 0 16px}
-.paper-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.paper{border-top:3px solid var(--gold)}
-.paper h3{font-size:15px;color:var(--navy);margin-bottom:10px}
-.paper p{font-size:12px;color:#718096;line-height:1.8}
-.paper strong{color:var(--navy)}
-.btn{
- display:inline-block;background:var(--navy);color:white;
- padding:10px 14px;border-radius:7px;text-decoration:none;
- font-size:12px;font-weight:bold;margin-top:12px;border:0;cursor:pointer;
-}
-.btn.gold{background:var(--gold);color:var(--navy)}
-.btn.green{background:#167044;color:white}
-.btn.red{background:#b42318;color:white}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
-.action{
- background:white;border:1px solid #e5e9f0;border-radius:11px;
- padding:18px;text-decoration:none;color:var(--navy);
-}
-.action strong{display:block;margin-bottom:8px;font-size:14px}
-.action span{font-size:12px;color:#718096;line-height:1.6}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{text-align:left;padding:13px;border-bottom:1px solid #e8ecf2}
-th{background:#f6f7fa;color:#536078}
-.footer{font-size:11px;color:#7c8799;text-align:center;margin:35px 0 10px}
-.hidden{display:none!important}
-#loginScreen{
- min-height:100vh;display:flex;align-items:center;justify-content:center;
- padding:20px;
-}
-.login-card{
- background:white;width:100%;max-width:410px;padding:30px;
- border-radius:16px;box-shadow:0 8px 35px #00000012;
-}
-.login-card h1{color:var(--navy);font-size:24px;margin-bottom:8px}
-.login-card p{font-size:13px;color:#718096;line-height:1.6;margin-bottom:22px}
-.login-card label{display:block;font-size:12px;font-weight:bold;margin:15px 0 7px}
-.login-card input{
- width:100%;padding:13px;border:1px solid #dce2eb;
- border-radius:8px;outline:none;
-}
-.login-card input:focus{border-color:var(--gold)}
-.login-card button{width:100%;margin-top:20px;padding:13px}
-.message{font-size:12px;line-height:1.6;margin-top:14px;overflow-wrap:anywhere}
-.error{color:#b42318}
-.success{color:#167044}
-.muted{color:#718096;font-size:12px}
-.table-wrap{width:100%;overflow-x:auto}
-.table-wrap table{min-width:850px}
-.status{
- display:inline-block;padding:5px 9px;border-radius:20px;
- font-size:11px;font-weight:bold;text-transform:capitalize;
-}
-.status.pending{background:#fff2cc;color:#805b00}
-.status.approved{background:#e5f6eb;color:#167044}
-.status.rejected{background:#ffebeb;color:#b42318}
-.student-actions{white-space:nowrap}
-.student-actions .btn{margin:2px;padding:8px 10px}
-.panel-head{
- display:flex;justify-content:space-between;align-items:center;
- gap:12px;flex-wrap:wrap;margin-bottom:15px;
-}
-.panel-head h3{color:var(--navy);font-size:16px}
-.empty-state{
- padding:25px;text-align:center;color:#718096;
- background:#f8f9fb;border-radius:9px;font-size:13px;line-height:1.7;
-}
-@media(max-width:950px){
- .sidebar{width:190px}
- .main{margin-left:190px}
- .stats{grid-template-columns:repeat(2,1fr)}
- .paper-grid{grid-template-columns:repeat(2,1fr)}
- .actions{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
- .sidebar{position:relative;width:100%;height:auto;padding:17px}
- .nav{display:flex;overflow-x:auto;gap:5px}
- .nav a{white-space:nowrap}
- .admin-label{display:none}
- .main{margin-left:0;padding:16px}
- .topbar{align-items:flex-start;flex-direction:column}
- .stats{grid-template-columns:1fr 1fr;gap:9px}
- .paper-grid,.actions{grid-template-columns:1fr}
- .stat{padding:14px}
- .stat h2{font-size:23px}
-}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat,.panel,.paper{background:#fff;border-radius:13px;padding:20px;box-shadow:0 4px 15px #00000007}.stat small{color:#758197;font-size:12px}.stat h2{font-size:27px;color:var(--navy);margin:12px 0 5px}.stat p{font-size:11px;color:#758197}
+.section-title{font-size:19px;color:var(--navy);margin:30px 0 16px}.paper-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.paper{border-top:3px solid var(--gold)}.paper h3{font-size:15px;color:var(--navy);margin-bottom:10px}.paper p{font-size:12px;color:#718096;line-height:1.8}.paper strong{color:var(--navy)}
+.btn{display:inline-block;background:var(--navy);color:#fff;padding:10px 14px;border-radius:7px;text-decoration:none;font-size:12px;font-weight:bold;margin-top:12px;border:0;cursor:pointer}.btn.gold{background:var(--gold);color:var(--navy)}.btn.green{background:#167044}.btn.red{background:#b42318}.btn.orange{background:#a45b08}.btn:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.action{background:#fff;border:1px solid #e5e9f0;border-radius:11px;padding:18px;text-decoration:none;color:var(--navy)}.action strong{display:block;margin-bottom:8px;font-size:14px}.action span{font-size:12px;color:#718096;line-height:1.6}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:13px;border-bottom:1px solid #e8ecf2;vertical-align:top}th{background:#f6f7fa;color:#536078}.footer{font-size:11px;color:#7c8799;text-align:center;margin:35px 0 10px}.hidden{display:none!important}
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.login-card{background:#fff;width:100%;max-width:410px;padding:30px;border-radius:16px;box-shadow:0 8px 35px #00000012}.login-card h1{color:var(--navy);font-size:24px;margin-bottom:8px}.login-card p{font-size:13px;color:#718096;line-height:1.6;margin-bottom:22px}.login-card label{display:block;font-size:12px;font-weight:bold;margin:15px 0 7px}.login-card input{width:100%;padding:13px;border:1px solid #dce2eb;border-radius:8px;outline:none}.login-card input:focus{border-color:var(--gold)}.login-card button{width:100%;margin-top:20px;padding:13px}
+.message{font-size:12px;line-height:1.6;margin-top:14px;overflow-wrap:anywhere}.error{color:#b42318}.success{color:#167044}.muted{color:#718096;font-size:12px}.table-wrap{width:100%;overflow-x:auto}.table-wrap table{min-width:850px}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:bold;text-transform:capitalize}.status.pending{background:#fff2cc;color:#805b00}.status.approved{background:#e5f6eb;color:#167044}.status.rejected{background:#ffebeb;color:#b42318}
+.student-actions{white-space:nowrap}.student-actions .btn{margin:2px;padding:8px 10px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}.panel-head h3{color:var(--navy);font-size:16px}.empty-state{padding:25px;text-align:center;color:#718096;background:#f8f9fb;border-radius:9px;font-size:13px;line-height:1.7}
+.modal-backdrop{position:fixed;inset:0;background:#071426b8;display:flex;align-items:center;justify-content:center;padding:18px;z-index:1000}.modal-card{background:#fff;width:100%;max-width:460px;border-radius:14px;padding:24px;box-shadow:0 15px 50px #0005}.modal-card h2{color:var(--navy);font-size:20px;margin-bottom:10px}.modal-card p{font-size:13px;line-height:1.6;color:#536078}.password-result{background:#f5f7fa;border:1px solid #dce2eb;border-radius:9px;padding:15px;margin-top:12px;overflow-wrap:anywhere}.password-result code{display:block;font-size:17px;font-weight:bold;margin:10px 0;color:var(--navy);word-break:break-all}
+@media(max-width:950px){.sidebar{width:190px}.main{margin-left:190px}.stats{grid-template-columns:repeat(2,1fr)}.paper-grid{grid-template-columns:repeat(2,1fr)}.actions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.sidebar{position:relative;width:100%;height:auto;padding:17px}.nav{display:flex;overflow-x:auto;gap:5px}.nav a{white-space:nowrap}.admin-label{display:none}.main{margin-left:0;padding:16px}.topbar{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr;gap:9px}.paper-grid,.actions{grid-template-columns:1fr}.stat{padding:14px}.stat h2{font-size:23px}}
 </style>
 </head>
-
 <body>
+<section id="loginScreen"><div class="login-card">
+ <div class="brand">RAKESHH PHYSICS<small style="color:#718096">CENTRAL ADMINISTRATION</small></div>
+ <h1 style="margin-top:25px">Admin Login</h1><p>Sign in using your authorized administrator account.</p>
+ <form id="loginForm"><label>Email Address</label><input id="email" type="email" autocomplete="username" required><label>Password</label><input id="password" type="password" autocomplete="current-password" required><button class="btn gold" id="loginButton" type="submit">Secure Admin Login</button></form>
+ <div id="loginMessage" class="message"></div>
+</div></section>
 
-<!-- ADMIN LOGIN -->
-<section id="loginScreen">
- <div class="login-card">
-  <div class="brand">RAKESHH PHYSICS
-   <small style="color:#718096">CENTRAL ADMINISTRATION</small>
-  </div>
-  <h1 style="margin-top:25px">Admin Login</h1>
-  <p>Sign in using your authorized administrator account.</p>
-
-  <form id="loginForm">
-   <label>Email Address</label>
-   <input id="email" type="email" autocomplete="username" required>
-
-   <label>Password</label>
-   <input id="password" type="password" autocomplete="current-password" required>
-
-   <button class="btn gold" id="loginButton" type="submit">
-    Secure Admin Login
-   </button>
-  </form>
-  <div id="loginMessage" class="message"></div>
- </div>
-</section>
-
-<!-- ADMIN DASHBOARD -->
 <div id="adminApp" class="hidden">
-
-<aside class="sidebar">
- <div class="brand">
-  RAKESHH PHYSICS
-  <small>CENTRAL ADMIN</small>
- </div>
-
- <div class="admin-label">MAIN MENU</div>
- <nav class="nav">
-  <a href="#dashboard" class="active">Dashboard</a>
-  <a href="#instituteStudents">Institute Students</a>
-  <a href="students.html">Scholarship Records</a>
-  <a href="questions.html">Question Bank</a>
-  <a href="exams.html">Exam Management</a>
-  <a href="answers.html">Answer Sheets</a>
-  <a href="results.html">Result Management</a>
- </nav>
-
- <div class="admin-label">WEBSITE</div>
- <nav class="nav">
-  <a href="../index.html">Student Portal</a>
- </nav>
+<aside class="sidebar"><div class="brand">RAKESHH PHYSICS<small>CENTRAL ADMIN</small></div>
+ <div class="admin-label">MAIN MENU</div><nav class="nav">
+  <a href="#dashboard" class="active">Dashboard</a><a href="#instituteStudents">Institute Students</a><a href="#scholarshipStudents">Scholarship Students</a><a href="students.html">Scholarship Records</a><a href="questions.html">Question Bank</a><a href="exams.html">Exam Management</a><a href="answers.html">Answer Sheets</a><a href="results.html">Result Management</a>
+ </nav><div class="admin-label">WEBSITE</div><nav class="nav"><a href="../index.html">Student Portal</a></nav>
 </aside>
-
 <main class="main" id="dashboard">
-
- <div class="topbar">
-  <div>
-   <h1>Admin Dashboard</h1>
-   <p class="muted" style="margin-top:6px">Scholarship & Institute Examination Administration</p>
-  </div>
-
-  <div class="admin-chip">
-   <strong id="adminName">Administrator</strong>
-   <br><span id="adminRole" class="muted">Verifying role...</span>
-   <br><button id="logoutButton" class="btn" style="margin-top:9px">Logout</button>
-  </div>
- </div>
-
- <div class="notice">
-  <strong>CENTRAL ADMIN PANEL:</strong>
-  Manage Scholarship Examinations and Institute Student Registrations
-  from the same authorized administrator account.
- </div>
-
+ <div class="topbar"><div><h1>Admin Dashboard</h1><p class="muted" style="margin-top:6px">Scholarship & Institute Examination Administration</p></div>
+ <div class="admin-chip"><strong id="adminName">Administrator</strong><br><span id="adminRole" class="muted">Verifying role...</span><br><button id="logoutButton" class="btn" style="margin-top:9px">Logout</button></div></div>
+ <div class="notice"><strong>CENTRAL ADMIN PANEL:</strong> Manage Scholarship Examinations and Institute Student Registrations from the same authorized administrator account.</div>
  <section class="stats">
+  <div class="stat"><small>Total Scholarship Registrations</small><h2 id="totalStudents">--</h2><p>Registered scholarship students</p></div>
+  <div class="stat"><small>Exam Completed</small><h2 id="completedExams">--</h2><p>Submitted examination attempts</p></div>
+  <div class="stat"><small>Exam In Progress</small><h2 id="activeExams">--</h2><p>Attempts not yet submitted</p></div>
+  <div class="stat"><small>Results Published</small><h2 id="publishedResults">--</h2><p>Published result records</p></div>
+ </section><div id="statsMessage" class="message"></div>
 
-  <div class="stat">
-   <small>Total Scholarship Registrations</small>
-   <h2 id="totalStudents">--</h2>
-   <p>Registered scholarship students</p>
-  </div>
-
-  <div class="stat">
-   <small>Exam Completed</small>
-   <h2 id="completedExams">--</h2>
-   <p>Submitted examination attempts</p>
-  </div>
-
-  <div class="stat">
-   <small>Exam In Progress</small>
-   <h2 id="activeExams">--</h2>
-   <p>Attempts not yet submitted</p>
-  </div>
-
-  <div class="stat">
-   <small>Results Published</small>
-   <h2 id="publishedResults">--</h2>
-   <p>Published result records</p>
-  </div>
-
- </section>
-
- <div id="statsMessage" class="message"></div>
-
- <!-- INSTITUTE STUDENT MANAGEMENT -->
  <h2 class="section-title" id="instituteStudents">Institute Student Management</h2>
-
- <section class="panel">
-  <div class="panel-head">
-   <div>
-    <h3>Institute Student Registrations</h3>
-    <p class="muted" style="margin-top:5px">
-     Review and approve RPI student accounts.
-    </p>
-   </div>
-
-   <button type="button" class="btn gold" id="refreshInstituteBtn">
-    Refresh Students
-   </button>
-  </div>
-
+ <section class="panel"><div class="panel-head"><div><h3>Institute Student Registrations</h3><p class="muted" style="margin-top:5px">Review, approve and manage RPI student accounts.</p></div><button type="button" class="btn gold" id="refreshInstituteBtn">Refresh Students</button></div>
   <div class="stats" style="margin-bottom:18px">
-   <div class="stat">
-    <small>Total Institute Students</small>
-    <h2 id="instituteTotal">--</h2>
-   </div>
-   <div class="stat">
-    <small>Pending Approval</small>
-    <h2 id="institutePending">--</h2>
-   </div>
-   <div class="stat">
-    <small>Approved</small>
-    <h2 id="instituteApproved">--</h2>
-   </div>
-   <div class="stat">
-    <small>Rejected</small>
-    <h2 id="instituteRejected">--</h2>
-   </div>
+   <div class="stat"><small>Total Institute Students</small><h2 id="instituteTotal">--</h2></div><div class="stat"><small>Pending Approval</small><h2 id="institutePending">--</h2></div><div class="stat"><small>Approved</small><h2 id="instituteApproved">--</h2></div><div class="stat"><small>Rejected</small><h2 id="instituteRejected">--</h2></div>
   </div>
-
-  <div id="instituteMessage" class="message muted">
-   Loading Institute Students...
-  </div>
-
-  <div class="table-wrap">
-   <table>
-    <thead>
-     <tr>
-      <th>Registration ID</th>
-      <th>Student Name</th>
-      <th>Father's Name</th>
-      <th>Mobile</th>
-      <th>Class</th>
-      <th>Stream</th>
-      <th>Batch</th>
-      <th>Status</th>
-      <th>Action</th>
-     </tr>
-    </thead>
-    <tbody id="instituteStudentsBody">
-     <tr>
-      <td colspan="9">Loading student records...</td>
-     </tr>
-    </tbody>
-   </table>
-  </div>
+  <div id="instituteMessage" class="message muted">Loading Institute Students...</div>
+  <div class="table-wrap"><table><thead><tr><th>Registration ID</th><th>Student Name</th><th>Father's Name</th><th>Mobile</th><th>Class</th><th>Stream</th><th>Batch</th><th>Status</th><th>Action</th></tr></thead><tbody id="instituteStudentsBody"><tr><td colspan="9">Loading student records...</td></tr></tbody></table></div>
  </section>
 
- <h2 class="section-title">Five Scholarship Examination Papers</h2>
-
- <section class="paper-grid">
-
-  <div class="paper">
-   <h3>RP10 – Class 10 Passed</h3>
-   <p>Combined JEE + NEET Foundation<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p>
-   <a href="questions.html?paper=RP10" class="btn">Manage Paper</a>
-  </div>
-
-  <div class="paper">
-   <h3>RP11PCB – Class 11</h3>
-   <p>Physics, Chemistry, Biology<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p>
-   <a href="questions.html?paper=RP11PCB" class="btn">Manage Paper</a>
-  </div>
-
-  <div class="paper">
-   <h3>RP11PCM – Class 11</h3>
-   <p>Physics, Chemistry, Mathematics<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p>
-   <a href="questions.html?paper=RP11PCM" class="btn">Manage Paper</a>
-  </div>
-
-  <div class="paper">
-   <h3>RP12PCB – Class 12</h3>
-   <p>Physics, Chemistry, Biology<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p>
-   <a href="questions.html?paper=RP12PCB" class="btn">Manage Paper</a>
-  </div>
-
-  <div class="paper">
-   <h3>RP12PCM – Class 12</h3>
-   <p>Physics, Chemistry, Mathematics<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p>
-   <a href="questions.html?paper=RP12PCM" class="btn">Manage Paper</a>
-  </div>
-
+ <h2 class="section-title" id="scholarshipStudents">Scholarship Student Management</h2>
+ <section class="panel"><div class="panel-head"><div><h3>Scholarship Student Accounts</h3><p class="muted" style="margin-top:5px">View registration details, reset passwords and remove login access.</p></div><button type="button" class="btn gold" id="refreshScholarshipBtn">Refresh Students</button></div>
+  <div id="scholarshipMessage" class="message muted">Loading Scholarship Students...</div>
+  <div class="table-wrap"><table><thead><tr><th>Registration ID</th><th>Student Name</th><th>Father's Name</th><th>Mobile</th><th>Category</th><th>Stream</th><th>District</th><th>Action</th></tr></thead><tbody id="scholarshipStudentsBody"><tr><td colspan="8">Loading...</td></tr></tbody></table></div>
  </section>
 
- <h2 class="section-title">Quick Administration</h2>
-
- <section class="actions">
-  <a href="students.html" class="action">
-   <strong>Scholarship Student Records</strong>
-   <span>View and manage registered scholarship students.</span>
-  </a>
-  <a href="#instituteStudents" class="action">
-   <strong>Institute Students</strong>
-   <span>Review Institute registrations and manage approval.</span>
-  </a>
-  <a href="questions.html" class="action">
-   <strong>Question Bank</strong>
-   <span>Manage questions, options and explanations.</span>
-  </a>
-  <a href="exams.html" class="action">
-   <strong>Exam Management</strong>
-   <span>Manage examination settings and status.</span>
-  </a>
-  <a href="answers.html" class="action">
-   <strong>Answer Sheets</strong>
-   <span>Review submitted student responses.</span>
-  </a>
-  <a href="results.html" class="action">
-   <strong>Result Management</strong>
-   <span>Manage and publish examination results.</span>
-  </a>
+ <h2 class="section-title">Five Scholarship Examination Papers</h2><section class="paper-grid">
+  <div class="paper"><h3>RP10 – Class 10 Passed</h3><p>Combined JEE + NEET Foundation<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p><a href="questions.html?paper=RP10" class="btn">Manage Paper</a></div>
+  <div class="paper"><h3>RP11PCB – Class 11</h3><p>Physics, Chemistry, Biology<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p><a href="questions.html?paper=RP11PCB" class="btn">Manage Paper</a></div>
+  <div class="paper"><h3>RP11PCM – Class 11</h3><p>Physics, Chemistry, Mathematics<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p><a href="questions.html?paper=RP11PCM" class="btn">Manage Paper</a></div>
+  <div class="paper"><h3>RP12PCB – Class 12</h3><p>Physics, Chemistry, Biology<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p><a href="questions.html?paper=RP12PCB" class="btn">Manage Paper</a></div>
+  <div class="paper"><h3>RP12PCM – Class 12</h3><p>Physics, Chemistry, Mathematics<br><strong>50 Questions</strong><br>25 Easy + 25 Hard</p><a href="questions.html?paper=RP12PCM" class="btn">Manage Paper</a></div>
  </section>
 
- <h2 class="section-title">Examination Configuration</h2>
-
- <section class="panel">
-  <table>
-   <tr><th>Setting</th><th>Configuration</th></tr>
-   <tr><td>Total Questions</td><td>50 per paper</td></tr>
-   <tr><td>Question Timer</td><td>45 Seconds</td></tr>
-   <tr><td>Total Duration</td><td>37 Minutes 30 Seconds</td></tr>
-   <tr><td>Correct Answer</td><td>+4 Marks</td></tr>
-   <tr><td>Incorrect Answer</td><td>-1 Mark</td></tr>
-   <tr><td>Previous Question</td><td>Locked</td></tr>
-   <tr><td>Result Publication</td><td>Manual Admin Publication</td></tr>
-   <tr><td>Target Student Capacity</td><td>500</td></tr>
-  </table>
+ <h2 class="section-title">Quick Administration</h2><section class="actions">
+  <a href="students.html" class="action"><strong>Scholarship Student Records</strong><span>View and manage registered scholarship students.</span></a>
+  <a href="#instituteStudents" class="action"><strong>Institute Students</strong><span>Review Institute registrations and manage approval.</span></a>
+  <a href="questions.html" class="action"><strong>Question Bank</strong><span>Manage questions, options and explanations.</span></a>
+  <a href="exams.html" class="action"><strong>Exam Management</strong><span>Manage examination settings and status.</span></a>
+  <a href="answers.html" class="action"><strong>Answer Sheets</strong><span>Review submitted student responses.</span></a>
+  <a href="results.html" class="action"><strong>Result Management</strong><span>Manage and publish examination results.</span></a>
  </section>
+ <h2 class="section-title">Examination Configuration</h2><section class="panel"><table>
+  <tr><th>Setting</th><th>Configuration</th></tr><tr><td>Total Questions</td><td>50 per paper</td></tr><tr><td>Question Timer</td><td>45 Seconds</td></tr><tr><td>Total Duration</td><td>37 Minutes 30 Seconds</td></tr><tr><td>Correct Answer</td><td>+4 Marks</td></tr><tr><td>Incorrect Answer</td><td>-1 Mark</td></tr><tr><td>Previous Question</td><td>Locked</td></tr><tr><td>Result Publication</td><td>Manual Admin Publication</td></tr><tr><td>Target Student Capacity</td><td>500</td></tr>
+ </table></section>
+ <div class="footer">© 2027 Rakeshh Physics | Central Examination Administration</div>
+</main></div>
 
- <div class="footer">
-  © 2027 Rakeshh Physics | Central Examination Administration
+<div id="passwordModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="passwordModalTitle">
+ <div class="modal-card"><h2 id="passwordModalTitle">Temporary Password</h2><p id="passwordStudentInfo">Password reset completed.</p>
+  <div class="password-result"><strong>Temporary password</strong><code id="temporaryPasswordText"></code></div>
+  <p style="margin-top:12px">Copy and share this password privately. It will not be shown again after this window is closed.</p>
+  <button type="button" class="btn gold" id="copyPasswordBtn">Copy Password</button><button type="button" class="btn" id="closePasswordBtn">Close</button><div id="copyMessage" class="message"></div>
  </div>
-
-</main>
 </div>
 
 <script>
 "use strict";
+const SUPABASE_URL="https://yrqdkzphsjqkrfbeupkj.supabase.co";
+const SUPABASE_KEY="sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+const INSTITUTE_FUNCTION_URL=SUPABASE_URL+"/functions/v1/manage-institute-student";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const loginScreen=document.getElementById("loginScreen"),adminApp=document.getElementById("adminApp"),loginMessage=document.getElementById("loginMessage");
+let instituteRecords=[],scholarshipRecords=[],currentTemporaryPassword="";
 
-const SUPABASE_URL = "https://yrqdkzphsjqkrfbeupkj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_hdlEbfoBoXU6CcktubmJjA_Bi5cl6tc";
+function showLoginMessage(message,type="error"){loginMessage.className="message "+type;loginMessage.textContent=message}
+function showDashboard(){loginScreen.classList.add("hidden");adminApp.classList.remove("hidden")}
+function showLogin(){adminApp.classList.add("hidden");loginScreen.classList.remove("hidden")}
 
-const INSTITUTE_FUNCTION_URL =
- SUPABASE_URL + "/functions/v1/manage-institute-student";
-
-const supabaseClient = window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY
-);
-
-const loginScreen = document.getElementById("loginScreen");
-const adminApp = document.getElementById("adminApp");
-const loginMessage = document.getElementById("loginMessage");
-
-let instituteRecords = [];
-
-function showLoginMessage(message,type="error") {
- loginMessage.className = "message " + type;
- loginMessage.textContent = message;
-}
-
-function showDashboard() {
- loginScreen.classList.add("hidden");
- adminApp.classList.remove("hidden");
-}
-
-function showLogin() {
- adminApp.classList.add("hidden");
- loginScreen.classList.remove("hidden");
-}
-
-async function verifyAdmin() {
- const {data:{user},error} = await supabaseClient.auth.getUser();
-
- if(error || !user) {
-  showLogin();
-  return false;
- }
-
- const {data:roleData,error:roleError} = await supabaseClient
-  .from("scholarship_admin_roles")
-  .select("admin_role")
-  .eq("user_id",user.id)
-  .maybeSingle();
-
- if(roleError || !roleData) {
-  await supabaseClient.auth.signOut();
-  showLogin();
-  showLoginMessage("Access denied. This account is not an authorized Scholarship Admin.");
-  return false;
- }
-
- document.getElementById("adminName").textContent =
-  user.email || "Administrator";
-
- document.getElementById("adminRole").textContent =
-  roleData.admin_role === "primary_admin"
-   ? "Primary Administrator"
-   : roleData.admin_role === "secondary_admin"
-    ? "Secondary Administrator"
-    : "Scholarship Administrator";
-
+async function verifyAdmin(){
+ const {data:{user},error}=await supabaseClient.auth.getUser();
+ if(error||!user){showLogin();return false}
+ const {data:roleData,error:roleError}=await supabaseClient.from("scholarship_admin_roles").select("admin_role").eq("user_id",user.id).maybeSingle();
+ if(roleError||!roleData){await supabaseClient.auth.signOut();showLogin();showLoginMessage("Access denied. This account is not an authorized Scholarship Admin.");return false}
+ document.getElementById("adminName").textContent=user.email||"Administrator";
+ document.getElementById("adminRole").textContent=roleData.admin_role==="primary_admin"?"Primary Administrator":roleData.admin_role==="secondary_admin"?"Secondary Administrator":"Scholarship Administrator";
  showDashboard();
-
- await Promise.all([
-  loadStatistics(),
-  loadInstituteStudents()
- ]);
-
+ await Promise.all([loadStatistics(),loadInstituteStudents(),loadScholarshipStudents()]);
  return true;
 }
-
-async function getCount(table,configure) {
- let query = supabaseClient
-  .from(table)
-  .select("id",{count:"exact",head:true});
-
- if(configure) query = configure(query);
-
- const {count,error} = await query;
- if(error) throw error;
- return count ?? 0;
+async function getCount(table,configure){
+ let query=supabaseClient.from(table).select("id",{count:"exact",head:true});if(configure)query=configure(query);
+ const {count,error}=await query;if(error)throw error;return count??0;
 }
-
-async function loadStatistics() {
- const message = document.getElementById("statsMessage");
- message.textContent = "Loading live statistics...";
- message.className = "message muted";
-
- try {
-  const [students,completed,active,published] = await Promise.all([
-   getCount("scholarship_students"),
-   getCount("scholarship_exam_attempts",q=>q.not("submitted_at","is",null)),
-   getCount("scholarship_exam_attempts",q=>q.is("submitted_at",null)),
-   getCount("scholarship_results",q=>q.eq("is_published",true))
+async function loadStatistics(){
+ const message=document.getElementById("statsMessage");message.textContent="Loading live statistics...";message.className="message muted";
+ try{
+  const [students,completed,active,published]=await Promise.all([
+   getCount("scholarship_students"),getCount("scholarship_exam_attempts",q=>q.not("submitted_at","is",null)),
+   getCount("scholarship_exam_attempts",q=>q.is("submitted_at",null)),getCount("scholarship_results",q=>q.eq("is_published",true))
   ]);
-
-  document.getElementById("totalStudents").textContent = students;
-  document.getElementById("completedExams").textContent = completed;
-  document.getElementById("activeExams").textContent = active;
-  document.getElementById("publishedResults").textContent = published;
-
-  message.textContent = "Statistics successfully loaded from Supabase.";
-  message.className = "message success";
-
- } catch(error) {
-  message.textContent =
-   "Could not load statistics: " + (error.message || "Database error");
-  message.className = "message error";
- }
+  document.getElementById("totalStudents").textContent=students;document.getElementById("completedExams").textContent=completed;document.getElementById("activeExams").textContent=active;document.getElementById("publishedResults").textContent=published;
+  message.textContent="Statistics successfully loaded from Supabase.";message.className="message success";
+ }catch(error){message.textContent="Could not load statistics: "+(error.message||"Database error");message.className="message error"}
 }
-
-/* CENTRAL ADMIN FUNCTION REQUEST */
-
-async function callInstituteFunction(payload) {
- const {data:sessionData,error:sessionError} =
-  await supabaseClient.auth.getSession();
-
- if(sessionError || !sessionData.session) {
-  throw new Error("Admin session expired. Please log in again.");
- }
-
- const response = await fetch(INSTITUTE_FUNCTION_URL,{
-  method:"POST",
-  headers:{
-   "Content-Type":"application/json",
-   "apikey":SUPABASE_KEY,
-   "Authorization":"Bearer " + sessionData.session.access_token
-  },
-  body:JSON.stringify(payload)
- });
-
- let result;
-
- try {
-  result = await response.json();
- } catch {
-  throw new Error("Invalid response received from Institute Management Function.");
- }
-
- if(!response.ok || result.success === false) {
-  throw new Error(
-   result.error || result.message || "Institute Management request failed."
-  );
- }
-
+async function callInstituteFunction(payload){
+ const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+ if(sessionError||!sessionData.session)throw new Error("Admin session expired. Please log in again.");
+ const response=await fetch(INSTITUTE_FUNCTION_URL,{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+sessionData.session.access_token},body:JSON.stringify(payload)});
+ let result;try{result=await response.json()}catch{throw new Error("Invalid response received from Student Management Function.")}
+ if(!response.ok||result.success===false)throw new Error(result.error||result.message||"Student Management request failed.");
  return result;
 }
-
-/* LOAD INSTITUTE STUDENTS */
-
-function extractStudentArray(result) {
- if(Array.isArray(result)) return result;
- if(Array.isArray(result.students)) return result.students;
- if(Array.isArray(result.data)) return result.data;
- if(Array.isArray(result.records)) return result.records;
- if(result.data && Array.isArray(result.data.students)) {
-  return result.data.students;
- }
- return null;
+function extractStudentArray(result){
+ if(Array.isArray(result))return result;if(Array.isArray(result.students))return result.students;if(Array.isArray(result.data))return result.data;if(Array.isArray(result.records))return result.records;if(result.data&&Array.isArray(result.data.students))return result.data.students;return null;
 }
-
-async function loadInstituteStudents() {
- const message = document.getElementById("instituteMessage");
- const tbody = document.getElementById("instituteStudentsBody");
-
- message.className = "message muted";
- message.textContent = "Loading Institute Student records...";
- tbody.innerHTML = '<tr><td colspan="9">Loading...</td></tr>';
-
- try {
-  const result = await callInstituteFunction({action:"list"});
-  const students = extractStudentArray(result);
-
-  if(!students) {
-   throw new Error(
-    "Student list response format could not be identified. Please verify the Edge Function response."
-   );
-  }
-
-  instituteRecords = students;
-
-  const pending = students.filter(s=>String(s.status).toLowerCase()==="pending").length;
-  const approved = students.filter(s=>String(s.status).toLowerCase()==="approved").length;
-  const rejected = students.filter(s=>String(s.status).toLowerCase()==="rejected").length;
-
-  document.getElementById("instituteTotal").textContent = students.length;
-  document.getElementById("institutePending").textContent = pending;
-  document.getElementById("instituteApproved").textContent = approved;
-  document.getElementById("instituteRejected").textContent = rejected;
-
-  tbody.innerHTML = "";
-
-  if(students.length === 0) {
-   tbody.innerHTML =
-    '<tr><td colspan="9"><div class="empty-state">No Institute Student registrations found.</div></td></tr>';
-  } else {
-   students.forEach(student=>{
-    const tr = document.createElement("tr");
-
-    const values = [
-     student.student_id,
-     student.student_name,
-     student.father_name,
-     student.mobile_number,
-     student.class,
-     student.stream,
-     student.batch
-    ];
-
-    values.forEach(value=>{
-     const td = document.createElement("td");
-     td.textContent = value ?? "—";
-     tr.appendChild(td);
-    });
-
-    const statusCell = document.createElement("td");
-    const statusBadge = document.createElement("span");
-    const status = String(student.status || "unknown").toLowerCase();
-
-    statusBadge.className = "status " + status;
-    statusBadge.textContent = status;
-    statusCell.appendChild(statusBadge);
-    tr.appendChild(statusCell);
-
-    const actionCell = document.createElement("td");
-    actionCell.className = "student-actions";
-
-    if(status === "pending") {
-     const approveButton = document.createElement("button");
-     approveButton.className = "btn green";
-     approveButton.textContent = "Approve";
-     approveButton.addEventListener("click",()=>{
-      updateInstituteStudent(student.student_id,"approve");
-     });
-
-     const rejectButton = document.createElement("button");
-     rejectButton.className = "btn red";
-     rejectButton.textContent = "Reject";
-     rejectButton.addEventListener("click",()=>{
-      updateInstituteStudent(student.student_id,"reject");
-     });
-
-     actionCell.append(approveButton,rejectButton);
-    } else {
-     actionCell.textContent = "No action";
-    }
-
-    tr.appendChild(actionCell);
-    tbody.appendChild(tr);
-   });
-  }
-
-  message.className = "message success";
-  message.textContent = "Institute Student records loaded successfully.";
-
- } catch(error) {
-  console.error("Institute student list error:",error);
-
-  message.className = "message error";
-  message.textContent =
-   "Unable to load Institute Students: " + error.message;
-
-  tbody.innerHTML =
-   '<tr><td colspan="9">Unable to load student records.</td></tr>';
-
-  document.getElementById("instituteTotal").textContent = "--";
-  document.getElementById("institutePending").textContent = "--";
-  document.getElementById("instituteApproved").textContent = "--";
-  document.getElementById("instituteRejected").textContent = "--";
- }
-}
-
-/* APPROVE / REJECT */
-
-async function updateInstituteStudent(studentId,action) {
- const actionText = action === "approve" ? "approve" : "reject";
-
- const confirmed = confirm(
-  "Are you sure you want to " + actionText +
-  " Institute Student " + studentId + "?"
- );
-
- if(!confirmed) return;
-
- try {
-  const result = await callInstituteFunction({
-   action:action,
-   student_id:studentId
+async function loadInstituteStudents(){
+ const message=document.getElementById("instituteMessage"),tbody=document.getElementById("instituteStudentsBody");
+ message.className="message muted";message.textContent="Loading Institute Student records...";tbody.innerHTML='<tr><td colspan="9">Loading...</td></tr>';
+ try{
+  const result=await callInstituteFunction({action:"list"}),students=extractStudentArray(result);if(!students)throw new Error("Student list response format could not be identified.");instituteRecords=students;
+  document.getElementById("instituteTotal").textContent=students.length;
+  document.getElementById("institutePending").textContent=students.filter(s=>String(s.status).toLowerCase()==="pending").length;
+  document.getElementById("instituteApproved").textContent=students.filter(s=>String(s.status).toLowerCase()==="approved").length;
+  document.getElementById("instituteRejected").textContent=students.filter(s=>String(s.status).toLowerCase()==="rejected").length;
+  tbody.innerHTML="";
+  if(!students.length)tbody.innerHTML='<tr><td colspan="9"><div class="empty-state">No Institute Student registrations found.</div></td></tr>';
+  students.forEach(student=>{
+   const tr=document.createElement("tr");
+   [student.student_id,student.student_name,student.father_name,student.mobile_number,student.class,student.stream,student.batch].forEach(value=>{const td=document.createElement("td");td.textContent=value??"—";tr.appendChild(td)});
+   const statusCell=document.createElement("td"),badge=document.createElement("span"),status=String(student.status||"unknown").toLowerCase();badge.className="status "+status;badge.textContent=status;statusCell.appendChild(badge);tr.appendChild(statusCell);
+   const actions=document.createElement("td");actions.className="student-actions";
+   if(status==="pending"){
+    const approve=document.createElement("button");approve.className="btn green";approve.textContent="Approve";approve.addEventListener("click",()=>updateInstituteStudent(student.student_id,"approve"));
+    const reject=document.createElement("button");reject.className="btn red";reject.textContent="Reject";reject.addEventListener("click",()=>updateInstituteStudent(student.student_id,"reject"));actions.append(approve,reject);
+   }
+   const reset=document.createElement("button");reset.className="btn orange";reset.textContent="Reset Password";reset.addEventListener("click",()=>manageStudentAccount("reset_password","institute",student.student_id));
+   const del=document.createElement("button");del.className="btn red";del.textContent="Delete Account";del.addEventListener("click",()=>manageStudentAccount("delete_account","institute",student.student_id));actions.append(reset,del);tr.appendChild(actions);tbody.appendChild(tr);
   });
-
-  alert(
-   result.message ||
-   ("Institute Student " + studentId + " has been " + actionText + "d.")
-  );
-
-  await loadInstituteStudents();
-
- } catch(error) {
-  console.error("Institute student update error:",error);
-  alert("Action failed: " + error.message);
+  message.className="message success";message.textContent="Institute Student records loaded successfully.";
+ }catch(error){
+  console.error(error);message.className="message error";message.textContent="Unable to load Institute Students: "+error.message;tbody.innerHTML='<tr><td colspan="9">Unable to load student records.</td></tr>';
+  ["instituteTotal","institutePending","instituteApproved","instituteRejected"].forEach(id=>document.getElementById(id).textContent="--");
  }
 }
-
-document.getElementById("refreshInstituteBtn")
-.addEventListener("click",loadInstituteStudents);
-
-/* ADMIN LOGIN */
-
-document.getElementById("loginForm").addEventListener("submit",async function(e) {
- e.preventDefault();
-
- const button = document.getElementById("loginButton");
- button.disabled = true;
- button.textContent = "Verifying...";
-
- try {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  const {error} = await supabaseClient.auth.signInWithPassword({
-   email,
-   password
+async function loadScholarshipStudents(){
+ const message=document.getElementById("scholarshipMessage"),tbody=document.getElementById("scholarshipStudentsBody");
+ message.className="message muted";message.textContent="Loading Scholarship Students...";tbody.innerHTML='<tr><td colspan="8">Loading...</td></tr>';
+ try{
+  const result=await callInstituteFunction({action:"list_scholarship"}),students=extractStudentArray(result);if(!students)throw new Error("Invalid Scholarship Student list response.");scholarshipRecords=students;tbody.innerHTML="";
+  if(!students.length)tbody.innerHTML='<tr><td colspan="8"><div class="empty-state">No Scholarship Students found.</div></td></tr>';
+  students.forEach(student=>{
+   const tr=document.createElement("tr");
+   [student.registration_id,student.student_name,student.father_name,student.mobile,student.category,student.stream,student.district].forEach(value=>{const td=document.createElement("td");td.textContent=value??"—";tr.appendChild(td)});
+   const actions=document.createElement("td");actions.className="student-actions";
+   const reset=document.createElement("button");reset.className="btn orange";reset.textContent="Reset Password";reset.addEventListener("click",()=>manageStudentAccount("reset_password","scholarship",student.registration_id));
+   const del=document.createElement("button");del.className="btn red";del.textContent="Delete Account";del.addEventListener("click",()=>manageStudentAccount("delete_account","scholarship",student.registration_id));actions.append(reset,del);tr.appendChild(actions);tbody.appendChild(tr);
   });
-
-  if(error) throw error;
-
-  showLoginMessage(
-   "Login successful. Verifying administrator permissions...",
-   "success"
-  );
-
-  const authorized = await verifyAdmin();
-
-  if(!authorized) {
-   await supabaseClient.auth.signOut();
-  }
-
- } catch(error) {
-  showLoginMessage(error.message || "Login failed.");
- } finally {
-  button.disabled = false;
-  button.textContent = "Secure Admin Login";
- }
+  message.className="message success";message.textContent="Loaded "+students.length+" Scholarship Student records.";
+ }catch(error){console.error(error);message.className="message error";message.textContent="Unable to load Scholarship Students: "+error.message;tbody.innerHTML='<tr><td colspan="8">Unable to load records.</td></tr>'}
+}
+function showTemporaryPassword(studentId,password){
+ currentTemporaryPassword=password;document.getElementById("passwordStudentInfo").textContent="Password reset completed for student ID: "+studentId+". Save this password securely.";
+ document.getElementById("temporaryPasswordText").textContent=password;document.getElementById("copyMessage").textContent="";document.getElementById("passwordModal").classList.remove("hidden");
+}
+async function manageStudentAccount(action,studentType,studentId){
+ const label=studentType==="institute"?"Institute Student":"Scholarship Student";
+ if(action==="delete_account"){
+  const warning=studentType==="scholarship"?"Only the login account will be deleted. Registration details and exam history are intended to remain.":"The Institute profile is linked to the Auth account and may be deleted with it. Linked records may block deletion.";
+  if(!confirm("WARNING: Delete login account for "+label+" "+studentId+"?\n\n"+warning+"\n\nThis action cannot be undone."))return;
+ }else if(!confirm("Generate a new temporary password for "+label+" "+studentId+"?"))return;
+ try{
+  const result=await callInstituteFunction({action,student_type:studentType,student_id:studentId});
+  if(action==="reset_password"){if(!result.temporary_password)throw new Error("Temporary password was not returned.");showTemporaryPassword(studentId,result.temporary_password)}
+  else alert(result.message||"Account deletion completed.");
+  if(studentType==="institute")await loadInstituteStudents();else await loadScholarshipStudents();
+ }catch(error){console.error(error);alert("Action failed: "+error.message)}
+}
+async function updateInstituteStudent(studentId,action){
+ const actionText=action==="approve"?"approve":"reject";if(!confirm("Are you sure you want to "+actionText+" Institute Student "+studentId+"?"))return;
+ try{const result=await callInstituteFunction({action,student_id:studentId});alert(result.message||("Institute Student "+studentId+" has been "+actionText+"d."));await loadInstituteStudents()}
+ catch(error){console.error(error);alert("Action failed: "+error.message)}
+}
+document.getElementById("refreshInstituteBtn").addEventListener("click",loadInstituteStudents);
+document.getElementById("refreshScholarshipBtn").addEventListener("click",loadScholarshipStudents);
+document.getElementById("copyPasswordBtn").addEventListener("click",async()=>{
+ try{await navigator.clipboard.writeText(currentTemporaryPassword);document.getElementById("copyMessage").textContent="Password copied. Share it privately.";document.getElementById("copyMessage").className="message success"}
+ catch{document.getElementById("copyMessage").textContent="Copy failed. Select and copy the password manually.";document.getElementById("copyMessage").className="message error"}
 });
+function closePasswordModal(){document.getElementById("passwordModal").classList.add("hidden");currentTemporaryPassword="";document.getElementById("temporaryPasswordText").textContent=""}
+document.getElementById("closePasswordBtn").addEventListener("click",closePasswordModal);
 
-/* ADMIN LOGOUT */
-
-document.getElementById("logoutButton").addEventListener("click",async function() {
- const {error} = await supabaseClient.auth.signOut();
-
- if(error) {
-  alert("Logout error: " + error.message);
-  return;
- }
-
- showLogin();
- document.getElementById("password").value = "";
- showLoginMessage("You have been logged out successfully.","success");
+document.getElementById("loginForm").addEventListener("submit",async function(e){
+ e.preventDefault();const button=document.getElementById("loginButton");button.disabled=true;button.textContent="Verifying...";
+ try{
+  const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;
+  showLoginMessage("Login successful. Verifying administrator permissions...","success");const authorized=await verifyAdmin();if(!authorized)await supabaseClient.auth.signOut();
+ }catch(error){showLoginMessage(error.message||"Login failed.")}
+ finally{button.disabled=false;button.textContent="Secure Admin Login"}
 });
-
-/* AUTH SESSION */
-
-supabaseClient.auth.onAuthStateChange((event,session)=>{
- if(event === "SIGNED_OUT") showLogin();
+document.getElementById("logoutButton").addEventListener("click",async()=>{
+ const {error}=await supabaseClient.auth.signOut();if(error){alert("Logout error: "+error.message);return}
+ showLogin();document.getElementById("password").value="";showLoginMessage("You have been logged out successfully.","success");
 });
-
+supabaseClient.auth.onAuthStateChange(event=>{if(event==="SIGNED_OUT")showLogin()});
 verifyAdmin();
 </script>
-
 </body>
 </html>
