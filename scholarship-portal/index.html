@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,20 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index,follow">
 <title>Student Portal | Rakeshh Physics</title>
-<meta name="description" content="Rakeshh Physics Digital Examination Portal">
+<meta name="description" content="Register or login to Rakeshh Physics Digital Examination Portal">
 
 <style>
 :root {
-  --bg:#000000;
-  --navy:#091B38;
-  --gold:#E8B51E;
-  --green:#00D987;
+  --bg:#07101f;
+  --navy:#0A1931;
+  --gold:#D4AF37;
   --white:#FFFFFF;
   --muted:#AAB4C4;
 }
-* {box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0}
 
-body {
+body{
   font-family:Arial,sans-serif;
   background:var(--bg);
   color:var(--white);
@@ -27,136 +27,225 @@ body {
   flex-direction:column;
 }
 
-header {
-  padding:25px 6%;
-  border-bottom:1px solid #24334a;
+header{
+  padding:24px 15px;
   text-align:center;
+  border-bottom:1px solid #263750;
+  background:#050c18;
 }
 
-.brand {
+.brand{
   color:var(--gold);
-  font-size:25px;
+  font-size:26px;
   font-weight:900;
-  letter-spacing:1px;
+  letter-spacing:1.5px;
 }
 
-.tagline {
-  color:#fff;
+.tagline{
   font-size:10px;
   letter-spacing:3px;
   margin-top:7px;
+  color:#fff;
 }
 
-main {
+main{
   width:100%;
-  max-width:1050px;
+  max-width:850px;
   margin:auto;
-  padding:55px 20px 65px;
+  padding:55px 20px;
 }
 
-.section-label {
+.section-label{
   display:table;
-  margin:0 auto 17px;
-  padding:7px 15px;
-  border-radius:5px;
-  background:#004B43;
-  color:var(--green);
+  margin:0 auto 18px;
+  padding:8px 16px;
+  border-radius:30px;
+  background:#182b45;
+  color:var(--gold);
   font-size:11px;
   font-weight:800;
   letter-spacing:1.5px;
 }
 
-h1 {
+h1{
   text-align:center;
   color:var(--gold);
-  font-size:clamp(25px,4vw,36px);
+  font-size:clamp(26px,5vw,38px);
   margin-bottom:12px;
 }
 
-.intro {
+.intro{
   text-align:center;
   color:var(--muted);
   font-size:14px;
   line-height:1.7;
-  margin-bottom:40px;
+  margin-bottom:35px;
 }
 
-.portal-grid {
+.main-options{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:24px;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
 
-.portal-card {
-  background:var(--navy);
-  border:1px solid #263b5b;
-  border-radius:15px;
-  padding:35px 25px;
+.option-card{
+  background:linear-gradient(145deg,#12294b,#0A1931);
+  border:1px solid #304565;
+  border-radius:16px;
+  padding:32px 20px;
   text-align:center;
+  min-height:210px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  min-height:245px;
-  transition:border-color .2s,transform .2s;
+  transition:.25s;
 }
 
-.portal-card:hover {
+.option-card:hover{
   border-color:var(--gold);
-  transform:translateY(-3px);
+  transform:translateY(-4px);
 }
 
-.portal-number {
-  color:var(--green);
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:2px;
-  margin-bottom:19px;
+.option-icon{
+  font-size:34px;
+  margin-bottom:15px;
 }
 
-.portal-card h2 {
-  color:var(--gold);
-  font-size:clamp(19px,3vw,25px);
-  font-weight:900;
-  line-height:1.4;
-  margin-bottom:25px;
+.option-card h2{
+  color:var(--white);
+  font-size:21px;
+  margin-bottom:10px;
 }
 
-.portal-btn {
+.option-card p{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:22px;
+  line-height:1.6;
+}
+
+.btn{
   display:inline-block;
+  border:0;
+  border-radius:8px;
+  padding:13px 25px;
+  min-width:175px;
   background:var(--gold);
   color:#091B38;
-  padding:13px 24px;
-  border-radius:7px;
-  font-size:13px;
+  font-size:14px;
   font-weight:800;
   text-decoration:none;
-  min-width:175px;
-  transition:background .2s;
+  cursor:pointer;
+  transition:.2s;
 }
 
-.portal-btn:hover {
-  background:#ffd45a;
+.btn:hover{
+  background:#f4d36c;
 }
 
-footer {
-  border-top:1px solid #24334a;
+.login-btn{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+}
+
+.login-btn:hover{
+  background:var(--gold);
+  color:#091B38;
+}
+
+#registrationChoices{
+  display:none;
+  margin-top:28px;
+  animation:appear .25s ease;
+}
+
+#registrationChoices.show{
+  display:block;
+}
+
+@keyframes appear{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.choice-heading{
+  text-align:center;
+  color:var(--gold);
+  font-size:21px;
+  margin-bottom:8px;
+}
+
+.choice-description{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.registration-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.registration-card{
+  background:#101f36;
+  border:1px solid #344966;
+  border-radius:13px;
+  padding:24px 16px;
+  text-align:center;
+}
+
+.registration-card h3{
+  font-size:17px;
+  margin-bottom:9px;
+  color:#fff;
+}
+
+.registration-card p{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+  min-height:38px;
+  margin-bottom:17px;
+}
+
+.registration-card .btn{
+  min-width:0;
+  width:100%;
+  padding:12px 8px;
+  font-size:12px;
+}
+
+#registrationChoices:target{
+  display:block;
+}
+
+footer{
+  border-top:1px solid #263750;
   padding:22px 15px;
   text-align:center;
   color:#8995a8;
   font-size:12px;
   line-height:1.8;
+  margin-top:auto;
 }
 
-footer strong {color:var(--gold)}
+footer strong{color:var(--gold)}
 
-@media(max-width:650px) {
-  header {padding:21px 15px}
-  .brand {font-size:21px}
-  main {padding:40px 17px}
-  .portal-grid {grid-template-columns:1fr;gap:17px}
-  .portal-card {min-height:205px;padding:28px 18px}
-  .intro {margin-bottom:30px}
+@media(max-width:600px){
+  header{padding:21px 12px}
+  .brand{font-size:22px}
+  main{padding:38px 17px}
+  .main-options{gap:12px}
+  .option-card{padding:25px 12px;min-height:190px}
+  .option-card h2{font-size:17px}
+  .option-card p{font-size:11px}
+  .btn{min-width:0;width:100%;padding:12px 8px;font-size:12px}
+  .registration-grid{grid-template-columns:1fr;gap:12px}
+  .registration-card{padding:22px 17px}
 }
 </style>
 </head>
@@ -170,31 +259,73 @@ footer strong {color:var(--gold)}
 
 <main>
 
-  <div class="section-label">STUDENT PORTAL</div>
+  <div class="section-label">DIGITAL EXAMINATION PORTAL</div>
 
-  <h1>Choose Your Examination Portal</h1>
+  <h1>Welcome to Student Portal</h1>
 
   <p class="intro">
-    Select your portal to continue.
+    Register for a new account or login to continue
+    your examination journey with Rakeshh Physics.
   </p>
 
-  <section class="portal-grid">
+  <section class="main-options">
 
-    <article class="portal-card">
-      <div class="portal-number">01</div>
-      <h2>RP SCHOLASTIC ARENA</h2>
-      <a class="portal-btn" href="scholarship.html">
-        ENTER PORTAL
+    <article class="option-card">
+      <div class="option-icon">✦</div>
+      <h2>New Student?</h2>
+      <p>Create your student account to get started.</p>
+
+      <button class="btn" id="registerButton" type="button"
+        aria-expanded="false" aria-controls="registrationChoices">
+        REGISTER NOW
+      </button>
+    </article>
+
+    <article class="option-card">
+      <div class="option-icon">➜</div>
+      <h2>Already Registered?</h2>
+      <p>Login using your Registration ID and Password.</p>
+
+      <a class="btn login-btn" href="login.html">
+        STUDENT LOGIN
       </a>
     </article>
 
-    <article class="portal-card">
-      <div class="portal-number">02</div>
-      <h2>RP ACADEMIC TEST HUB</h2>
-      <a class="portal-btn" href="academic-test-hub.html">
-        ENTER PORTAL
-      </a>
-    </article>
+  </section>
+
+  <section id="registrationChoices">
+
+    <h2 class="choice-heading">Choose Student Category</h2>
+
+    <p class="choice-description">
+      Select the category that applies to you.
+    </p>
+
+    <div class="registration-grid">
+
+      <article class="registration-card">
+        <h3>Institute Student</h3>
+        <p>
+          For students enrolled at Rakeshh Physics
+          Institute.
+        </p>
+        <a class="btn" href="institute-register.html">
+          INSTITUTE REGISTRATION
+        </a>
+      </article>
+
+      <article class="registration-card">
+        <h3>Scholarship Student</h3>
+        <p>
+          For students applying through the
+          RP Scholastic Arena.
+        </p>
+        <a class="btn" href="register.html">
+          SCHOLARSHIP REGISTRATION
+        </a>
+      </article>
+
+    </div>
 
   </section>
 
@@ -205,6 +336,25 @@ footer strong {color:var(--gold)}
   <p>Another Name For Success</p>
   <p>© 2026 Rakeshh Physics. All Rights Reserved.</p>
 </footer>
+
+<script>
+const registerButton = document.getElementById("registerButton");
+const registrationChoices = document.getElementById("registrationChoices");
+
+registerButton.addEventListener("click", function () {
+  const isOpen = registrationChoices.classList.toggle("show");
+
+  registerButton.setAttribute("aria-expanded", String(isOpen));
+  registerButton.textContent = isOpen ? "CLOSE REGISTRATION" : "REGISTER NOW";
+
+  if (isOpen) {
+    registrationChoices.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+});
+</script>
 
 </body>
 </html>
